@@ -45,6 +45,29 @@ projects them through the camera, and positions two absolutely-placed DOM panels
 resulting screen rectangles, scaling the font to match. The text sits exactly on the open pages
 while remaining ordinary DOM.
 
+### Two languages, including the 3D cover
+
+The page ships in English and Spanish. English lives in `index.html` and is the
+single source of truth: on load, the innerHTML of every `[data-i18n]` element is
+snapshotted into memory, so `js/i18n.js` only carries *translations* and there is
+no duplicated English to drift out of sync.
+
+Switching languages does three things that a normal i18n layer doesn't have to:
+it reverts the GSAP SplitText instances before swapping text and re-splits after
+(a split holds references to DOM it generated, so swapping underneath it would
+strand the animation); it repaints the book's cover texture, since the jacket is
+canvas-painted rather than an image and the title has to be re-drawn; and it
+refreshes ScrollTrigger, because translated copy changes the page height.
+
+On a first visit the browser's preferred language is compared against the page's.
+If it differs and we have that language, a quiet prompt offers to switch — worded
+in the language being offered. The choice persists in `localStorage`, and the
+prompt never appears again once answered.
+
+**Adding a third language** means adding an entry to `LANGS` and a matching block
+to `TRANSLATIONS` in `js/i18n.js`. The switcher builds itself from `LANGS`, so
+there is no UI work.
+
 ### Mobile gets a different treatment on purpose
 
 On a phone, each projected page is roughly 170px wide — far too small to hold a letter. Below
@@ -84,9 +107,10 @@ Then visit `http://localhost:4173`.
 ## Structure
 
 ```
-index.html          markup and content
+index.html          markup and content (English — the i18n source of truth)
 css/style.css       all styling, including the phone layout
 js/main.js          Three.js scene, canvas textures, scroll choreography
+js/i18n.js          translations and cover wording per language
 assets/art/         author portrait and the four "Movements" photographs
 audio/              voice notes (see below)
 ```

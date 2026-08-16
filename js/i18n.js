@@ -64,7 +64,7 @@ export const TRANSLATIONS = {
     "nav.cta": "Reservar",
 
     /* ── hero ── */
-    "hero.press": "Academy Press",
+    "hero.press": "By Francia",
     "hero.edition": "Edición Nº 01",
     "hero.title":
       '<span class="hero__title-line"><span data-split>Te enseñaron</span></span>' +
@@ -292,7 +292,7 @@ export const TRANSLATIONS = {
     "footer.big": "Respira<span>.</span>",
     "footer.notify": "Avísame",
     "footer.email": "Tu correo electrónico",
-    "footer.copy": "© MMXXVI Academy Press",
+    "footer.copy": "© MMXXVI By Francia",
     "footer.crafted": "Hecho con paciencia",
   },
 };

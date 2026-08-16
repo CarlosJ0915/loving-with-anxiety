@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════
-   ACADEMY — The Luminous Mind
+   BY FRANCIA — The Luminous Mind
    Creative direction: light, luxurious, editorial
    ═══════════════════════════════════════════════ */
 
@@ -1570,4 +1570,17 @@ em { font-style: italic; }
   }
   .lang-offer p { white-space: normal; width: 100%; }
   .lang-offer button { min-height: 44px; }
+}
+
+/* ═══════════ BRAND ═══════════
+   "BY FRANCIA" is longer than the old mark, so the loader's wide tracking
+   needs a touch less room, and the two words need a real gap between them. */
+.loader__letter--gap { width: 0.32em; }
+.loader__brand {
+  letter-spacing: 0.62em;
+  padding-left: 0.62em;
+}
+@media (max-width: 520px) {
+  .loader__brand { letter-spacing: 0.4em; padding-left: 0.4em; }
+  .nav__logo { letter-spacing: 0.18em; font-size: 0.78rem; }
 }

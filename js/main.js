@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════
-   ACADEMY — The Luminous Mind
+   BY FRANCIA — The Luminous Mind
    Motion: Lenis + GSAP ScrollTrigger + Three.js
    ═══════════════════════════════════════════════ */
 
@@ -834,7 +834,7 @@ document.fonts.ready.then(() => {
      i18n.js only carries translations. Switching re-swaps innerHTML, re-runs
      the SplitText instances over the new text, and repaints the 3D jacket. */
   const EN = new Map();
-  const LANG_KEY = "academy-lang";
+  const LANG_KEY = "byfrancia-lang";
   let splitsReady = false;
 
   function remember(el, attr, read) {

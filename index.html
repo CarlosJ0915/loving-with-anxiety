@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ACADEMY — Learning How to Love with Anxiety</title>
+  <meta name="description" content="Learning How to Love with Anxiety by Francia Montoya — a tender guide to living, loving, and growing alongside an anxious heart. Published by Academy Press." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Allura&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="css/style.css?v=35" />
+</head>
+<body>
+
+  <!-- ══════════ PRELOADER ══════════ -->
+  <div class="loader" id="loader">
+    <div class="loader__inner">
+      <div class="loader__brand">
+        <span class="loader__letter">A</span><span class="loader__letter">C</span><span class="loader__letter">A</span><span class="loader__letter">D</span><span class="loader__letter">E</span><span class="loader__letter">M</span><span class="loader__letter">Y</span>
+      </div>
+      <div class="loader__count"><span id="loaderCount">00</span></div>
+      <div class="loader__line"><span id="loaderBar"></span></div>
+    </div>
+    <div class="loader__curtain loader__curtain--1"></div>
+    <div class="loader__curtain loader__curtain--2"></div>
+  </div>
+
+  <!-- ══════════ CURSOR ══════════ -->
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- ══════════ GRAIN ══════════ -->
+  <div class="grain" aria-hidden="true"></div>
+
+  <!-- ══════════ AMBIENT SUNLIGHT + DUST ══════════ -->
+  <div class="sunbeam" aria-hidden="true"></div>
+  <canvas class="dustfield" id="dustField" aria-hidden="true"></canvas>
+
+  <!-- ══════════ CHAPTER STILLNESS VEIL ══════════ -->
+  <div class="chapter-veil" id="chapterVeil" aria-hidden="true"><span></span></div>
+
+  <!-- ══════════ SVG FILTERS (handmade paper edges) ══════════ -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <filter id="paperEdge" x="-5%" y="-5%" width="110%" height="110%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.012 0.02" numOctaves="2" seed="7" result="n" />
+        <feDisplacementMap in="SourceGraphic" in2="n" scale="2.6" xChannelSelector="R" yChannelSelector="G" />
+      </filter>
+    </defs>
+  </svg>
+
+  <!-- ══════════ SUNLIT ROOM (parallax on scroll) ══════════ -->
+  <div class="room" aria-hidden="true">
+    <div class="room__scene" id="roomScene">
+      <svg viewBox="0 0 1600 3200" preserveAspectRatio="xMidYMin slice" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <filter id="glowBig" x="-40%" y="-40%" width="180%" height="180%">
+            <feGaussianBlur stdDeviation="30" />
+          </filter>
+          <filter id="glowSoft" x="-40%" y="-40%" width="180%" height="180%">
+            <feGaussianBlur stdDeviation="16" />
+          </filter>
+          <filter id="leafSoft" x="-60%" y="-60%" width="220%" height="220%">
+            <feGaussianBlur stdDeviation="9" />
+          </filter>
+          <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#f5f0e4" />
+            <stop offset="0.28" stop-color="#eee6d4" />
+            <stop offset="0.55" stop-color="#f2ecdf" />
+            <stop offset="0.8" stop-color="#eae1cc" />
+            <stop offset="1" stop-color="#f0e9d9" />
+          </linearGradient>
+          <radialGradient id="warmGlow" cx="0.5" cy="0.5" r="0.5">
+            <stop offset="0" stop-color="#fff4dd" stop-opacity="0.75" />
+            <stop offset="1" stop-color="#fff4dd" stop-opacity="0" />
+          </radialGradient>
+        </defs>
+
+        <!-- the wall -->
+        <rect x="0" y="0" width="1600" height="3200" fill="url(#wall)" />
+
+        <!-- faint tall streaks, like light bleeding down the wall -->
+        <g filter="url(#glowBig)" opacity="0.3">
+          <rect x="70" y="60" width="46" height="1350" fill="#f7ecd6" />
+          <rect x="180" y="200" width="26" height="1100" fill="#f5e9d0" />
+          <rect x="1380" y="1500" width="40" height="1250" fill="#f7ecd6" />
+          <rect x="120" y="1900" width="30" height="1200" fill="#f5e9d0" />
+        </g>
+
+        <!-- ── window A · hero, right ── -->
+        <g id="lightA">
+          <ellipse cx="1210" cy="470" rx="520" ry="620" fill="url(#warmGlow)" />
+          <g transform="translate(1030, 90) rotate(10)" filter="url(#glowSoft)" opacity="0.5">
+            <rect x="0" y="0" width="165" height="290" fill="#fff5e0" />
+            <rect x="195" y="0" width="165" height="290" fill="#fff5e0" />
+            <rect x="0" y="322" width="165" height="290" fill="#fff5e0" />
+            <rect x="195" y="322" width="165" height="290" fill="#fff5e0" />
+            <rect x="0" y="644" width="165" height="290" fill="#fff5e0" />
+            <rect x="195" y="644" width="165" height="290" fill="#fff5e0" />
+          </g>
+          <g transform="translate(1120, 420) rotate(16)" filter="url(#leafSoft)" fill="#7a6548" opacity="0.13">
+            <path d="M0 0 q 34 -46 78 -22 q 42 24 16 64 q -54 34 -94 -42 z" />
+            <path d="M90 60 q 40 -30 70 0 q 26 30 -6 56 q -44 20 -64 -56 z" transform="rotate(24)" />
+            <ellipse cx="40" cy="130" rx="46" ry="20" transform="rotate(-18 40 130)" />
+            <ellipse cx="130" cy="180" rx="52" ry="22" transform="rotate(30 130 180)" />
+            <path d="M-30 90 q -10 90 40 150" stroke="#7a6548" stroke-width="7" fill="none" />
+          </g>
+        </g>
+
+        <!-- ── window B · left, second stretch ── -->
+        <g id="lightB">
+          <ellipse cx="380" cy="1330" rx="560" ry="520" fill="url(#warmGlow)" opacity="0.8" />
+          <g transform="translate(110, 1040) rotate(-8)" filter="url(#glowSoft)" opacity="0.42">
+            <rect x="0" y="0" width="190" height="260" fill="#fff5e0" />
+            <rect x="222" y="0" width="190" height="260" fill="#fff5e0" />
+            <rect x="444" y="0" width="190" height="260" fill="#fff5e0" />
+            <rect x="0" y="292" width="190" height="260" fill="#fff5e0" />
+            <rect x="222" y="292" width="190" height="260" fill="#fff5e0" />
+            <rect x="444" y="292" width="190" height="260" fill="#fff5e0" />
+          </g>
+          <g transform="translate(360, 1240) rotate(-20)" filter="url(#leafSoft)" fill="#7a6548" opacity="0.11">
+            <ellipse cx="0" cy="0" rx="58" ry="24" transform="rotate(20)" />
+            <ellipse cx="90" cy="50" rx="50" ry="22" transform="rotate(-28 90 50)" />
+            <ellipse cx="30" cy="110" rx="44" ry="18" transform="rotate(40 30 110)" />
+            <path d="M-40 -30 q 60 90 130 160" stroke="#7a6548" stroke-width="6" fill="none" />
+          </g>
+        </g>
+
+        <!-- ── window C · centre-right, third stretch ── -->
+        <g id="lightC">
+          <ellipse cx="1040" cy="1980" rx="460" ry="480" fill="url(#warmGlow)" opacity="0.7" />
+          <g transform="translate(880, 1760) rotate(13)" filter="url(#glowSoft)" opacity="0.4">
+            <rect x="0" y="0" width="150" height="250" fill="#fff5e0" />
+            <rect x="180" y="0" width="150" height="250" fill="#fff5e0" />
+            <rect x="0" y="280" width="150" height="250" fill="#fff5e0" />
+            <rect x="180" y="280" width="150" height="250" fill="#fff5e0" />
+          </g>
+          <g transform="translate(1010, 1950) rotate(8)" filter="url(#leafSoft)" fill="#7a6548" opacity="0.1">
+            <ellipse cx="0" cy="0" rx="48" ry="20" transform="rotate(-24)" />
+            <ellipse cx="70" cy="60" rx="42" ry="18" transform="rotate(32 70 60)" />
+            <path d="M-30 -40 q 50 80 110 140" stroke="#7a6548" stroke-width="5" fill="none" />
+          </g>
+        </g>
+
+        <!-- ── window D · footer, left ── -->
+        <g id="lightD">
+          <ellipse cx="520" cy="2760" rx="620" ry="560" fill="url(#warmGlow)" opacity="0.85" />
+          <g transform="translate(240, 2450) rotate(-11)" filter="url(#glowSoft)" opacity="0.48">
+            <rect x="0" y="0" width="180" height="300" fill="#fff5e0" />
+            <rect x="212" y="0" width="180" height="300" fill="#fff5e0" />
+            <rect x="0" y="334" width="180" height="300" fill="#fff5e0" />
+            <rect x="212" y="334" width="180" height="300" fill="#fff5e0" />
+            <rect x="0" y="668" width="180" height="300" fill="#fff5e0" />
+            <rect x="212" y="668" width="180" height="300" fill="#fff5e0" />
+          </g>
+          <g transform="translate(430, 2700) rotate(-14)" filter="url(#leafSoft)" fill="#7a6548" opacity="0.12">
+            <path d="M0 0 q 34 -46 78 -22 q 42 24 16 64 q -54 34 -94 -42 z" />
+            <ellipse cx="90" cy="70" rx="54" ry="22" transform="rotate(26 90 70)" />
+            <ellipse cx="10" cy="140" rx="46" ry="20" transform="rotate(-30 10 140)" />
+            <path d="M-30 -20 q 40 110 100 190" stroke="#7a6548" stroke-width="6" fill="none" />
+          </g>
+        </g>
+      </svg>
+    </div>
+  </div>
+
+  <!-- ══════════ NAV ══════════ -->
+  <header class="nav" id="nav">
+    <a class="nav__logo" href="#" data-hover>ACADEMY<sup>®</sup></a>
+    <nav class="nav__links">
+      <a href="#book" data-hover>The Book</a>
+      <a href="#chapters" data-hover>Chapters</a>
+      <a href="#editions" data-hover>Editions</a>
+    </nav>
+    <a class="nav__cta" href="#editions" data-hover><span>Pre-order</span></a>
+  </header>
+
+  <main id="main">
+
+    <!-- ══════════ HERO ══════════ -->
+    <section class="hero" id="hero">
+      <!-- slow leaf & window shadows on the bone wall -->
+      <div class="hero__bg" aria-hidden="true">
+        <svg viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <filter id="shSoft" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="13" /></filter>
+            <filter id="shBig" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="30" /></filter>
+          </defs>
+          <!-- diagonal window shadow bands -->
+          <g id="windowShadow" opacity="0.09" fill="#57503f" filter="url(#shBig)">
+            <polygon points="-100,760 340,1050 260,1050 -180,760" />
+            <polygon points="120,660 660,1050 560,1050 20,660" />
+            <polygon points="1290,-80 1720,220 1640,260 1210,-40" />
+          </g>
+          <!-- leaf cluster · top left -->
+          <g id="leafShadowA" fill="#5a4f3d" opacity="0.10" filter="url(#shSoft)">
+            <path d="M110 40 q 90 60 180 150" stroke="#5a4f3d" stroke-width="7" fill="none" />
+            <ellipse cx="150" cy="70" rx="52" ry="20" transform="rotate(32 150 70)" />
+            <ellipse cx="230" cy="120" rx="60" ry="23" transform="rotate(-14 230 120)" />
+            <ellipse cx="300" cy="185" rx="55" ry="21" transform="rotate(40 300 185)" />
+            <ellipse cx="180" cy="180" rx="46" ry="18" transform="rotate(70 180 180)" />
+            <ellipse cx="90 " cy="150" rx="42" ry="16" transform="rotate(-24 90 150)" />
+            <ellipse cx="370" cy="120" rx="48" ry="18" transform="rotate(12 370 120)" />
+            <ellipse cx="430" cy="220" rx="52" ry="20" transform="rotate(52 430 220)" />
+            <ellipse cx="260" cy="40" rx="44" ry="17" transform="rotate(-38 260 40)" />
+          </g>
+          <!-- leaf cluster · upper right, behind the book -->
+          <g id="leafShadowB" fill="#5a4f3d" opacity="0.08" filter="url(#shSoft)">
+            <path d="M1480 120 q -110 90 -190 220" stroke="#5a4f3d" stroke-width="6" fill="none" />
+            <ellipse cx="1440" cy="150" rx="56" ry="22" transform="rotate(-30 1440 150)" />
+            <ellipse cx="1360" cy="230" rx="60" ry="23" transform="rotate(18 1360 230)" />
+            <ellipse cx="1300" cy="330" rx="52" ry="20" transform="rotate(-46 1300 330)" />
+            <ellipse cx="1470" cy="300" rx="46" ry="18" transform="rotate(60 1470 300)" />
+            <ellipse cx="1540" cy="220" rx="48" ry="19" transform="rotate(-10 1540 220)" />
+            <ellipse cx="1230" cy="420" rx="50" ry="19" transform="rotate(28 1230 420)" />
+          </g>
+          <!-- leaf cluster · lower left, faint -->
+          <g id="leafShadowC" fill="#5a4f3d" opacity="0.06" filter="url(#shSoft)">
+            <ellipse cx="220" cy="820" rx="58" ry="22" transform="rotate(-20 220 820)" />
+            <ellipse cx="330" cy="880" rx="52" ry="20" transform="rotate(34 330 880)" />
+            <ellipse cx="140" cy="900" rx="46" ry="18" transform="rotate(64 140 900)" />
+            <ellipse cx="420" cy="800" rx="44" ry="17" transform="rotate(-42 420 800)" />
+          </g>
+        </svg>
+      </div>
+
+      <canvas id="webgl"></canvas>
+
+      <div class="hero__content">
+        <p class="hero__eyebrow"><span>Academy Press</span><span class="hero__eyebrow-rule"></span><span>Edition Nº 01</span></p>
+        <h1 class="hero__title">
+          <span class="hero__title-line"><span data-split>Te enseñaron</span></span>
+          <span class="hero__title-line"><span data-split>a controlar</span></span>
+          <span class="hero__title-line"><span class="hero__script">lo que sentías,</span></span>
+          <span class="hero__title-line"><span data-split>pero nadie te enseñó</span></span>
+          <span class="hero__title-line"><span data-split><em>a comprenderlo.</em></span></span>
+        </h1>
+        <p class="hero__sub" data-split-lines>A story about anxiety, love<br />and the way back to you.</p>
+      </div>
+
+      <div class="hero__footer">
+        <p class="hero__author">Nicol Montoya</p>
+        <div class="hero__scroll" id="scrollHint">
+          <span>Scroll</span>
+          <span class="hero__scroll-line"></span>
+        </div>
+        <p class="hero__year">MMXXVI</p>
+      </div>
+    </section>
+
+    <!-- ══════════ THE BOOK OPENS · HOW DO YOU FEEL ══════════ -->
+    <section class="feelings" id="feelings">
+      <div class="feelings__inner" id="feelingsInner">
+        <!-- typeset onto the open book's left page -->
+        <div class="fpage fpage--left" id="pageLeft">
+          <div class="fpage__view" id="pageLeftIntro">
+            <p class="fpage__kicker">Before continuing,</p>
+            <p class="fpage__lead">I want to ask<br />you <em>something…</em></p>
+            <span class="fpage__stem" aria-hidden="true"></span>
+            <svg class="fpage__sprig" viewBox="0 0 48 48" fill="none" stroke="#8a7a5c" stroke-width="1.4" stroke-linecap="round" aria-hidden="true">
+              <path d="M24 44 V 12" />
+              <path d="M24 36 q -7 -1 -10 -7" />
+              <path d="M24 36 q 7 -1 10 -7" />
+              <path d="M24 27 q -6 -1 -8.5 -6" />
+              <path d="M24 27 q 6 -1 8.5 -6" />
+              <path d="M24 18 q -4.5 -1 -6.5 -4.5" />
+              <path d="M24 18 q 4.5 -1 6.5 -4.5" />
+              <path d="M24 12 q -1.5 -3 0 -6 q 1.5 3 0 6" />
+            </svg>
+            <p class="fpage__note">Be completely honest with yourself.</p>
+            <span class="fpage__orn" aria-hidden="true">— ♥ —</span>
+          </div>
+          <!-- a page written only for anxious hearts · first half of the letter -->
+          <div class="fpage__view fpage__view--letter" id="pageLeftAnxious">
+            <p class="fpage__kicker">Before we begin</p>
+            <div class="anxious-note">
+              <p>If you chose “anxiety” today, I want you to know something before we go any further.</p>
+              <p>You don’t have to pretend to be okay here.</p>
+              <p>I know how exhausting it is to feel like your mind never rests, to have your heart race for no reason, to overanalyze everything, or to be afraid of something you can’t even explain.</p>
+              <p>I also know how tiring it is to smile while, deep down, you feel like you’re fighting a battle no one else sees.</p>
+              <p>But I want you to read this calmly:</p>
+              <p>You aren’t broken. You aren’t losing your mind. And you aren’t alone.</p>
+            </div>
+          </div>
+          <!-- for the one who feels lost · first half of the letter -->
+          <div class="fpage__view fpage__view--letter" id="pageLeftLost">
+            <p class="fpage__kicker">For the one who feels lost</p>
+            <div class="anxious-note">
+              <p>Before continuing, I want you to know something.</p>
+              <p>Not always feeling lost means that you don’t know what to do with your life.</p>
+              <p>Sometimes it means that you have been surviving for so long, pleasing others, trying to be strong or pretending that everything is fine, that one day you stop listening.</p>
+              <p>And it’s scary.</p>
+              <p>It’s scary to look inside and not recognize who you are.</p>
+              <p>It’s scary to feel that everyone seems to have a way… except you.</p>
+              <p>But I want to tell you something that I wish someone had told me before:</p>
+              <p>Being lost doesn’t mean you’re failing. Many times it means that you are leaving behind a version of you that could no longer carry everything.</p>
+            </div>
+          </div>
+          <!-- for the one who is exhausted · spread one, left -->
+          <div class="fpage__view fpage__view--letter" id="pageLeftExh1">
+            <p class="fpage__kicker">For the one who is exhausted</p>
+            <div class="anxious-note">
+              <p>Exhausted?</p>
+              <p>I don’t think you’re tired just because you haven’t slept enough.</p>
+              <p>I think you’re tired from thinking so much.</p>
+              <p>From waking up with a mind full of thoughts before you’ve even opened your eyes.</p>
+              <p>From trying to keep anyone from noticing how much you’re struggling on the inside.</p>
+              <p>From smiling when, in reality, you just want to shut out the world for a while.</p>
+            </div>
+          </div>
+          <!-- exhausted · spread two, left -->
+          <div class="fpage__view fpage__view--letter" id="pageLeftExh2">
+            <div class="anxious-note">
+              <p>If you chose this option today, I want you to know something.</p>
+              <p>You aren’t weak for feeling exhausted.</p>
+              <p>You’ve been surviving for far too long.</p>
+              <p>And surviving… is exhausting, too.</p>
+              <p>So, for a few minutes, stop demanding answers from yourself.</p>
+            </div>
+          </div>
+          <!-- for the one who feels alone · spread one, left -->
+          <div class="fpage__view fpage__view--letter" id="pageLeftAlone1">
+            <p class="fpage__kicker">For the one who feels alone</p>
+            <div class="anxious-note">
+              <p>If you chose this word today…</p>
+              <p>Perhaps it isn’t because you are physically alone.</p>
+              <p>Perhaps it is because you have felt this way inside for too long.</p>
+              <p>Because there are days when you are surrounded by people, yet you feel that no one truly sees the weight you carry in your chest.</p>
+              <p>You smile.<br />You make conversation.<br />You go on with your life.</p>
+            </div>
+          </div>
+          <!-- alone · spread two, left -->
+          <div class="fpage__view fpage__view--letter" id="pageLeftAlone2">
+            <div class="anxious-note">
+              <p>But I want to pause for a moment.</p>
+              <p>Because there is something I need you to hear.</p>
+              <p>The fact that you feel alone today does not mean you are destined to stay that way.</p>
+              <p>It does not mean you are unworthy of love.</p>
+              <p>It does not mean there is something broken within you.</p>
+              <p>It means you are human.</p>
+              <p>And that your heart has long been longing to feel seen, understood, and embraced.</p>
+              <p>Thank you for making it this far.</p>
+            </div>
+          </div>
+          <!-- for the one who cannot name it · single spread, left -->
+          <div class="fpage__view fpage__view--letter" id="pageLeftUnsure">
+            <p class="fpage__kicker">For the one who cannot name it</p>
+            <div class="anxious-note">
+              <p>I don’t know what I feel.</p>
+              <p>Sometimes the hardest part isn’t what you’re feeling.</p>
+              <p>It’s not knowing.</p>
+              <p>You search inside yourself for an answer, but everything feels tangled. You’re not sure if you’re sad, anxious, exhausted, overwhelmed… or simply numb.</p>
+              <p>You keep asking yourself, “What’s wrong with me?” and the silence inside can feel terrifying.</p>
+            </div>
+          </div>
+          <!-- for the one who feels afraid · spread one, left -->
+          <div class="fpage__view fpage__view--letter" id="pageLeftAfraid1">
+            <p class="fpage__kicker">For the one who feels afraid</p>
+            <div class="anxious-note">
+              <p>Afraid</p>
+              <p>You aren’t always afraid of what is happening.</p>
+              <p>Sometimes, you are afraid of what might happen.</p>
+              <p>Afraid of suffering again.<br />Of breaking apart again.<br />Of trusting and ending up disappointed.<br />Of getting your hopes up and losing everything all over again.</p>
+            </div>
+          </div>
+          <!-- afraid · spread two, left -->
+          <div class="fpage__view fpage__view--letter" id="pageLeftAfraid2">
+            <div class="anxious-note">
+              <p>Fear isn’t always trying to tell you to run away.<br />Often, it is simply revealing the wounds that still need to be embraced.</p>
+              <p>You aren’t weak for feeling afraid.</p>
+              <p>You have survived things that changed the way you see the world.<br />And even though your heart feels insecure right now, that doesn’t mean it will stay that way forever.</p>
+              <p>You don’t have to be brave all the time.</p>
+            </div>
+          </div>
+          <!-- a real page from the book · left leaf of the excerpt -->
+          <div class="fpage__view fpage__view--excerpt" id="excerptLeft">
+            <p class="excerpt-chapter">One · Where it began</p>
+            <div class="excerpt-body">
+              <p>For years, I believed the fear living in my chest was simply who I was. It woke before I did. It followed me into rooms full of people and sat with me in the silence afterward.</p>
+              <p>I learned to speak over it, to work around it, to smile so that no one would ask. I called it many things before I called it by its name. Restlessness. Sensitivity. Being too much.</p>
+            </div>
+            <span class="excerpt-folio">12</span>
+          </div>
+        </div>
+        <!-- typeset onto the right page -->
+        <div class="fpage fpage--right" id="pageRight">
+          <div class="fpage__view" id="pageRightQ">
+            <h2 class="fpage__q">How do you<br /><em>feel</em> today?</h2>
+            <div class="fpage__opts">
+              <button class="feel" data-feel="anxious">Anxious</button>
+              <button class="feel" data-feel="lost">Lost</button>
+              <button class="feel" data-feel="exhausted">Exhausted</button>
+              <button class="feel" data-feel="alone">Alone</button>
+              <button class="feel" data-feel="afraid">Afraid</button>
+              <button class="feel" data-feel="unsure">I don’t know what I feel</button>
+            </div>
+            <p class="fpage__caption">There are no wrong answers.</p>
+          </div>
+          <div class="fpage__view fpage__view--answer" id="pageRightA">
+            <p class="fpage__kicker">The book hears you</p>
+            <p class="feelings__response" id="feelResponse"></p>
+            <span class="fpage__orn" aria-hidden="true">— ♥ —</span>
+            <a class="feelings__continue" id="feelContinue" href="#book" data-hover>Continue with me</a>
+          </div>
+          <!-- second half of the anxious letter, with the voice note -->
+          <div class="fpage__view fpage__view--letter" id="pageRightAnx">
+            <div class="anxious-note">
+              <p>What you’re feeling may be intense, but it doesn’t define who you are.</p>
+              <p>This isn’t a place where I’ll ask you to stop feeling. This is a place where, little by little, we’ll understand what you’re going through together.</p>
+              <p>You don’t have to figure out your whole life today.</p>
+              <p>Just stay with me. One page at a time. 🤍</p>
+            </div>
+            <button class="audio-card" type="button" data-audio="audio/nicol-anxious.mp3" data-hover>
+              <span class="audio-card__btn" aria-hidden="true">▶</span>
+              <span class="audio-card__text">
+                <span class="audio-card__label">Listen to a message from Nicol</span>
+                <span class="audio-card__line"><span></span></span>
+              </span>
+            </button>
+            <a class="feelings__continue" href="#book" data-hover>Continue with me</a>
+          </div>
+          <!-- second half of the lost letter, with the voice note -->
+          <div class="fpage__view fpage__view--letter" id="pageRightLost">
+            <div class="anxious-note">
+              <p>You don’t need to have all the answers today.</p>
+              <p>You don’t need to discover your purpose tonight.</p>
+              <p>You just need to give permission to that part of you that is tired to rest for a moment.</p>
+              <p>Breathe.</p>
+              <p>Even if you can’t see it now, you’re still here.</p>
+              <p>And as long as you are still here, there is always the possibility of meeting you again.</p>
+              <p>You don’t have to walk that road alone.</p>
+              <p>Stay with me. Let’s take the next step, together. 🤍</p>
+            </div>
+            <button class="audio-card" type="button" data-audio="audio/nicol-lost.mp3" data-hover>
+              <span class="audio-card__btn" aria-hidden="true">▶</span>
+              <span class="audio-card__text">
+                <span class="audio-card__label">Listen to a message from Nicol</span>
+                <span class="audio-card__line"><span></span></span>
+              </span>
+            </button>
+            <a class="feelings__continue" href="#book" data-hover>Continue with me</a>
+          </div>
+          <!-- exhausted · spread one, right — ends on an invitation to keep reading -->
+          <div class="fpage__view fpage__view--letter" id="pageRightExh1">
+            <div class="anxious-note">
+              <p>You’re tired of carrying around endless questions, of analyzing every conversation, every decision, every feeling. Of trying to be okay while your mind never stops racing.</p>
+              <p>And the hardest part is that, often, you can’t even explain why you feel this way.</p>
+              <p>You just know you’ve been strong for too long.</p>
+            </div>
+            <a class="feelings__continue letter-more" data-letter="exhausted" href="#" data-hover>Keep reading →</a>
+          </div>
+          <!-- exhausted · spread two, right — the letter closes, with the voice note -->
+          <div class="fpage__view fpage__view--letter" id="pageRightExh2">
+            <div class="anxious-note">
+              <p>You don’t have to figure your whole life out right this second.</p>
+              <p>Just stay here with me.</p>
+              <p>Breathe.</p>
+              <p>Rest for a moment.</p>
+              <p>Because even the strongest people need a place to set down the weight they’ve been carrying.</p>
+            </div>
+            <button class="audio-card" type="button" data-audio="audio/nicol-exhausted.mp3" data-hover>
+              <span class="audio-card__btn" aria-hidden="true">▶</span>
+              <span class="audio-card__text">
+                <span class="audio-card__label">Listen to a message from Nicol</span>
+                <span class="audio-card__line"><span></span></span>
+              </span>
+            </button>
+            <a class="feelings__continue" href="#book" data-hover>Continue with me</a>
+          </div>
+          <!-- alone · spread one, right — ends on an invitation to keep reading -->
+          <div class="fpage__view fpage__view--letter" id="pageRightAlone1">
+            <div class="anxious-note">
+              <p>But when everything falls silent, you are once again met with that same sense of emptiness that no one else seems to notice.</p>
+              <p>And that hurts.</p>
+              <p>It hurts to feel like you have so much to say but don’t know how to explain it.</p>
+              <p>It hurts to think that, if you were to truly speak up, perhaps no one would understand what is happening inside you.</p>
+              <p>Over time, you begin to convince yourself that it is better to stay silent.</p>
+              <p>That your emotions are too much.<br />That asking for company is a burden.<br />That you have to learn to carry it all on your own.</p>
+            </div>
+            <a class="feelings__continue letter-more" data-letter="alone" href="#" data-hover>Keep reading →</a>
+          </div>
+          <!-- alone · spread two, right — the letter closes, with the voice note -->
+          <div class="fpage__view fpage__view--letter" id="pageRightAlone2">
+            <div class="anxious-note">
+              <p>Even if you don’t feel it right now, this moment does not define your entire story.</p>
+              <p>And as you read these words, I want you to know something very simple:</p>
+              <p>You are no longer completely alone.</p>
+              <p>I am here with you.<br />Page by page.<br />Word by word.</p>
+              <p>Until, little by little, you find yourself again.</p>
+            </div>
+            <button class="audio-card" type="button" data-audio="audio/nicol-alone.mp3" data-hover>
+              <span class="audio-card__btn" aria-hidden="true">▶</span>
+              <span class="audio-card__text">
+                <span class="audio-card__label">Listen to a message from Nicol</span>
+                <span class="audio-card__line"><span></span></span>
+              </span>
+            </button>
+            <a class="feelings__continue" href="#book" data-hover>Continue with me</a>
+          </div>
+          <!-- for the one who cannot name it · single spread, right — closes with the voice note -->
+          <div class="fpage__view fpage__view--letter" id="pageRightUnsure">
+            <div class="anxious-note">
+              <p>But not knowing doesn’t mean there’s something wrong with you.</p>
+              <p>Sometimes your mind has been carrying so much for so long that it no longer knows how to separate one feeling from another.</p>
+              <p>You don’t need to force an answer today.<br />You don’t need to have the right words.</p>
+              <p>For now, it’s enough to know that you’re here.</p>
+              <p>And maybe that’s where healing begins—not by understanding everything at once, but by giving yourself permission to feel… even when you can’t name it yet.</p>
+            </div>
+            <button class="audio-card" type="button" data-audio="audio/nicol-unsure.mp3" data-hover>
+              <span class="audio-card__btn" aria-hidden="true">▶</span>
+              <span class="audio-card__text">
+                <span class="audio-card__label">Listen to a message from Nicol</span>
+                <span class="audio-card__line"><span></span></span>
+              </span>
+            </button>
+            <a class="feelings__continue" href="#book" data-hover>Continue with me</a>
+          </div>
+          <!-- afraid · spread one, right — ends on an invitation to keep reading -->
+          <div class="fpage__view fpage__view--letter" id="pageRightAfraid1">
+            <div class="anxious-note">
+              <p>And so, you start to protect yourself.</p>
+              <p>You overthink.<br />You doubt everything.<br />You look for signs where there are none.<br />You brace yourself for a pain that doesn’t even exist yet.</p>
+              <p>It is exhausting to live waiting for the worst-case scenario.</p>
+              <p>But I want to remind you of something…</p>
+            </div>
+            <a class="feelings__continue letter-more" data-letter="afraid" href="#" data-hover>Keep reading →</a>
+          </div>
+          <!-- afraid · spread two, right — the letter closes, with the voice note -->
+          <div class="fpage__view fpage__view--letter" id="pageRightAfraid2">
+            <div class="anxious-note">
+              <p>For now…<br />just stay here.</p>
+              <p>Breathe.</p>
+              <p>You are not alone.</p>
+              <p>And perhaps, for a few minutes, you can allow yourself to rest from everything your mind has been trying to control.</p>
+            </div>
+            <button class="audio-card" type="button" data-audio="audio/nicol-afraid.mp3" data-hover>
+              <span class="audio-card__btn" aria-hidden="true">▶</span>
+              <span class="audio-card__text">
+                <span class="audio-card__label">Listen to a message from Nicol</span>
+                <span class="audio-card__line"><span></span></span>
+              </span>
+            </button>
+            <a class="feelings__continue" href="#book" data-hover>Continue with me</a>
+          </div>
+          <!-- the quiet bridge into the book, as the voice note ends -->
+          <div class="fpage__view fpage__view--bridge" id="excerptBridge">
+            <div class="bridge-note">
+              <p>What you just felt doesn’t end here.</p>
+              <p>There is a part of my story that began exactly where you are today. Perhaps it is the beginning of yours, too.</p>
+            </div>
+            <a class="feelings__continue letter-into" id="excerptOpen" href="#" data-hover>Turn to the page</a>
+          </div>
+          <!-- a real page from the book · right leaf of the excerpt -->
+          <div class="fpage__view fpage__view--excerpt" id="excerptRight">
+            <div class="excerpt-body">
+              <p>It took me years to understand that anxiety was not a flaw in my character. It was a part of me asking, in the only language it had, to be heard.</p>
+              <p>The night everything changed, I wasn’t brave. I was only tired. So I stopped, just for one night, and let myself feel all of it without trying to fix it.</p>
+              <p>And in that stillness, the fear did not grow. It softened.</p>
+            </div>
+            <div class="excerpt-closing" id="excerptClosing">
+              <p>If these words resonated with you, there is still much to discover.</p>
+              <p><em>This is just the beginning of the journey back to yourself.</em></p>
+              <a class="feelings__continue" href="#editions" data-hover>Continue reading</a>
+            </div>
+            <span class="excerpt-folio">13</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ REVIEWS · FROM ITS READERS ══════════ -->
+    <section class="reviews" id="book">
+      <p class="reviews__label">01 — From its readers</p>
+
+      <!-- the featured voice -->
+      <figure class="review review--feature">
+        <span class="review__mark" aria-hidden="true">“</span>
+        <blockquote class="review__quote">I didn’t expect a book to understand me better than I understood myself. Every page felt like someone had quietly witnessed the parts of me I had always hidden. I finished it feeling less alone.</blockquote>
+        <figcaption class="review__by"><span class="review__rule"></span>Emily R.<span class="review__rule"></span></figcaption>
+      </figure>
+
+      <!-- a quiet duet -->
+      <div class="reviews__pair">
+        <figure class="review">
+          <blockquote class="review__quote">This wasn’t just a book—it was an experience. It reminded me that healing isn’t about becoming someone new, but finally learning to be gentle with the person you’ve always been. I couldn’t stop thinking about it after I finished.</blockquote>
+          <figcaption class="review__by"><span class="review__rule"></span>Daniel M.</figcaption>
+        </figure>
+        <figure class="review review--offset">
+          <blockquote class="review__quote">I’ve read many books about emotions, but none made me feel this seen. It gave words to feelings I had carried for years and helped me look at myself with compassion instead of judgment. I honestly wish I had found it sooner.</blockquote>
+          <figcaption class="review__by"><span class="review__rule"></span>Sophia L.</figcaption>
+        </figure>
+      </div>
+
+      <span class="reviews__orn" aria-hidden="true">— ♥ —</span>
+
+      <!-- the closing word -->
+      <figure class="review review--closing">
+        <blockquote class="review__quote">I closed the last page with tears in my eyes, but for the first time in a long time, they weren’t tears of hopelessness. This book changed the way I see pain, love, and even myself. It’s the kind of story that stays with you long after you’ve finished reading.</blockquote>
+        <figcaption class="review__by"><span class="review__rule"></span>Olivia C.<span class="review__rule"></span></figcaption>
+      </figure>
+    </section>
+
+    <!-- ══════════ CHAPTERS · HORIZONTAL ══════════ -->
+    <section class="chapters" id="chapters">
+      <div class="chapters__pin" id="chaptersPin">
+        <div class="chapters__head">
+          <p class="chapters__label" style="font-size: 20px;">02 — Inside the Book</p>
+          <h2 class="chapters__title">Movements <em>of the Heart</em></h2>
+          <p class="chapters__sub">Every heart heals differently. Every step matters.</p>
+        </div>
+        <div class="chapters__track" id="chaptersTrack">
+          <article class="chapter" data-hover>
+            <span class="chapter__num">I</span>
+            <figure class="chapter__plate chapter__plate--1">
+              <img class="chapter__img" src="assets/art/movement-1.jpg?v=4" alt="A young man on a windswept headland at sunrise, tearing an old letter in two as its fragments and faded photographs drift away on the wind." loading="eager" decoding="async" onerror="this.remove()" />
+            </figure>
+            <div class="chapter__caption">
+              <h3 class="chapter__name">Letting Go<br />Without Judgment</h3>
+              <p class="chapter__line">&ldquo;Some chapters were never meant to be carried forever. Releasing them is not giving up&mdash;it is choosing yourself.&rdquo;</p>
+            </div>
+          </article>
+          <article class="chapter" data-hover>
+            <span class="chapter__num">II</span>
+            <figure class="chapter__plate chapter__plate--2">
+              <img class="chapter__img" src="assets/art/movement-2.jpg?v=5" alt="A young woman close to a tall antique mirror in an old library, her palm pressed to the glass, eyes bright with held-back tears as she finally sees herself with compassion." loading="eager" decoding="async" onerror="this.remove()" />
+            </figure>
+            <div class="chapter__caption">
+              <h3 class="chapter__name">Learning to<br />Feel Again</h3>
+              <p class="chapter__line">&ldquo;The heart does not forget overnight. It simply learns, little by little, that it is safe to beat without fear.&rdquo;</p>
+            </div>
+          </article>
+          <article class="chapter" data-hover>
+            <span class="chapter__num">III</span>
+            <figure class="chapter__plate chapter__plate--3">
+              <img class="chapter__img" src="assets/art/movement-3.jpg?v=5" alt="A young woman walking slowly along a garden path flooded with golden light, wildflowers blooming all around her, unhurried and at peace." loading="eager" decoding="async" onerror="this.remove()" />
+            </figure>
+            <div class="chapter__caption">
+              <h3 class="chapter__name">Healing at<br />Your Own Pace</h3>
+              <p class="chapter__line">&ldquo;Healing has never been a race. Every small step is still a step toward the light.&rdquo;</p>
+            </div>
+          </article>
+          <article class="chapter" data-hover>
+            <span class="chapter__num">IV</span>
+            <figure class="chapter__plate chapter__plate--4">
+              <img class="chapter__img" src="assets/art/movement-4.jpg?v=5" alt="A young man at ease in an old sunlit room; on the wooden table a cup of tea, an open book, a journal and fresh roses, light streaming through tall windows." loading="eager" decoding="async" onerror="this.remove()" />
+            </figure>
+            <div class="chapter__caption">
+              <h3 class="chapter__name">Finding<br />Home Within</h3>
+              <p class="chapter__line">&ldquo;One day, you stop searching for the person who will save you&hellip; because you finally become the place where your own heart feels safe.&rdquo;</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ QUOTE ══════════ -->
+    <section class="quote">
+      <span class="quote__mark" aria-hidden="true">“</span>
+      <blockquote class="quote__text" data-split-lines>
+        My anxiety never left —<br />
+        it simply learned to sit beside me,<br />
+        while I learned how to love.
+      </blockquote>
+      <cite class="quote__cite">— Nicol Montoya, Chapter III</cite>
+    </section>
+
+    <!-- ══════════ AUTHOR ══════════ -->
+    <section class="author">
+      <div class="author__media">
+        <div class="author__frame" id="authorFrame">
+          <div class="author__portrait"></div>
+          <img class="author__photo" src="assets/art/author.jpg?v=2" alt="Nicol Montoya, author of Amar con ansiedad." loading="eager" decoding="async" onerror="this.remove()" />
+        </div>
+      </div>
+      <div class="author__body">
+        <p class="author__label" style="font-size: 24px;">03 — The Author</p>
+        <h2 class="author__name">Nicol<br /><em>Montoya</em></h2>
+        <p class="author__bio" data-split-lines>
+I’ve lived with anxiety for as long as I can remember. For a long time, I thought it was something I had to fight,
+ silence, or overcome. But somewhere along the way, I stopped fighting my anxious heart and began learning from it.
+  Through the honest and difficult lessons it brought me, I learned how to love myself more gently — and how to love 
+  others more deeply.
+This book comes from that journey. From everything I felt, everything I feared, and everything I learned while finding 
+my way back to myself.
+        </p>
+        <a class="author__link" href="#editions" data-hover>Read the first chapter <span>→</span></a>
+      </div>
+    </section>
+
+    <!-- ══════════ EDITIONS ══════════ -->
+    <section class="editions" id="editions">
+      <div class="editions__head">
+        <p class="editions__label">04 — The Editions</p>
+        <h2 class="editions__title">Choose your <em>edition</em></h2>
+      </div>
+      <div class="editions__grid">
+        <article class="edition" data-hover>
+          <div class="edition__top">
+            <span class="edition__tag">Standard</span>
+            <span class="edition__price">$38</span>
+          </div>
+          <h3 class="edition__name">Cloth<br />Edition</h3>
+          <ul class="edition__list">
+            <li>Ivory cloth binding</li>
+            <li>Foil-stamped spine</li>
+            <li>320 pages, deckled edges</li>
+          </ul>
+          <a class="edition__btn" href="#" data-hover><span>Pre-order</span></a>
+        </article>
+        <article class="edition edition--featured" data-hover>
+          <div class="edition__top">
+            <span class="edition__tag">Most coveted</span>
+            <span class="edition__price">$120</span>
+          </div>
+          <h3 class="edition__name">Collector’s<br />Edition</h3>
+          <ul class="edition__list">
+            <li>Numbered, limited to 500</li>
+            <li>Hand-gilded page edges</li>
+            <li>Signed by the author</li>
+            <li>Linen slipcase</li>
+          </ul>
+          <a class="edition__btn" href="#" data-hover><span>Pre-order</span></a>
+        </article>
+        <article class="edition" data-hover>
+          <div class="edition__top">
+            <span class="edition__tag">Digital</span>
+            <span class="edition__price">$18</span>
+          </div>
+          <h3 class="edition__name">Reader’s<br />Edition</h3>
+          <ul class="edition__list">
+            <li>eBook &amp; audiobook</li>
+            <li>Read by the author</li>
+            <li>Instant delivery</li>
+          </ul>
+          <a class="edition__btn" href="#" data-hover><span>Pre-order</span></a>
+        </article>
+      </div>
+    </section>
+
+    <!-- ══════════ FOOTER ══════════ -->
+    <footer class="footer">
+      <div class="footer__cta">
+        <p class="footer__hint">Autumn 2026 — Be the first to know</p>
+        <h2 class="footer__big" id="footerBig">Breathe<span>.</span></h2>
+        <form class="footer__form" onsubmit="return false">
+          <input type="email" placeholder="Your email address" aria-label="Email" />
+          <button type="submit" data-hover>Notify me</button>
+        </form>
+      </div>
+      <div class="footer__bottom">
+        <span>© MMXXVI Academy Press</span>
+        <span class="footer__logo">ACADEMY<sup>®</sup></span>
+        <span>Crafted with patience</span>
+      </div>
+    </footer>
+
+  </main>
+
+  <!-- ══════════ SCRIPTS ══════════ -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.4/dist/lenis.min.js"></script>
+  <script type="importmap">
+    { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.module.js" } }
+  </script>
+  <script type="module" src="js/main.js?v=45"></script>
+</body>
+</html>

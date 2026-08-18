@@ -91,6 +91,7 @@ export const TRANSLATIONS = {
     "feel.continue": "Continúa conmigo",
     "feel.more": "Seguir leyendo →",
     "feel.revisit": "O volver a otro sentimiento",
+    "sheet.back": "Otro sentimiento",
     "audio.label": "Escucha un mensaje de Nicol",
 
     /* ── letter · anxious ── */

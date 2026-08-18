@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#f7f4ef" />
   <title>BY FRANCIA — Learning How to Love with Anxiety</title>
   <meta name="description" content="Learning How to Love with Anxiety by Francia Montoya — a tender guide to living, loving, and growing alongside an anxious heart. BY FRANCIA." />
 
@@ -10,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Allura&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet" />
 
-  <link rel="stylesheet" href="css/style.css?v=37" />
+  <link rel="stylesheet" href="css/style.css?v=38" />
 </head>
 <body>
 
@@ -177,6 +178,25 @@
     <a class="nav__cta" href="#editions" data-hover><span data-i18n="nav.cta">Pre-order</span></a>
     <div class="lang" id="langSwitch"></div>
   </header>
+
+
+  <!-- ══════════ PHONE · FULL-SCREEN LETTER ══════════
+       Below 760px a chosen feeling opens its letter here instead of being
+       typeset onto the 3D pages. Content is cloned out of .fpage__view at
+       open time, so it is already translated and there is one source of
+       truth for the copy. See css/style.css › PHONES and js/main.js › PHONE. -->
+  <div class="sheet" id="letterSheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle" hidden>
+    <header class="sheet__bar">
+      <button class="sheet__back" id="sheetBack" type="button">
+        <span class="sheet__arrow" aria-hidden="true">←</span>
+        <span data-i18n="sheet.back">Another feeling</span>
+      </button>
+      <p class="sheet__title" id="sheetTitle"></p>
+    </header>
+    <div class="sheet__scroll" id="sheetScroll">
+      <div class="sheet__inner" id="sheetInner"></div>
+    </div>
+  </div>
 
   <main id="main">
 
@@ -761,6 +781,6 @@ my way back to myself.
   <script type="importmap">
     { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.module.js" } }
   </script>
-  <script type="module" src="js/main.js?v=49"></script>
+  <script type="module" src="js/main.js?v=50"></script>
 </body>
 </html>

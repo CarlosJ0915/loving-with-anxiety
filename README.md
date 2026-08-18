@@ -70,10 +70,18 @@ there is no UI work.
 
 ### Mobile gets a different treatment on purpose
 
-On a phone, each projected page is roughly 170px wide — far too small to hold a letter. Below
-760px the projection is skipped entirely: the book stays as a backdrop and the copy is laid out
-full-width over it, with its own scrolling and comfortable tap targets. Same content and same
-choreography, a layout that actually fits the device.
+On a phone each projected page is roughly 170px wide — far too small to hold a letter.
+Below 760px the projection is skipped entirely: the book is a moment in the hero rather
+than a surface to typeset on, and choosing a feeling opens that letter full-screen in
+`#letterSheet` at a size a person can actually read. Movements becomes a native snap
+carousel instead of a pinned horizontal scroll, and sections measure themselves in
+`svh` so the collapsing address bar does not move the layout.
+
+The letter views are *moved* into the sheet rather than copied, so the voice-note card
+keeps its listener and the copy stays a single source of truth for the translations.
+
+Same content and same choreography, a composition that actually fits the device.
+`MOBILE.md` has the full audit, the numbers before and after, and what is still open.
 
 ---
 

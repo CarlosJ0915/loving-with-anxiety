@@ -13,6 +13,13 @@ gsap.registerPlugin(ScrollTrigger, SplitText);
 
 const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+/* ═══════════ PHONE ═══════════
+   Below 760px the composition is different, not smaller: the book is a moment
+   in the hero rather than a surface to typeset on, letters open full-screen in
+   #letterSheet, and Movements is a native snap carousel. Every branch that
+   depends on that reads this one query. See css/style.css › PHONES. */
+const phoneQ = window.matchMedia("(max-width: 760px)");
+
 /* ═══════════ SMOOTH SCROLL ═══════════ */
 const lenis = new Lenis({
   duration: 1.35,
@@ -21,6 +28,9 @@ const lenis = new Lenis({
 });
 window.lenis = lenis;
 lenis.on("scroll", ScrollTrigger.update);
+lenis.on("scroll", ({ scroll }) => {
+  document.getElementById("nav").classList.toggle("is-scrolled", scroll > 40);
+});
 gsap.ticker.add((time) => lenis.raf(time * 1000));
 gsap.ticker.lagSmoothing(0);
 lenis.stop(); // hold until the loader finishes
@@ -109,7 +119,7 @@ camera.position.set(0, 0.1, 8.5);
 
 const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, preserveDrawingBuffer: true });
 renderer.setSize(innerWidth, innerHeight);
-renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.setPixelRatio(Math.min(devicePixelRatio, phoneQ.matches ? 1.5 : 2));
 
 /* — lighting: soft morning light — */
 scene.add(new THREE.HemisphereLight(0xfdfbf5, 0xb9c3cd, 1.15));
@@ -753,8 +763,10 @@ function layoutScene() {
   } else {
     // portrait: the book floats in the band between the nav and the headline
     const t = THREE.MathUtils.clamp((1.1 - aspect) / 0.65, 0, 1); // 0 at square … 1 at phone
-    bookHolder.position.set(0, 1.05 + 0.45 * t, 0);
-    bookHolder.scale.setScalar(0.44 - 0.21 * t);
+    // On a phone the book is the whole composition rather than an object beside
+    // the copy, so it sits higher and stays large enough to read as a book.
+    bookHolder.position.set(0, 1.06 + 0.52 * t, 0);
+    bookHolder.scale.setScalar(0.44 - 0.13 * t);
   }
 }
 layoutScene();
@@ -1075,7 +1087,9 @@ document.fonts.ready.then(() => {
     scrollTrigger: {
       trigger: "#feelings",
       start: "top top",
-      end: "+=260%",
+      // on a phone the open pages carry no copy, so a 260% hold is over a
+      // viewport of blank spread — the sequence gets to the question faster
+      end: phoneQ.matches ? "+=170%" : "+=260%",
       pin: true,
       scrub: 1,
       anticipatePin: 1,
@@ -1093,7 +1107,7 @@ document.fonts.ready.then(() => {
     .to(coverPivot.rotation, { y: OPEN.cover, duration: 0.3, ease: "power1.inOut" }, 0.24)
     .fromTo("#feelingsInner",
       { autoAlpha: 0, y: 30 },
-      { autoAlpha: 1, y: 0, duration: 0.14, ease: "power2.out" }, 0.5)
+      { autoAlpha: 1, y: 0, duration: 0.14, ease: "power2.out" }, phoneQ.matches ? 0.42 : 0.5)
     // hold — the book stays open while the reader answers
     .to({}, { duration: 0.36 }, 0.64);
 
@@ -1116,7 +1130,7 @@ document.fonts.ready.then(() => {
   const pageRightEl = document.getElementById("pageRight");
   // On phones the projected pages are far too small to hold the copy, so the
   // book becomes a backdrop and CSS lays the panels out full-width instead.
-  const narrowQ = window.matchMedia("(max-width: 760px)");
+  const narrowQ = phoneQ; // the projection is skipped on phones
   function layoutBookPages() {
     if (narrowQ.matches) {
       for (const el of [pageLeftEl, pageRightEl]) {
@@ -1339,15 +1353,118 @@ document.fonts.ready.then(() => {
     }
   }
 
+  /* ═══════════ PHONE · THE LETTER, FULL SCREEN ═══════════
+     A projected page is ~170px wide on a phone, so below 760px nothing is
+     typeset onto the book. Choosing a feeling instead MOVES that letter's
+     views into #letterSheet and opens it over the page.
+
+     Moved, not cloned, and deliberately: the voice-note card keeps the
+     listener it was given at load, the copy stays a single source of truth
+     for i18n, and closeLetterSheet() returns every node to the exact place
+     it came from. One surface, one scroll, no pinning — which is what the
+     old nested scroll box inside the pinned section could never offer. */
+  const sheetEl = document.getElementById("letterSheet");
+  const sheetInner = document.getElementById("sheetInner");
+  const sheetScroll = document.getElementById("sheetScroll");
+  const sheetTitle = document.getElementById("sheetTitle");
+  const sheetBack = document.getElementById("sheetBack");
+  let sheetHome = [];          // [node, parent, nextSibling] for every borrowed view
+  let sheetIsOpen = false;
+
+  function sheetBorrow(sel) {
+    const el = typeof sel === "string" ? document.querySelector(sel) : sel;
+    if (!el || el.parentNode === sheetInner) return;
+    sheetHome.push([el, el.parentNode, el.nextSibling]);
+    sheetInner.appendChild(el);
+  }
+
+  function openLetterSheet(feel) {
+    if (sheetIsOpen) return;
+    sheetIsOpen = true;
+    activeFeel = feel;
+    const chip = document.querySelector('.feel[data-feel="' + feel + '"]');
+    sheetTitle.textContent = chip ? chip.textContent.trim() : "";
+    const letter = letters[feel];
+    if (letter) {
+      // every spread in reading order — a phone scrolls, so there is no reason
+      // to hold the second half behind a "keep reading" link
+      letter.spreads.flat().forEach(sheetBorrow);
+    } else {
+      sheetBorrow("#pageRightA");
+    }
+    sheetBorrow("#excerptBridge");
+    sheetEl.hidden = false;
+    document.body.classList.add("sheet-open");
+    lenis.stop();               // the page behind must not scroll with it
+    sheetScroll.scrollTop = 0;
+    requestAnimationFrame(() => sheetEl.classList.add("is-open"));
+    sheetBack.focus({ preventScroll: true });
+  }
+
+  function closeLetterSheet() {
+    if (!sheetIsOpen) return;
+    sheetIsOpen = false;
+    audioCards.forEach((c) => c.stop && c.stop());
+    sheetEl.classList.remove("is-open");
+    document.body.classList.remove("sheet-open");
+    lenis.start();
+    const putBack = () => {
+      sheetEl.hidden = true;
+      for (const [el, parent, next] of sheetHome) parent.insertBefore(el, next);
+      sheetHome = [];
+      sheetExcerptOpen = false;
+    };
+    if (prefersReduced) putBack(); else setTimeout(putBack, 460);
+    document.querySelectorAll(".feel").forEach((b) => b.classList.remove("is-active", "is-glow"));
+  }
+
+  let sheetExcerptOpen = false;
+  sheetBack.addEventListener("click", closeLetterSheet);
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && sheetIsOpen) closeLetterSheet();
+  });
+
+  // links inside the letter: "Turn to the page" opens the excerpt in place,
+  // anything else closes the letter and carries on down the page
+  sheetInner.addEventListener("click", (e) => {
+    const a = e.target.closest("a[href]");
+    if (!a || !sheetIsOpen) return;
+    e.preventDefault();
+    if (a.id === "excerptOpen") {
+      if (sheetExcerptOpen) return;
+      sheetExcerptOpen = true;
+      const lines = excerptClosings[activeFeel] || excerptClosings.anxious;
+      closingParas[0].textContent = lines[0];
+      closingParas[1].innerHTML = "<em>" + lines[1] + "</em>";
+      a.style.display = "none";
+      sheetBorrow("#excerptLeft");
+      sheetBorrow("#excerptRight");
+      requestAnimationFrame(() => {
+        document.getElementById("excerptLeft").scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+      return;
+    }
+    const href = a.getAttribute("href");
+    closeLetterSheet();
+    if (href && href.length > 1) {
+      setTimeout(() => lenis.scrollTo(href, { duration: 1.4 }), 500);
+    }
+  });
+
   document.querySelectorAll(".feel").forEach((btn) => {
     btn.addEventListener("click", () => {
-      if (pageTurned || resetting) return;
+      if (pageTurned || resetting || sheetIsOpen) return;
       document.querySelectorAll(".feel").forEach((b) => b.classList.remove("is-active", "is-glow"));
       btn.classList.add("is-active");
       void btn.offsetWidth; // restart the glow animation cleanly
       btn.classList.add("is-glow");
       feelResponse.textContent = (feelResponsesByLang[LANG] || feelResponses)[btn.dataset.feel];
       bookAcknowledge();                      // leaves stir, light brightens
+      if (phoneQ.matches) {
+        // …and the letter arrives full-screen instead of on the pages
+        gsap.delayedCall(0.5, () => openLetterSheet(btn.dataset.feel));
+        return;
+      }
       if (turnCall) turnCall.kill();
       turnCall = gsap.delayedCall(1.05, () => turnToResponse(btn.dataset.feel)); // …then the page turns
     });
@@ -1464,6 +1581,7 @@ document.fonts.ready.then(() => {
   let excerptOpened = false;
   function beginExcerpt() {
     if (excerptStarted || resetting) return;
+    if (phoneQ.matches) return; // the bridge is already in the open letter
     excerptStarted = true;
     // set the closing to match the feeling that led here
     const lines = excerptClosings[activeFeel] || excerptClosings.anxious;
@@ -1480,6 +1598,7 @@ document.fonts.ready.then(() => {
 
   function revealExcerpt() {
     if (excerptOpened) return;
+    if (phoneQ.matches) return; // handled inside #letterSheet
     excerptOpened = true;
     gsap.timeline()
       .to("#excerptBridge", { autoAlpha: 0, duration: 0.7, ease: "power1.inOut" }, 0)
@@ -1564,19 +1683,41 @@ document.fonts.ready.then(() => {
   const chTrack = document.getElementById("chaptersTrack");
   const getScroll = () => chTrack.scrollWidth - innerWidth + innerWidth * 0.06;
 
-  gsap.to(chTrack, {
-    x: () => -getScroll(),
-    ease: "none",
-    scrollTrigger: {
-      trigger: "#chaptersPin",
-      start: "top top",
-      end: () => "+=" + getScroll(),
-      pin: true,
-      scrub: 1,
-      invalidateOnRefresh: true,
-      anticipatePin: 1,
-    },
-  });
+  if (phoneQ.matches) {
+    // native snap carousel — the gesture people already expect, and every card
+    // arrives whole. CSS does the scrolling; this only keeps the dots honest.
+    const dots = document.createElement("div");
+    dots.className = "chapters__dots";
+    const cards = [...chTrack.children];
+    cards.forEach(() => dots.appendChild(document.createElement("span")));
+    chTrack.after(dots);
+    const marks = [...dots.children];
+    const syncDots = () => {
+      const mid = chTrack.scrollLeft + chTrack.clientWidth / 2;
+      let near = 0, best = Infinity;
+      cards.forEach((c, i) => {
+        const d = Math.abs(c.offsetLeft + c.offsetWidth / 2 - mid);
+        if (d < best) { best = d; near = i; }
+      });
+      marks.forEach((m, i) => m.classList.toggle("is-on", i === near));
+    };
+    chTrack.addEventListener("scroll", syncDots, { passive: true });
+    syncDots();
+  } else {
+    gsap.to(chTrack, {
+      x: () => -getScroll(),
+      ease: "none",
+      scrollTrigger: {
+        trigger: "#chaptersPin",
+        start: "top top",
+        end: () => "+=" + getScroll(),
+        pin: true,
+        scrub: 1,
+        invalidateOnRefresh: true,
+        anticipatePin: 1,
+      },
+    });
+  }
   // the chapters head is revealed by the chapter-stillness sequence
   gsap.utils.toArray(".chapter").forEach((card, i) => {
     gsap.from(card, {

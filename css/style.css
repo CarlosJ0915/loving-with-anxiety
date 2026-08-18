@@ -1425,58 +1425,329 @@ em { font-style: italic; }
 @media (prefers-reduced-motion: reduce) {
   .grain, .hero__scroll-line::after { animation: none; }
 }
-
 /* ═══════════ PHONES ═══════════
-   The open book is ~170px per page on a phone — far too small to hold the
-   letters and the six options. Below 760px the 3D book stays as a backdrop
-   and the copy is laid out full-width over it instead of being projected
-   onto the pages (js/main.js: layoutBookPages() skips positioning here). */
-@media (max-width: 760px) {
-  .fpage {
-    position: absolute;
-    left: 0;
-    width: 100%;
-    height: auto;
-    font-size: 15px;
-    padding: 0;
-  }
-  /* clears the fixed nav at the top */
-  .fpage--left  { top: 13vh; height: 29vh; }
-  .fpage--right { top: 44vh; height: 52vh; }
-  /* the letters are longer than a phone screen — let each page scroll itself
-     rather than spilling over the nav and off the section */
-  .fpage { overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; }
-  .fpage__view { padding: 0.4em 1.5rem; height: auto; min-height: 100%; bottom: auto; }
-  /* decorative stem/sprig eat vertical room that the copy needs */
-  .fpage__stem, .fpage__sprig { display: none; }
+   A phone is not a small laptop.
 
-  /* a soft parchment scrim so the copy stays legible over the book */
-  .fpage__view::before {
+   Above 760px the book sits beside the copy and each letter is typeset onto
+   the open pages by projecting them into the DOM. None of that survives the
+   trip down: at 390px a projected page is ~170px wide, the fixed nav has no
+   backdrop to keep full-width copy off it, and a scroll box nested inside a
+   pinned, Lenis-driven section fights every swipe.
+
+   So below 760px the composition changes rather than shrinking:
+     · the book is a moment in the hero, then the question — nothing is
+       typeset onto its pages
+     · choosing a feeling opens that letter full-screen in #letterSheet,
+       at a size a person can actually read
+     · Movements becomes a native snap carousel instead of a pinned
+       horizontal scroll
+   The behaviour half of this lives in js/main.js › PHONE. */
+
+@media (max-width: 760px) {
+
+  :root { --nav-h: 3.5rem; }
+
+  /* ── nav: shorter, out of the safe area, and frosted once you leave the top.
+        Without a backdrop every section's copy collided with it. ── */
+  .nav {
+    padding: 0.7rem 1.1rem;
+    padding-top: calc(0.7rem + env(safe-area-inset-top));
+    min-height: var(--nav-h);
+  }
+  .nav::before {
     content: "";
     position: absolute;
-    inset: -0.5rem 0.5rem;
-    background: radial-gradient(ellipse at center, rgba(247, 243, 234, 0.92) 55%, rgba(247, 243, 234, 0) 100%);
+    inset: 0;
+    background: rgba(247, 244, 239, 0.86);
+    backdrop-filter: blur(14px) saturate(1.1);
+    -webkit-backdrop-filter: blur(14px) saturate(1.1);
+    border-bottom: 1px solid rgba(61, 68, 80, 0.07);
+    opacity: 0;
+    transition: opacity 0.4s var(--ease-out);
+    pointer-events: none;
+  }
+  .nav.is-scrolled::before { opacity: 1; }
+  .nav > * { position: relative; z-index: 1; }
+  .nav__cta {
+    padding: 0.55rem 1.1rem;
+    font-size: 0.62rem;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+  .author__link { min-height: 44px; display: inline-flex; align-items: center; }
+  .nav__logo { min-height: 44px; display: flex; align-items: center; }
+
+  /* ── 100vh is the *largest* viewport height on mobile, so a full-height
+        section hides behind the browser chrome until you scroll. svh is the
+        smallest — stable, and it does not churn ScrollTrigger when the
+        address bar collapses. ── */
+  .feelings { height: 100svh; }
+  .chapters__pin { height: auto; }
+
+  /* ══ THE QUESTION ══
+     The projected-page machinery is desktop-only. Here the section is an
+     ordinary centred column: the invitation, then the six feelings. */
+  .feelings__inner {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2.2rem;
+    padding: calc(var(--nav-h) + env(safe-area-inset-top) + 1.5rem) 1.4rem
+            calc(2rem + env(safe-area-inset-bottom));
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .fpage {
+    position: static;
+    width: 100%;
+    height: auto;
+    font-size: 16px;
+    padding: 0;
+    flex: 0 0 auto;
+  }
+  .fpage__view {
+    position: static;
+    inset: auto;
+    padding: 0;
+  }
+  /* everything past the question is read in #letterSheet instead */
+  .fpage__view--letter,
+  .fpage__view--answer,
+  .fpage__view--bridge,
+  .fpage__view--excerpt { display: none; }
+
+  .fpage__stem, .fpage__sprig { display: none; }
+  .fpage__kicker { font-size: 0.72em; margin-bottom: 1.1em; }
+  .fpage__lead { font-size: 1.75em; line-height: 1.3; }
+  .fpage__note { font-size: 0.85em; margin-top: 1.1em; }
+  .fpage__q { font-size: 2em; line-height: 1.2; margin-bottom: 1.2em; }
+  .fpage__caption { font-size: 0.8em; margin-top: 1.4em; }
+
+  .fpage__opts { max-width: 100%; gap: 0.6em; }
+  .feel {
+    min-height: 48px;
+    padding: 0.75em 1.15em;
+    font-size: 0.95em;
+  }
+
+  /* a soft parchment scrim so the column stays legible over the book */
+  .feelings__inner::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 45%,
+                rgba(247, 243, 234, 0.94) 45%, rgba(247, 243, 234, 0.55) 100%);
     z-index: -1;
   }
 
-  .fpage__opts { max-width: 100%; gap: 0.7em 0.6em; }
-  /* comfortable tap targets */
-  .feel { min-height: 44px; padding: 0.7em 1.1em; }
+  /* ══ MOVEMENTS ══
+     The pinned horizontal scroll drove 686px of travel through 232px cards —
+     you never saw a whole one. A native snap carousel does the same job with
+     the gesture people already expect. */
+  .chapters__pin {
+    overflow: visible;
+    padding: 4.5rem 0 3rem;
+    justify-content: flex-start;
+  }
+  .chapters__head { padding: 0 1.4rem; margin-bottom: 1.8rem; }
+  .chapters__track {
+    width: auto;
+    display: flex;
+    gap: 1rem;
+    padding: 0 1.4rem 1.6rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-left: 1.4rem;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    transform: none !important;
+  }
+  .chapters__track::-webkit-scrollbar { display: none; }
+  .chapter {
+    width: min(80vw, 320px);
+    scroll-snap-align: start;
+  }
+  /* progress dots — a carousel with no edge cue reads as a cut-off grid */
+  .chapters__dots {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 0.2rem;
+  }
+  .chapters__dots span {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: rgba(61, 68, 80, 0.18);
+    transition: background 0.3s, transform 0.3s;
+  }
+  .chapters__dots span.is-on { background: var(--gold); transform: scale(1.35); }
 
-  .fpage__lead { font-size: 1.5em; }
-  .fpage__kicker { font-size: 0.7em; }
-  .anxious-note { max-width: 100%; font-size: 0.95em; }
+  /* ── comfortable tap targets throughout ── */
+  .feelings__continue { padding: 0.85em 1.7em; min-height: 48px; display: inline-flex;
+                        align-items: center; justify-content: center; }
+  .footer a, .editions__cta, .nav__links a { min-height: 44px; }
 
-  /* the hero meta line wraps awkwardly beside the floating book */
-  .hero__meta { gap: 0.8rem; }
+  /* the book floats above the copy rather than beside it, so the eyebrow and
+     headline start below where the jacket lands */
+  .hero__content { padding-top: 15vh; }
+  .hero__eyebrow { gap: 0.7rem; font-size: 0.6rem; margin-bottom: 1.2rem; }
+  .hero__title { font-size: 1.7rem; line-height: 1.16; }
+  .hero__sub { font-size: 0.88rem; }
 }
 
-/* ═══════════ SMALL PHONES ═══════════ */
-@media (max-width: 400px) {
-  .fpage { font-size: 14px; }
-  .fpage--left  { top: 12vh; height: 28vh; }
-  .fpage--right { top: 42vh; height: 54vh; }
+/* ═══════════ PHONE · THE LETTER, FULL SCREEN ═══════════
+   Opened by js/main.js when a feeling is chosen below 760px. It is a sibling
+   of <main>, so no pinned section can clip it and no smooth-scroll wrapper
+   competes with it — one surface, one scroll, at a size you can read. */
+.sheet {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  opacity: 0;
+  transform: translateY(2.5%);
+  transition: opacity 0.45s var(--ease-out), transform 0.45s var(--ease-out);
 }
+.sheet[hidden] { display: none; }
+.sheet.is-open { opacity: 1; transform: none; }
+
+/* the same warm paper the pages are painted on */
+.sheet::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 78% -10%, rgba(255, 252, 244, 0.9) 0%, rgba(255, 252, 244, 0) 55%),
+    linear-gradient(180deg, #faf7f0 0%, #f4f0e6 100%);
+  pointer-events: none;
+}
+
+.sheet__bar {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: calc(0.6rem + env(safe-area-inset-top)) 1rem 0.6rem;
+  background: rgba(250, 247, 240, 0.9);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(61, 68, 80, 0.08);
+}
+.sheet__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  padding: 0 0.6rem 0 0.2rem;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+.sheet__back:focus { outline: none; }
+.sheet__back:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; border-radius: 4px; }
+.sheet__arrow { font-size: 1rem; color: var(--gold); }
+.sheet__title {
+  margin: 0 0 0 auto;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1rem;
+  color: #7d6437;
+}
+
+.sheet__scroll {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+.sheet__inner {
+  max-width: 34rem;
+  margin: 0 auto;
+  padding: 2.4rem 1.5rem calc(4rem + env(safe-area-inset-bottom));
+  font-size: 17px;
+  color: #5d5648;
+}
+
+/* the letter views are *moved* here, not copied — so the audio player keeps
+   its listener and the copy stays a single source of truth for i18n */
+.sheet__inner .fpage__view {
+  display: block;
+  position: static;
+  inset: auto;
+  opacity: 1;
+  visibility: visible;
+  padding: 0;
+  text-align: left;
+}
+.sheet__inner .fpage__view + .fpage__view { margin-top: 1.6em; }
+.sheet__inner .fpage__kicker {
+  font-size: 0.7rem;
+  letter-spacing: 0.28em;
+  margin-bottom: 1.8em;
+  color: #96835e;
+}
+.sheet__inner .anxious-note,
+.sheet__inner .bridge-note,
+.sheet__inner .excerpt-body {
+  font-size: 1rem;
+  line-height: 1.78;
+  max-width: none;
+  gap: 1.15em;
+  text-align: left;
+}
+.sheet__inner .anxious-note p { margin: 0; }
+.sheet__inner .fpage__lead { font-size: 1.5rem; line-height: 1.35; }
+.sheet__inner .fpage__orn { display: block; margin: 2.2em 0 0; text-align: center; }
+.sheet__inner .fpage__stem,
+.sheet__inner .fpage__sprig { display: none; }
+
+.sheet__inner .audio-card {
+  width: 100%;
+  margin: 2.2em 0 0;
+  min-height: 60px;
+  opacity: 1;
+  visibility: visible;
+}
+.sheet__inner .feelings__continue {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  margin-top: 2em;
+  font-size: 1rem;
+  padding: 0.8em 1.8em;
+}
+/* the back button in the bar already does these two jobs */
+.sheet__inner .letter-more,
+.sheet__inner .read-another { display: none; }
+
+/* these are revealed by GSAP on desktop; in the sheet they are simply here */
+.sheet__inner .excerpt-closing,
+.sheet__inner .excerpt-folio,
+.sheet__inner .fpage__view--excerpt,
+.sheet__inner .fpage__view--bridge { opacity: 1; visibility: visible; }
+.sheet__inner .excerpt-body { text-align: left; hyphens: none; }
+.sheet__inner .excerpt-chapter { align-self: flex-start; margin-bottom: 1.6em; }
+.sheet__inner .excerpt-folio { display: none; }
+
+/* while the letter is open the page behind it must not scroll */
+body.sheet-open { overflow: hidden; }
 
 /* ═══════════ LANGUAGE SWITCHER ═══════════ */
 .lang {

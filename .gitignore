@@ -11,3 +11,6 @@
 
 # logs
 *.log
+
+# stale git internals left behind by the folder move
+_git_leftovers/

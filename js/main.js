@@ -20,6 +20,23 @@ const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").mat
    depends on that reads this one query. See css/style.css › PHONES. */
 const phoneQ = window.matchMedia("(max-width: 760px)");
 
+/* ═══════════ LITE MODE ═══════════
+   The ambient stack that makes this page feel like paper on a desktop — an
+   animated grain plate four times the size of the screen, a screen-blended
+   sunbeam, a canvas dust field, blurred SVG light, MSAA — is exactly the set
+   of effects a mobile GPU is worst at. Each one forces a full-screen repaint
+   or a backdrop read-back every frame, and on iOS Safari they compound.
+
+   LITE keeps every one of those effects *visible* but stops them being
+   re-computed per frame: the grain becomes a still plate, the sunbeam loses
+   its blend mode, the dust field and the parallax stop. Nothing is recoloured
+   and nothing disappears — see css/style.css › LITE. */
+const LITE =
+  phoneQ.matches ||
+  (navigator.hardwareConcurrency || 8) <= 4 ||
+  (navigator.deviceMemory || 8) <= 4;
+document.documentElement.classList.toggle("lite", LITE);
+
 /* ═══════════ SMOOTH SCROLL ═══════════ */
 const lenis = new Lenis({
   duration: 1.35,
@@ -67,12 +84,20 @@ if (window.matchMedia("(hover: hover)").matches) {
 }
 
 /* ═══════════ AMBIENT SUNLIGHT + DRIFTING DUST ═══════════ */
+/* The sunbeam still drifts on a phone — it is one tween on one element and
+   costs nothing once its blend mode is gone (see css › LITE). The dust field
+   is the opposite: a full-viewport 2D canvas cleared and redrawn every frame
+   with a shadowBlur per mote, and shadowBlur is among the slowest things
+   canvas2d can do. On a phone those motes are barely perceptible, so the
+   canvas is hidden in CSS and this loop is never registered at all. */
 if (!prefersReduced) {
   // a warm pool of window-light wandering across the page, ~1 minute per pass
   gsap.fromTo(".sunbeam",
     { xPercent: -10, yPercent: -5, rotate: -1.5 },
     { xPercent: 10, yPercent: 5, rotate: 1.5, duration: 52, ease: "sine.inOut", yoyo: true, repeat: -1 });
+}
 
+if (!prefersReduced && !LITE) {
   const dustField = document.getElementById("dustField");
   const dctx = dustField.getContext("2d");
   let DW, DH;
@@ -117,9 +142,24 @@ const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(32, innerWidth / innerHeight, 0.1, 60);
 camera.position.set(0, 0.1, 8.5);
 
-const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, preserveDrawingBuffer: true });
+/* MSAA and a preserved drawing buffer are both expensive on a mobile GPU:
+   preserveDrawingBuffer blocks the compositor from discarding the buffer after
+   every frame, and MSAA costs the most on exactly the large flat surfaces this
+   book is made of. Both go on LITE.
+
+   Pixel ratio stays at 1.5 rather than dropping to 1.25: an iPhone is a 3x
+   display, so 1.25 renders at 42% of native and upscales — the jacket type is
+   the one thing on the page that cannot afford to go soft. The frame throttle
+   below buys back more than the extra pixels cost. */
+const renderer = new THREE.WebGLRenderer({
+  canvas,
+  antialias: !LITE,
+  alpha: true,
+  preserveDrawingBuffer: !LITE,
+  powerPreference: LITE ? "low-power" : "high-performance",
+});
 renderer.setSize(innerWidth, innerHeight);
-renderer.setPixelRatio(Math.min(devicePixelRatio, phoneQ.matches ? 1.5 : 2));
+renderer.setPixelRatio(Math.min(devicePixelRatio, LITE ? 1.5 : 2));
 
 /* — lighting: soft morning light — */
 scene.add(new THREE.HemisphereLight(0xfdfbf5, 0xb9c3cd, 1.15));
@@ -783,7 +823,23 @@ window.addEventListener("pointermove", (e) => {
 const clock = new THREE.Clock();
 let heroVisible = true;
 
-function render() {
+/* On a phone the book only ever breathes — a slow float and a drift of motes.
+   Half the frames carry that motion just as well, and halving the frame count
+   halves the GPU time the scene costs while the reader is scrolling past it.
+   Rendering also stops entirely when the tab is backgrounded. */
+const FRAME_MS = LITE ? 1000 / 30 : 0;
+let lastFrame = 0;
+let docHidden = false;
+document.addEventListener("visibilitychange", () => {
+  docHidden = document.hidden;
+});
+
+function render(now = 0) {
+  requestAnimationFrame(render);
+  if (docHidden) return;
+  if (FRAME_MS && now - lastFrame < FRAME_MS) return;
+  lastFrame = now;
+
   const t = clock.getElapsedTime();
 
   if (heroVisible) {
@@ -806,7 +862,6 @@ function render() {
     }
     renderer.render(scene, camera);
   }
-  requestAnimationFrame(render);
 }
 
 /* — scroll-driven rotation & drift — */
@@ -1039,7 +1094,11 @@ document.fonts.ready.then(() => {
   });
 
   /* ═══════════ HERO — slow breathing of the leaf shadows ═══════════ */
-  if (!prefersReduced) {
+  // Each of these groups is drawn through a feGaussianBlur. Safari re-rasterises
+  // a filtered group when it is transformed, so an endless breathing tween on
+  // four of them is a permanent raster cost for motion measured in single
+  // pixels over half a minute. The shadows stay — they just hold still.
+  if (!prefersReduced && !LITE) {
     gsap.to("#leafShadowA", {
       x: 16, rotation: 1.4, transformOrigin: "50% 50%",
       duration: 26, ease: "sine.inOut", yoyo: true, repeat: -1,
@@ -1165,26 +1224,33 @@ document.fonts.ready.then(() => {
   ScrollTrigger.addEventListener("refresh", layoutBookPages);
 
   /* ═══════════ ROOM — travel down the sunlit wall as you scroll ═══════════ */
+  // The wall is a 2,700px SVG carrying five blurred groups. Scrubbing it against
+  // scroll asks Safari to re-rasterise those filters on the same frames that are
+  // already running the book, the pinned spread and the copy reveals — the one
+  // moment a phone has least to spare. On LITE the wall holds its position; it
+  // is a lit backdrop either way, and nothing about it is removed.
   const roomScene = document.getElementById("roomScene");
-  gsap.to(roomScene, {
-    y: () => -(roomScene.offsetHeight - innerHeight),
-    ease: "none",
-    scrollTrigger: {
-      start: 0,
-      end: () => ScrollTrigger.maxScroll(window),
-      scrub: 1,
-      invalidateOnRefresh: true,
-    },
-  });
-  // individual light patches drift at their own pace for depth
-  gsap.to("#lightB", {
-    x: -80, ease: "none",
-    scrollTrigger: { start: 0, end: () => ScrollTrigger.maxScroll(window), scrub: 2 },
-  });
-  gsap.to("#lightC", {
-    x: 70, ease: "none",
-    scrollTrigger: { start: 0, end: () => ScrollTrigger.maxScroll(window), scrub: 2.5 },
-  });
+  if (!LITE) {
+    gsap.to(roomScene, {
+      y: () => -(roomScene.offsetHeight - innerHeight),
+      ease: "none",
+      scrollTrigger: {
+        start: 0,
+        end: () => ScrollTrigger.maxScroll(window),
+        scrub: 1,
+        invalidateOnRefresh: true,
+      },
+    });
+    // individual light patches drift at their own pace for depth
+    gsap.to("#lightB", {
+      x: -80, ease: "none",
+      scrollTrigger: { start: 0, end: () => ScrollTrigger.maxScroll(window), scrub: 2 },
+    });
+    gsap.to("#lightC", {
+      x: 70, ease: "none",
+      scrollTrigger: { start: 0, end: () => ScrollTrigger.maxScroll(window), scrub: 2.5 },
+    });
+  }
 
   /* ═══════════ THE BOOK ACKNOWLEDGES — breeze, light, dust ═══════════ */
   let ackTl = null;
@@ -1419,6 +1485,10 @@ document.fonts.ready.then(() => {
   }
 
   let sheetExcerptOpen = false;
+  // testing hooks, like __openTl — the sheet is otherwise only reachable
+  // through a delayedCall, which a throttled tab never fires
+  window.__openSheet = openLetterSheet;
+  window.__closeSheet = closeLetterSheet;
   sheetBack.addEventListener("click", closeLetterSheet);
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape" && sheetIsOpen) closeLetterSheet();

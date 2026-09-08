@@ -1855,3 +1855,54 @@ body.sheet-open { overflow: hidden; }
   .loader__brand { letter-spacing: 0.4em; padding-left: 0.4em; }
   .nav__logo { letter-spacing: 0.18em; font-size: 0.78rem; }
 }
+
+/* ═══════════ LITE ═══════════
+   Set by js/main.js on <html> for phones and low-core devices. The ambient
+   layers stay on screen — this block stops them being recomputed every frame.
+   Nothing here changes a colour; see js/main.js › LITE MODE for the pairing. */
+
+/* The grain plate is the single most expensive thing on the page for a phone:
+   inset -50% at 200% square is four screens of feTurbulence noise, and the
+   steps(10) animation repaints all of it eight times a second, forever. Held
+   still it needs only the viewport, and paints once. The texture is identical;
+   only the shimmer is gone. */
+.lite .grain {
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  animation: none;
+}
+
+/* mix-blend-mode forces the compositor to read the backdrop back on every
+   frame. The beam is a warm wash at 0.08 either way — normal blending over
+   this ivory ground lands in the same place without the read-back. */
+.lite .sunbeam {
+  mix-blend-mode: normal;
+  opacity: 0.1;
+}
+
+/* the canvas is never drawn to on LITE (the ticker is not registered) */
+.lite .dustfield { display: none; }
+
+/* backdrop-filter re-blurs whatever is behind it as that content scrolls —
+   on a bar that is always on screen, that is a blur per frame. These are the
+   same warm surfaces, painted rather than sampled. */
+.lite .nav::before {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  background: rgba(247, 244, 239, 0.92);
+}
+.lite .sheet__bar {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  background: rgba(247, 244, 239, 0.96);
+}
+.lite .lang-offer {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  background: rgba(250, 247, 240, 0.98);
+}
+
+/* a fixed full-screen promoted layer costs real memory on a phone; the wall
+   no longer moves on LITE, so it does not need to be promoted */
+.lite .room__scene { will-change: auto; }

@@ -1,8 +1,9 @@
 # The phone version
 
-**Status:** first pass landed. Audited at 390×664 (iPhone 13), 320×568 and 430×780,
-against commit `c67ee5b`. Desktop composition is unchanged — every change below is
-inside `@media (max-width: 760px)` or behind the `phoneQ` test in `js/main.js`.
+**Status:** layout pass landed (`a9e2a38`), then a performance pass after the first
+real-device report of lag on iPhone Safari. Audited at 390×844, 320×568 and 430×932.
+Desktop composition is unchanged — every change is inside `@media (max-width: 760px)`,
+behind `phoneQ`, or behind the `LITE` flag in `js/main.js`.
 
 ---
 
@@ -66,8 +67,42 @@ in JS. The pinned horizontal ScrollTrigger is skipped entirely below 760px.
 **Sections** use `100svh` rather than `100vh` — the *small* viewport height, which is
 stable when the address bar collapses and does not churn ScrollTrigger.
 
-**Performance:** `setPixelRatio` caps at 1.5 on phones (a 390px canvas at DPR 3 was
-rendering 780×1328). The render loop already gates on `heroVisible`.
+---
+
+## Performance: the LITE flag
+
+The first pass capped `setPixelRatio` and left it there. That was not the problem.
+A real iPhone reported lag anyway, and the cost turned out to be almost entirely in
+the **ambient layers**, not the 3D book.
+
+`LITE` (js/main.js, top) is true for phones and for any device reporting ≤4 cores or
+≤4 GB. It sets `.lite` on `<html>`, which css/style.css › LITE reads. **Nothing is
+recoloured and nothing is removed** — the effects stop being *recomputed per frame*.
+
+| Cost | Before | After |
+|---|---|---|
+| Grain plate | 14.19 MP, `steps(10)` animation, forever | 0.33 MP, painted once |
+| Sunbeam | `mix-blend-mode: screen` (backdrop read-back/frame) | normal blend |
+| Dust field | full-viewport canvas2d, `shadowBlur` per mote per frame | loop never registered |
+| WebGL | MSAA on, `preserveDrawingBuffer: true` | both off, `low-power` |
+| Frame rate | uncapped | 30 fps, and stops when the tab is hidden |
+| Room wall | 2,700px SVG w/ 5 blur filters, scrubbed against scroll | held still → filters raster once |
+| Leaf shadows | 4 endless tweens on blurred groups | static |
+| `backdrop-filter` | 3 always-on-screen bars | painted surfaces |
+| ScrollTriggers | 27 | 24 |
+
+The grain was the single worst offender: `inset: -50%` at `200%` square is four
+screens of feTurbulence noise, held as a promoted layer (~57 MB) and repainted on a
+loop. Held still at viewport size it is 43× smaller and paints once.
+
+Pixel ratio deliberately stayed at **1.5, not 1.25** — an iPhone is a 3× display, so
+1.25 renders at 42% of native and upscales, and the jacket type is the one thing on
+the page that cannot go soft. The frame throttle buys back more than those pixels cost.
+
+**Not reproducible:** the same report mentioned layout overflow. Measured at 320, 390
+and 430 px, sheet open and closed: zero elements past the viewport, zero tap targets
+under 44 px, no horizontal scroll. If it recurs, get the device width and whether
+`document.documentElement.classList.contains("lite")` is true there.
 
 ### Measured
 
@@ -87,8 +122,10 @@ rendering 780×1328). The render loop already gates on `heroVisible`.
 - **The open-book beat is still quiet on a phone.** 170% is better than 260%, but
   there is a stretch where the spread is blank before the question arrives. Worth
   considering whether the book should open *behind* the question rather than before it.
-- **Landscape phones** are untested. `(max-width: 760px)` catches a portrait phone;
-  a landscape one at 844×390 falls into the desktop branch with 390px of height.
+- **Landscape phones**: the *layout* is still untested — `(max-width: 760px)` catches a
+  portrait phone, and a landscape one at 844×390 falls into the desktop branch. The
+  *performance* side now carries over, because `LITE` is a class set once at load
+  rather than a live media query, so rotating does not restore the heavy stack.
 - **`prefers-reduced-motion`** on phone is untested end to end.
 - **Real-device testing.** Everything here is Playwright at phone viewports — it does
   not reproduce iOS Safari's address-bar behaviour, momentum scrolling, or the actual

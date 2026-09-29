@@ -11,7 +11,24 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Allura&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet" />
 
-  <link rel="stylesheet" href="css/style.css?v=39" />
+  <!-- Stylesheets load in cascade order — css/parts/ concatenated in this
+       sequence is byte-identical to the single file it replaced. -->
+  <link rel="stylesheet" href="css/parts/base.css?v=61" />
+  <link rel="stylesheet" href="css/parts/ambient.css?v=61" />
+  <link rel="stylesheet" href="css/parts/cursor.css?v=61" />
+  <link rel="stylesheet" href="css/parts/preloader.css?v=61" />
+  <link rel="stylesheet" href="css/parts/nav.css?v=61" />
+  <link rel="stylesheet" href="css/parts/hero.css?v=61" />
+  <link rel="stylesheet" href="css/parts/feelings.css?v=61" />
+  <link rel="stylesheet" href="css/parts/reviews.css?v=61" />
+  <link rel="stylesheet" href="css/parts/chapters.css?v=61" />
+  <link rel="stylesheet" href="css/parts/quote.css?v=61" />
+  <link rel="stylesheet" href="css/parts/author.css?v=61" />
+  <link rel="stylesheet" href="css/parts/editions.css?v=61" />
+  <link rel="stylesheet" href="css/parts/footer.css?v=61" />
+  <link rel="stylesheet" href="css/parts/phone.css?v=61" />
+  <link rel="stylesheet" href="css/parts/lang.css?v=61" />
+  <link rel="stylesheet" href="css/parts/lite.css?v=61" />
 </head>
 <body>
 
@@ -783,6 +800,6 @@ my way back to myself — and today I want to share it with you, to walk beside 
   <script type="importmap">
     { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.module.js" } }
   </script>
-  <script type="module" src="js/main.js?v=57"></script>
+  <script type="module" src="js/main.js?v=61"></script>
 </body>
 </html>

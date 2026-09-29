@@ -1,0 +1,38 @@
+/* ═══════════ QUOTE ═══════════ */
+.quote {
+  position: relative;
+  padding: clamp(9rem, 22vh, 16rem) clamp(1.5rem, 6vw, 6rem);
+  text-align: center;
+  overflow: hidden;
+}
+.quote__mark {
+  position: absolute;
+  top: 0.3em; left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-serif);
+  font-size: clamp(12rem, 30vw, 26rem);
+  line-height: 1;
+  color: rgba(199, 168, 109, 0.22);
+  z-index: 0;
+  user-select: none;
+}
+.quote__text {
+  position: relative; z-index: 1;
+  font-family: var(--font-serif);
+  font-weight: 300;
+  font-style: italic;
+  font-size: clamp(1.7rem, 4vw, 3.4rem);
+  line-height: 1.4;
+}
+.quote__cite {
+  position: relative; z-index: 1;
+  display: block;
+  margin-top: 3rem;
+  font-family: var(--font-sans);
+  font-style: normal;
+  font-size: 0.72rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+

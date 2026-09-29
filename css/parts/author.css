@@ -1,0 +1,77 @@
+/* ═══════════ AUTHOR ═══════════ */
+.author {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(3rem, 6vw, 6rem);
+  padding: clamp(6rem, 14vh, 10rem) clamp(1.5rem, 6vw, 6rem);
+  max-width: 1500px;
+  margin: 0 auto;
+  align-items: center;
+}
+@media (max-width: 860px) { .author { grid-template-columns: 1fr; } }
+.author__frame {
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  position: relative;
+}
+.author__portrait {
+  position: absolute;
+  inset: -12% 0;
+  background:
+    radial-gradient(ellipse 60% 45% at 50% 38%, rgba(199, 168, 109, 0.35), transparent 70%),
+    radial-gradient(ellipse 90% 70% at 50% 105%, rgba(61, 68, 80, 0.55), transparent 65%),
+    linear-gradient(160deg, #dfe6ec 0%, #aebfcc 45%, #7e93a6 100%);
+}
+/* the real portrait — sits over the gradient placeholder. If the file is
+   missing the img removes itself and the "NM" placeholder shows through. */
+.author__photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 50%;
+  /* warmed slightly so the cool green reads olive and sits in the ivory palette */
+  filter: saturate(0.82) contrast(1.04) sepia(0.16) brightness(1.06);
+}
+.author__portrait::after {
+  content: "NM";
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -60%);
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(5rem, 10vw, 9rem);
+  color: rgba(247, 244, 239, 0.88);
+  letter-spacing: 0.05em;
+}
+.author__name {
+  font-family: var(--font-serif);
+  font-weight: 300;
+  font-size: clamp(3rem, 7vw, 6rem);
+  line-height: 0.98;
+  margin-bottom: 2.5rem;
+}
+.author__name em { color: var(--blue); }
+.author__bio {
+  font-size: 0.95rem;
+  line-height: 1.9;
+  color: var(--ink-soft);
+  font-weight: 300;
+  max-width: 44ch;
+  margin-bottom: 2.5rem;
+}
+.author__link {
+  font-size: 0.72rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--ink);
+  border-bottom: 1px solid var(--gold);
+  padding-bottom: 0.5rem;
+  display: inline-flex;
+  gap: 0.8rem;
+  transition: gap 0.4s var(--ease-out), color 0.3s;
+}
+.author__link:hover { gap: 1.4rem; color: var(--gold); }
+

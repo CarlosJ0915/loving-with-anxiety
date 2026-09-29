@@ -1,0 +1,105 @@
+/* ═══════════ REVIEWS — praise from its readers ═══════════ */
+.reviews {
+  padding: clamp(8rem, 18vh, 14rem) clamp(1.5rem, 6vw, 6rem);
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.reviews__label,
+.chapters__label, .author__label, .editions__label {
+  font-size: 0.7rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 3rem;
+}
+.reviews__label {
+  font-size: clamp(0.95rem, 1.7vw, 1.3rem);
+  letter-spacing: 0.32em;
+  margin-bottom: clamp(3.5rem, 8vh, 6rem);
+}
+.review {
+  position: relative;
+  margin: 0;
+  text-align: center;
+}
+.review__quote {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-style: italic;
+  color: var(--ink);
+  line-height: 1.55;
+  margin: 0 auto;
+}
+/* opening word carries a breath of gold, like an illuminated phrase */
+.review__quote::first-letter { color: #a8905f; }
+.review__by {
+  margin-top: 2.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.9rem;
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 0.92rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+.review__rule {
+  width: 34px;
+  height: 1px;
+  background: var(--gold-soft);
+}
+/* the featured voice — a praise-page pull quote */
+.review--feature .review__quote {
+  font-size: clamp(1.45rem, 2.9vw, 2.35rem);
+  max-width: 34ch;
+}
+.review__mark {
+  position: absolute;
+  top: -0.42em;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-serif);
+  font-size: clamp(7rem, 14vw, 11rem);
+  line-height: 1;
+  color: rgba(199, 168, 109, 0.16);
+  user-select: none;
+  z-index: -1;
+}
+/* two voices side by side — one left, one right, like facing pages */
+.reviews__pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(2.5rem, 6vw, 5rem);
+  align-items: start;
+  margin-top: clamp(4.5rem, 10vh, 8rem);
+  width: 100%;
+}
+.reviews__pair .review { text-align: left; }
+.reviews__pair .review__quote {
+  font-size: clamp(1.2rem, 2vw, 1.75rem);
+  line-height: 1.6;
+}
+.reviews__pair .review__by { justify-content: flex-start; }
+.review--offset { margin-top: 0; }
+@media (max-width: 860px) {
+  .reviews__pair { grid-template-columns: 1fr; gap: 4rem; }
+}
+.reviews__orn {
+  margin-top: clamp(5rem, 10vh, 7.5rem);
+  color: var(--gold);
+  font-size: 0.85rem;
+  letter-spacing: 0.4em;
+  padding-left: 0.4em; /* optically centre against the letter-spacing */
+}
+/* the closing word */
+.review--closing { margin-top: clamp(4rem, 8vh, 6rem); }
+.review--closing .review__quote {
+  font-size: clamp(1.45rem, 2.9vw, 2.35rem);
+  max-width: 34ch;
+}
+

@@ -1,8 +1,9 @@
 # Working on this project
 
 A static landing page for *Loving with Anxiety* by Nicol Montoya (imprint: BY FRANCIA).
-No build step, no framework, no bundler — `index.html`, `css/style.css`, `js/main.js`,
-`js/i18n.js`. Everything third-party loads from a CDN. Read `README.md` for why the
+No build step, no framework, no bundler. `index.html` plus native ES modules under
+`js/` and a stylesheet per section under `css/parts/`. Everything third-party
+loads from a CDN. Read `README.md` for why the
 book is real Three.js geometry and how the i18n snapshot works; read `MOBILE.md`
 before touching anything below 760px.
 
@@ -11,8 +12,10 @@ before touching anything below 760px.
 - **`index.html` is the English source of truth.** `js/i18n.js` carries only
   *translations* — never duplicate English into it. New user-facing strings need a
   `data-i18n` key in the markup and a matching entry in the `es` block.
-- **Bump the cache-buster** when you edit CSS or JS: `style.css?v=NN`, `main.js?v=NN`
-  in `index.html`. GitHub Pages caches aggressively.
+- **Bump the cache-buster** when you edit CSS or JS. Every `css/parts/*.css` link in
+  `index.html`, `main.js?v=NN` there too, *and* the `?v=NN` on each `import` inside
+  the JS modules — they are separate requests and the browser caches them
+  independently. Bump them all to the same number. GitHub Pages caches hard.
 - **Serve over HTTP to test** (`python3 -m http.server 4173`). The page uses ES
   modules, so opening `index.html` from the filesystem will not work.
 - **Two compositions, one codebase.** Above 760px the book sits beside the copy and
@@ -20,6 +23,31 @@ before touching anything below 760px.
   letters open full-screen in `#letterSheet`. The switch is `phoneQ` in `js/main.js`
   and `@media (max-width: 760px)` in `css/style.css`. Changing one composition should
   not change the other — check both before calling a change done.
+
+## How the files are laid out
+
+`js/` is native ES modules, no bundler:
+
+    main.js            entry: the scroll choreography, everything that waits for fonts
+    config.js          prefersReduced, phoneQ, LITE
+    scroll.js          Lenis
+    cursor.js          the dot and its ring
+    ambient.js         sunbeam + dust field
+    i18n.js            translations (data only)
+    scene/renderer.js  canvas, camera, lights, WebGL context
+    scene/textures.js  every canvas-painted texture
+    scene/book.js      geometry, materials, holders, layoutScene
+    scene/loop.js      mouse parallax, render loop, resize
+
+`css/parts/` is one stylesheet per section, linked from `index.html` **in cascade
+order**: base, ambient, cursor, preloader, nav, hero, feelings, reviews, chapters,
+quote, author, editions, footer, phone, lang, lite. Concatenated in that order they
+are byte-identical to the single file they replaced — so if you reorder the links,
+you change the cascade. Add a new one deliberately.
+
+Two bindings cross module boundaries by function rather than value, because an
+imported binding cannot be assigned to: `setHeroVisible()` in `scene/loop.js`, and
+`createCoverTexture(lang)` which takes the language rather than reading it.
 
 ## Layout of the JS
 

@@ -264,14 +264,14 @@ export const TRANSLATIONS = {
     "chapter.4.line": "«Un día dejas de buscar a la persona que te salvará… porque por fin te conviertes en el lugar donde tu propio corazón se siente seguro.»",
 
     /* ── quote ── */
-    "quote.text": "Mi ansiedad nunca se fue —<br />simplemente aprendió a sentarse a mi lado,<br />mientras yo aprendía a amar.",
+    "quote.text": "Intenté silenciar mi mente,<br />hasta que entendí que no todo<br />necesitaba una explicación.<br />A veces, solo necesitaba dejar<br />de huir de mí.",
     "quote.cite": "— Nicol Montoya, Capítulo III",
 
     /* ── author ── */
     "author.label": "03 — La autora",
     "author.bio":
       "He vivido con ansiedad desde que tengo memoria. Durante mucho tiempo pensé que era algo que debía combatir, silenciar o superar. Pero en algún punto del camino dejé de pelear con mi corazón ansioso y empecé a aprender de él. A través de las lecciones honestas y difíciles que me trajo, aprendí a amarme con más ternura — y a amar a los demás más profundamente. " +
-      "Este libro nace de ese camino. De todo lo que sentí, todo lo que temí y todo lo que aprendí mientras encontraba el camino de regreso a mí.",
+      "Este libro nace de ese camino. De todo lo que sentí, todo lo que temí y todo lo que aprendí mientras encontraba el camino de regreso a mí que hoy quiero compartir contigo, para acompañarte mientras encuentras tu propio camino de regreso a ti.",
     "author.link": 'Lee el primer capítulo <span>→</span>',
 
     /* ── editions ── */

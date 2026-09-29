@@ -4,7 +4,9 @@
    ═══════════════════════════════════════════════ */
 
 import * as THREE from "three";
-import { LANGS, DEFAULT_LANG, COVER, OFFER, TRANSLATIONS } from "./i18n.js";
+// ?v= bumped with the one in index.html — a bare "./i18n.js" is cached by the
+// browser independently of main.js, so translation edits can otherwise go stale
+import { LANGS, DEFAULT_LANG, COVER, OFFER, TRANSLATIONS } from "./i18n.js?v=57";
 
 /* the active language — the cover texture and the copy both read from this */
 let LANG = DEFAULT_LANG;

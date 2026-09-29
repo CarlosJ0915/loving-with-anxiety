@@ -12,22 +12,22 @@
    ═══════════════════════════════════════════════ */
 
 import * as THREE from "three"; // layoutBookPages projects world points to screen
-import { LANGS, DEFAULT_LANG, COVER, OFFER, TRANSLATIONS } from "./i18n.js?v=60";
-import { prefersReduced, phoneQ, LITE } from "./config.js?v=60";
-import { lenis } from "./scroll.js?v=60";
-import "./cursor.js?v=60";
-import "./ambient.js?v=60";
-import { camera } from "./scene/renderer.js?v=60";
+import { LANGS, DEFAULT_LANG, COVER, OFFER, TRANSLATIONS } from "./i18n.js?v=61";
+import { prefersReduced, phoneQ, LITE } from "./config.js?v=61";
+import { lenis } from "./scroll.js?v=61";
+import "./cursor.js?v=61";
+import "./ambient.js?v=61";
+import { camera, key, fill } from "./scene/renderer.js?v=61";
 import {
   book, bookHolder, coverPivot, coverFaceMat, W,
   turnPivot, turnPage, turnPivot2, turnPage2,
   leafPlane, rightPageTex, bookDust,
   openState,
-} from "./scene/book.js?v=60";
-import { render, setHeroVisible, scrollRotY, scrollRotX } from "./scene/loop.js?v=60";
+} from "./scene/book.js?v=61";
+import { render, setHeroVisible, scrollRotY, scrollRotX } from "./scene/loop.js?v=61";
 import {
   createCoverTexture, makeQuestionSheetTexture, makeLetterSheetTexture,
-} from "./scene/textures.js?v=60";
+} from "./scene/textures.js?v=61";
 
 /* the active language — the cover texture and the copy both read from this */
 let LANG = DEFAULT_LANG;

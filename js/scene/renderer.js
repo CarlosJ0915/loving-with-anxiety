@@ -3,7 +3,7 @@
    Evaluated before scene/book.js, which needs `renderer` for anisotropy.
    ═══════════════════════════════════════════════ */
 import * as THREE from "three";
-import { LITE } from "../config.js?v=60";
+import { LITE } from "../config.js?v=61";
 
 /* ═══════════ THREE.JS — THE BOOK ═══════════ */
 const canvas = document.getElementById("webgl");
@@ -49,4 +49,4 @@ scene.add(fill);
 
 /* — the book — */
 
-export { canvas, scene, camera, renderer };
+export { canvas, scene, camera, renderer, key, rim, fill };

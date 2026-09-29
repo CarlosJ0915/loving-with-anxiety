@@ -6,12 +6,12 @@
    directly: an imported binding cannot be assigned to.
    ═══════════════════════════════════════════════ */
 import * as THREE from "three";
-import { prefersReduced, LITE } from "../config.js?v=60";
-import { scene, camera, renderer } from "./renderer.js?v=60";
+import { prefersReduced, LITE } from "../config.js?v=61";
+import { scene, camera, renderer } from "./renderer.js?v=61";
 import {
   book, bookHolder, floatHolder, motes, bookDust,
   openState, layoutScene,
-} from "./book.js?v=60";
+} from "./book.js?v=61";
 
 /* — mouse parallax — */
 const mouse = { x: 0, y: 0 };

@@ -116,8 +116,8 @@ Then visit `http://localhost:4173`.
 
 ```
 index.html          markup and content (English — the i18n source of truth)
-css/style.css       all styling, including the phone layout
-js/main.js          Three.js scene, canvas textures, scroll choreography
+css/parts/          one stylesheet per section, linked in cascade order
+js/                 native ES modules: entry, config, scene/, i18n
 js/i18n.js          translations and cover wording per language
 assets/art/         author portrait and the four "Movements" photographs
 audio/              voice notes (see below)

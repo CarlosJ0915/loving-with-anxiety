@@ -1,0 +1,163 @@
+/* ═══════════ CHAPTERS ═══════════ */
+.chapters { background: rgba(238, 230, 217, 0.5); /* translucent warm parchment — the room shows through */ }
+.chapters__pin {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+  padding: clamp(2rem, 4vh, 3rem) 0 1rem;
+}
+.chapters__head {
+  padding: 0 clamp(1.5rem, 6vw, 6rem);
+  margin-bottom: clamp(1.2rem, 3.5vh, 2.4rem);
+}
+/* inside the pinned chapter head, the label sits tighter so the full
+   caption of every card fits within the viewport */
+.chapters__head .chapters__label { margin-bottom: 0.9rem; }
+.editions__title {
+  font-family: var(--font-serif);
+  font-weight: 300;
+  font-size: clamp(2.4rem, 6vw, 5rem);
+  line-height: 1.02;
+}
+.editions__title em { color: var(--gold-soft); }
+/* Chapters title — a vintage book-cover title: an elegant high-contrast
+   serif, generously tracked, with a gilt italic line and a delicate subtitle */
+.chapters__title {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(2.1rem, 4.4vw, 3.6rem);
+  line-height: 1.06;
+  letter-spacing: 0.06em;
+}
+.chapters__title em {
+  display: block;
+  margin-top: 0.14em;
+  font-weight: 400;
+  font-style: italic;
+  font-size: 0.84em;
+  letter-spacing: 0.03em;
+  color: var(--gold);
+}
+.chapters__sub {
+  margin-top: clamp(0.9rem, 2vh, 1.5rem);
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(1.02rem, 1.5vw, 1.4rem);
+  letter-spacing: 0.015em;
+  line-height: 1.5;
+  color: var(--ink-soft);
+}
+/* ── the four movements: painterly plates in a horizontal gallery ── */
+.chapters__track {
+  display: flex;
+  gap: clamp(1.6rem, 3vw, 3.2rem);
+  padding: 0 clamp(1.5rem, 6vw, 6rem);
+  width: max-content;
+  align-items: flex-start;
+}
+.chapter {
+  width: clamp(232px, 23vw, 316px);
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.9rem, 1.4vw, 1.4rem);
+}
+.chapter__num {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 1.1rem;
+  letter-spacing: 0.18em;
+  color: var(--gold);
+}
+/* the illustration plate — framed and aged like a museum reproduction */
+.chapter__plate {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  max-height: 33vh;
+  overflow: hidden;
+  margin: 0;
+  border: 1px solid rgba(120, 96, 56, 0.24);
+  box-shadow:
+    0 1px 0 rgba(255, 250, 240, 0.55) inset,
+    0 26px 50px -30px rgba(94, 78, 50, 0.5);
+  transition: transform 0.7s var(--ease-out), box-shadow 0.7s var(--ease-out);
+}
+/* warm aged-paper field, visible until the painting loads (or if it is absent) */
+.chapter__plate::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(120% 80% at 50% 20%, rgba(255, 247, 228, 0.92), transparent 60%),
+    radial-gradient(130% 100% at 50% 122%, rgba(120, 96, 56, 0.3), transparent 62%),
+    linear-gradient(160deg, #f2ead9, #ddccb0);
+}
+.chapter__plate--2::before {
+  background:
+    radial-gradient(120% 80% at 50% 20%, rgba(252, 246, 232, 0.9), transparent 60%),
+    radial-gradient(130% 100% at 50% 122%, rgba(104, 96, 64, 0.3), transparent 62%),
+    linear-gradient(160deg, #ece9d8, #d3cbad);
+}
+.chapter__plate--3::before {
+  background:
+    radial-gradient(120% 80% at 50% 20%, rgba(255, 246, 222, 0.94), transparent 60%),
+    radial-gradient(130% 100% at 50% 122%, rgba(126, 98, 50, 0.32), transparent 62%),
+    linear-gradient(160deg, #f4ecd4, #e2cfa3);
+}
+.chapter__plate--4::before {
+  background:
+    radial-gradient(120% 80% at 50% 20%, rgba(255, 249, 234, 0.92), transparent 60%),
+    radial-gradient(130% 100% at 50% 122%, rgba(110, 92, 58, 0.3), transparent 62%),
+    linear-gradient(160deg, #efe9dc, #d7cfbb);
+}
+/* a soft inner vignette + gilt line — oil-painting depth over whatever fills it */
+.chapter__plate::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  box-shadow: 0 0 58px 12px rgba(74, 60, 36, 0.26) inset;
+  border: 1px solid rgba(255, 250, 240, 0.14);
+  pointer-events: none;
+}
+.chapter__img {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(0.92) sepia(0.05); /* settle the paint into the ivory world */
+}
+.chapter:hover .chapter__plate {
+  transform: translateY(-8px);
+  box-shadow:
+    0 1px 0 rgba(255, 250, 240, 0.55) inset,
+    0 42px 72px -34px rgba(94, 78, 50, 0.6);
+}
+.chapter__caption {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.chapter__name {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(1.25rem, 1.8vw, 1.6rem);
+  line-height: 1.16;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+}
+.chapter__line {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(0.95rem, 1.1vw, 1.08rem);
+  line-height: 1.55;
+  color: var(--ink-soft);
+}
+

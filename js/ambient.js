@@ -2,7 +2,7 @@
    ambient — the wandering sunbeam and the drifting dust motes.
    The dust loop is never registered on LITE (see css › LITE).
    ═══════════════════════════════════════════════ */
-import { prefersReduced, LITE } from "./config.js?v=75";
+import { prefersReduced, LITE } from "./config.js?v=78";
 
 /* ═══════════ AMBIENT SUNLIGHT + DRIFTING DUST ═══════════ */
 /* The sunbeam still drifts on a phone — it is one tween on one element and

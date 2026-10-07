@@ -5,8 +5,8 @@
 
 .page-choose {
   --rose: #d9a9a4;
-  --rose-wash: rgba(222, 170, 166, 0.38);
-  --card: #faf6ee;
+  --rose-wash: rgba(224, 157, 152, 0.62);
+  --card: #f3ecdf; /* bone, close to the landing page's ground */
   min-height: 100svh;
 }
 
@@ -98,7 +98,7 @@ html:has(.page-choose) { overflow-x: clip; }
 
 .choose__title {
   font-family: var(--font-serif);
-  font-weight: 300;
+  font-weight: 600;
   font-size: clamp(2.4rem, 6.4vw, 4.6rem);
   line-height: 1.16;
   letter-spacing: -0.01em;
@@ -119,15 +119,16 @@ html:has(.page-choose) { overflow-x: clip; }
 }
 .choose__intro p {
   font-family: var(--font-serif);
-  font-weight: 300;
-  font-size: clamp(1.05rem, 1.9vw, 1.3rem);
+  font-weight: 500;
+  font-size: clamp(1.22rem, 2.25vw, 1.55rem);
   line-height: 1.38;
-  color: var(--ink-soft);
+  color: var(--ink); /* --ink-soft went pale once the type got heavier */
 }
 
 /* the one highlighted passage, as in the reference */
 .choose__mark {
   font-style: italic;
+  font-weight: 500;
   color: var(--ink) !important;
 }
 /* box-decoration-break gives every line box its own band, so a two-line
@@ -276,7 +277,11 @@ html:has(.page-choose) { overflow-x: clip; }
 @media (max-width: 760px) {
   .choose__inner { padding-top: clamp(5.5rem, 13vh, 7rem); }
   .choose__paths { grid-template-columns: 1fr; gap: 1.5rem; }
-  .choose__intro p { font-size: 1.02rem; line-height: 1.45; }
+  .choose__intro p { font-size: 1.14rem; line-height: 1.45; }
+  /* The line breaks in the copy are set for a wide measure. At this width they
+     fight the wrap and strand single words, so the paragraphs flow naturally
+     instead — the breaks come back above 760px. */
+  .choose__intro br { display: none; }
   .choose__mark span { background-size: 100% 1.1em; }
   .path__plate { aspect-ratio: 16 / 10; }
   /* A portrait crop puts the bedding — the busiest part of the photograph —

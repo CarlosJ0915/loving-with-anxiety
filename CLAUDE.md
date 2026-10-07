@@ -1,11 +1,26 @@
 # Working on this project
 
-A static landing page for *Loving with Anxiety* by Nicol Montoya (imprint: BY FRANCIA).
+A static site for *Loving with Anxiety* by Nicol Montoya (imprint: BY FRANCIA).
 No build step, no framework, no bundler. `index.html` plus native ES modules under
 `js/` and a stylesheet per section under `css/parts/`. Everything third-party
 loads from a CDN. Read `README.md` for why the
 book is real Three.js geometry and how the i18n snapshot works; read `MOBILE.md`
 before touching anything below 760px.
+
+## Pages
+
+Two routes, both plain files — there is no router.
+
+    index.html      the landing page: hero, the book, the feelings flow, sections
+    continue.html   the choice page the letters lead to — read it, or hear it
+
+`continue.html` loads only the foundations it needs (base, ambient, cursor, nav,
+continue, lang, lite) and `js/continue.js`, which pulls in no Three.js at all. It
+is a fraction of index.html's weight, which is the point of it being its own page.
+
+`js/i18n-runtime.js` is shared by both. index.html passes it two hooks — one to
+revert and re-run SplitText around the text swap, one to repaint the book's canvas
+jacket; continue.html passes neither. A language choice persists across both.
 
 ## Ground rules
 

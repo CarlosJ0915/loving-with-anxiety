@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#f7f4ef" />
+  <title>How do you want to continue? — BY FRANCIA</title>
+  <meta name="description" content="Read it or hear it in Nicol's own voice — choose how you want to continue with Loving with Anxiety. BY FRANCIA." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- This page needs only the shared foundations plus its own sheet; it has no
+       book, no pinned sections and no carousel. Cascade order still matters. -->
+  <link rel="stylesheet" href="css/parts/base.css?v=78" />
+  <link rel="stylesheet" href="css/parts/ambient.css?v=78" />
+  <link rel="stylesheet" href="css/parts/cursor.css?v=78" />
+  <link rel="stylesheet" href="css/parts/nav.css?v=78" />
+  <link rel="stylesheet" href="css/parts/continue.css?v=78" />
+  <link rel="stylesheet" href="css/parts/lang.css?v=78" />
+  <link rel="stylesheet" href="css/parts/lite.css?v=78" />
+</head>
+<body class="page-choose">
+
+  <!-- ══════════ CURSOR ══════════ -->
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- ══════════ GRAIN ══════════ -->
+  <div class="grain" aria-hidden="true"></div>
+
+  <!-- ══════════ AMBIENT SUNLIGHT ══════════ -->
+  <div class="sunbeam" aria-hidden="true"></div>
+
+  <!-- ══════════ NAV ══════════ -->
+  <header class="nav" id="nav">
+    <a class="nav__logo" href="index.html" data-hover>BY FRANCIA<sup>®</sup></a>
+    <nav class="nav__links">
+      <a href="index.html" data-hover data-i18n="choose.back">← Back to the book</a>
+    </nav>
+    <a class="nav__cta" href="#paths" data-hover><span data-i18n="nav.cta">Pre-order</span></a>
+    <div class="lang" id="langSwitch"></div>
+  </header>
+
+  <main class="choose">
+    <!-- the warm room behind the copy; the gradient stands in until the
+         photograph is dropped at assets/art/continue-bg.jpg -->
+    <div class="choose__room" aria-hidden="true"></div>
+
+    <div class="choose__inner">
+      <header class="choose__head">
+        <p class="choose__eyebrow" data-i18n="choose.eyebrow">Loving with Anxiety<span>by Nicol Montoya</span></p>
+        <span class="choose__rule" aria-hidden="true"></span>
+        <h1 class="choose__title" data-i18n="choose.title">How do you want to<br /><em>continue with me?</em></h1>
+      </header>
+
+      <div class="choose__intro">
+        <p data-i18n="choose.p1">This book was born from my darkest moments — <br /> but also from my most beautiful ones.</p>
+        <p data-i18n="choose.p2">It doesn’t matter whether you would rather read or listen. <br /> What matters is that you give yourself this space.</p>
+        <p data-i18n="choose.p3">Here you will find a true story, exercises, questions <br /> and a companionship that will help you understand yourself, <br /> feel less alone, and make peace with your anxiety.</p>
+        <p class="choose__mark" data-i18n="choose.mark"><span>And between every page, you have me here with you too. <br /> Because one day I felt exactly like you.</span></p>
+        <p data-i18n="choose.p4">And if my story managed to carry me this far, <br /> I want it to walk beside you as you begin your own.</p>
+      </div>
+
+      <span class="choose__heart" aria-hidden="true">
+        <svg viewBox="0 0 32 28" fill="currentColor"><path d="M16 27C6 20.5 1 15 1 9.2 1 4.7 4.4 1 8.8 1c2.9 0 5.5 1.6 7.2 4.2C17.7 2.6 20.3 1 23.2 1 27.6 1 31 4.7 31 9.2 31 15 26 20.5 16 27z"/></svg>
+      </span>
+
+      <div class="choose__paths" id="paths">
+        <a class="path" href="#" data-hover>
+          <figure class="path__plate">
+            <img class="path__img" src="assets/art/path-read.webp?v=1" alt="The printed edition of Loving with Anxiety resting on a bed of cream linen, beside pale dried flowers." loading="eager" decoding="async" onerror="this.remove()" />
+          </figure>
+          <span class="path__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 6.5C10.3 5 8 4.4 5 4.6v12c3-.2 5.3.4 7 1.9 1.7-1.5 4-2.1 7-1.9v-12c-3-.2-5.3.4-7 1.9z" />
+              <path d="M12 6.5v12" />
+            </svg>
+          </span>
+          <span class="path__body">
+            <span class="path__title" data-i18n="choose.read.title">I want to read</span>
+            <span class="path__line" data-i18n="choose.read.line">Let me walk with you<br />through its pages.</span>
+            <span class="path__go" aria-hidden="true">→</span>
+          </span>
+        </a>
+
+        <a class="path" href="#" data-hover>
+          <figure class="path__plate">
+            <img class="path__img" src="assets/art/path-listen.webp?v=1" alt="Pale headphones and a lit candle on soft bedding, waiting for the audiobook." loading="eager" decoding="async" onerror="this.remove()" />
+          </figure>
+          <span class="path__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 14v-2a8 8 0 0 1 16 0v2" />
+              <rect x="2.5" y="14" width="4.5" height="6.5" rx="2.25" />
+              <rect x="17" y="14" width="4.5" height="6.5" rx="2.25" />
+            </svg>
+          </span>
+          <span class="path__body">
+            <span class="path__title" data-i18n="choose.listen.title">I want to hear you</span>
+            <span class="path__line" data-i18n="choose.listen.line">Tell me my story<br />in your voice.</span>
+            <span class="path__go" aria-hidden="true">→</span>
+          </span>
+        </a>
+      </div>
+
+      <p class="choose__foot" data-i18n="choose.foot">You can change paths whenever you like.</p>
+      <span class="choose__rule choose__rule--end" aria-hidden="true"></span>
+    </div>
+  </main>
+
+  <!-- ══════════ SCRIPTS ══════════ -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.4/dist/lenis.min.js"></script>
+  <script type="module" src="js/continue.js?v=78"></script>
+</body>
+</html>

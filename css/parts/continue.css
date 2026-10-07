@@ -10,6 +10,36 @@
   min-height: 100svh;
 }
 
+/* nav.css starts the bar at opacity 0 because index.html's preloader fades it
+   in. This page has no preloader, so without this the nav never appears. */
+.page-choose .nav { opacity: 1; }
+
+/* The frosted bar behind the nav lives in phone.css, which this page does not
+   load. Without it the logo floats over the card photographs once you scroll.
+   scroll.js toggles .is-scrolled from the Lenis callback, same as the
+   landing page. */
+.page-choose .nav::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(250, 246, 238, 0.93);
+  border-bottom: 1px solid rgba(61, 68, 80, 0.07);
+  opacity: 0;
+  transition: opacity 0.45s var(--ease-out);
+}
+.page-choose .nav.is-scrolled::before { opacity: 1; }
+.page-choose .nav > * { position: relative; z-index: 1; }
+
+/* The ambient layers are fixed and deliberately full-bleed, so body's
+   overflow-x cannot contain them — only the root can. Clipping here costs
+   nothing visually (nothing on this page is meant to scroll sideways) and
+   makes a stray horizontal scrollbar structurally impossible. */
+html:has(.page-choose) { overflow-x: clip; }
+
+/* The sunbeam's drift is a transform, so it never needs the -25% overhang on
+   a page this size; pulling it flush keeps the bleed off the root entirely. */
+.page-choose .sunbeam { inset: 0; }
+
 /* ── the room behind the copy ──────────────────────────────────────────────
    Layered warm light that reads as a sunlit bedroom on its own. Drop a
    photograph at assets/art/continue-bg.jpg and it takes over; until then the
@@ -20,13 +50,19 @@
   inset: 0;
   z-index: -1;
   background-color: #f3ece0;
+  /* One soft scrim over the photograph, heaviest where the letter sits and
+     gone by the time the cards start — enough to hold the type legible
+     without flattening the room behind it. */
   background-image:
-    radial-gradient(ellipse 48% 38% at 72% 12%, rgba(255, 243, 219, 0.95), rgba(255, 243, 219, 0) 72%),
-    radial-gradient(ellipse 60% 44% at 18% 78%, rgba(243, 227, 206, 0.8), rgba(243, 227, 206, 0) 70%),
-    radial-gradient(ellipse 80% 60% at 50% 50%, rgba(250, 244, 233, 0.9), rgba(238, 228, 211, 0.5)),
-    url("../../assets/art/continue-bg.jpg?v=1");
-  background-size: auto, auto, auto, cover;
-  background-position: center, center, center, center;
+    linear-gradient(to bottom,
+      rgba(250, 245, 235, 0.52) 0%,
+      rgba(250, 245, 235, 0.42) 38%,
+      rgba(250, 245, 235, 0.18) 62%,
+      rgba(250, 245, 235, 0.04) 80%,
+      rgba(250, 245, 235, 0) 100%),
+    url("../../assets/art/continue-bg.webp?v=1");
+  background-size: cover, cover;
+  background-position: center, center top;
 }
 
 .choose__inner {
@@ -44,18 +80,19 @@
   font-weight: 400;
   letter-spacing: 0.34em;
   text-transform: uppercase;
-  color: var(--ink-soft);
+  color: #6f6354; /* reads over the lit wall, where --ink-soft goes pale */
   line-height: 2;
   padding-left: 0.34em; /* optical centring against the tracking */
 }
-.choose__eyebrow span { display: block; font-size: 0.92em; color: var(--muted); }
+.choose__eyebrow span { display: block; font-size: 0.92em; color: #8a7c69; }
 
 .choose__rule {
   display: block;
   width: 3.2rem;
   height: 1px;
   margin: clamp(1.1rem, 2.5vh, 1.6rem) auto;
-  background: linear-gradient(90deg, transparent, var(--line), transparent);
+  /* --line is tuned for a flat ivory page; over a photograph it disappears */
+  background: linear-gradient(90deg, transparent, rgba(61, 68, 80, 0.28), transparent);
 }
 .choose__rule--end { margin-top: clamp(1.6rem, 4vh, 2.4rem); }
 
@@ -63,24 +100,28 @@
   font-family: var(--font-serif);
   font-weight: 300;
   font-size: clamp(2.4rem, 6.4vw, 4.6rem);
-  line-height: 1.1;
+  line-height: 1.16;
   letter-spacing: -0.01em;
   color: var(--ink);
 }
 .choose__title em { font-style: normal; } /* the reference sets both lines alike */
 
 /* ── the letter ── */
+/* Line spacing follows the printed reference: lines inside a paragraph sit
+   about 1.38x the type size apart, and the space between paragraphs is a
+   little over one line on top of that. Tighter than a web default, which is
+   what gives the page its letter-like rhythm. */
 .choose__intro {
-  margin-top: clamp(1.6rem, 4vh, 2.6rem);
+  margin-top: clamp(1.3rem, 3vh, 2rem);
   display: flex;
   flex-direction: column;
-  gap: clamp(1.1rem, 2.6vh, 1.7rem);
+  gap: clamp(0.95rem, 2vh, 1.25rem);
 }
 .choose__intro p {
   font-family: var(--font-serif);
   font-weight: 300;
   font-size: clamp(1.05rem, 1.9vw, 1.3rem);
-  line-height: 1.62;
+  line-height: 1.38;
   color: var(--ink-soft);
 }
 
@@ -95,8 +136,8 @@
   display: inline;
   background-image: linear-gradient(var(--rose-wash), var(--rose-wash));
   background-repeat: no-repeat;
-  background-size: 100% 0.86em;
-  background-position: 0 0.3em;
+  background-size: 100% 1.04em;
+  background-position: 0 0.12em;
   padding: 0.02em 0.34em;
   -webkit-box-decoration-break: clone;
   box-decoration-break: clone;
@@ -105,7 +146,7 @@
 .choose__heart {
   display: block;
   width: 1.75rem;
-  margin: clamp(1.6rem, 4vh, 2.4rem) auto clamp(2rem, 5vh, 3rem);
+  margin: clamp(1.4rem, 3.2vh, 2rem) auto clamp(1.7rem, 4vh, 2.4rem);
   color: var(--rose);
 }
 .choose__heart svg { width: 100%; height: auto; display: block; }
@@ -212,8 +253,22 @@
   font-family: var(--font-serif);
   font-style: italic;
   font-size: clamp(0.92rem, 1.5vw, 1.05rem);
-  color: var(--muted);
+  /* It closes the page over the crocheted blanket, which is far too busy for
+     a shadow alone to carry — it gets a soft halo of its own instead. */
+  color: var(--ink-soft);
+  position: relative;
+  z-index: 1;
 }
+.choose__foot::before {
+  content: "";
+  position: absolute;
+  inset: -1rem -2.5rem;
+  z-index: -1;
+  border-radius: 999px;
+  background: radial-gradient(ellipse at center,
+    rgba(250, 246, 238, 0.94), rgba(250, 246, 238, 0.7) 45%, rgba(250, 246, 238, 0) 75%);
+}
+.choose__rule--end { background: linear-gradient(90deg, transparent, rgba(61, 68, 80, 0.22), transparent); }
 
 /* ═══════════ PHONES ═══════════
    The two paths stack rather than shrink — at 390px a 2-up grid would put the
@@ -221,9 +276,27 @@
 @media (max-width: 760px) {
   .choose__inner { padding-top: clamp(5.5rem, 13vh, 7rem); }
   .choose__paths { grid-template-columns: 1fr; gap: 1.5rem; }
-  .choose__intro p { font-size: 1.02rem; line-height: 1.68; }
-  .choose__mark { background-size: 100% 0.86em; }
+  .choose__intro p { font-size: 1.02rem; line-height: 1.45; }
+  .choose__mark span { background-size: 100% 1.1em; }
   .path__plate { aspect-ratio: 16 / 10; }
+  /* A portrait crop puts the bedding — the busiest part of the photograph —
+     directly behind the closing paragraphs. The room still reads, but the
+     scrim has to carry much more of the contrast than it does on a wide
+     screen, where the wall sits behind the type. The room is fixed, so
+     scrolled copy can land anywhere on it — the scrim holds almost evenly
+     rather than grading away. */
+  .choose__room {
+    background-image:
+      linear-gradient(to bottom,
+        rgba(250, 246, 238, 0.86) 0%,
+        rgba(250, 246, 238, 0.89) 50%,
+        rgba(250, 246, 238, 0.88) 78%,
+        rgba(250, 246, 238, 0.74) 100%),
+      url("../../assets/art/continue-bg.webp?v=1");
+  }
+  /* with a calmer ground behind it, the closing line no longer needs a halo */
+  .choose__foot::before { display: none; }
+
   .path__go { min-height: 44px; }           /* comfortable tap target */
   .nav__links { display: none; }            /* the logo is the way back */
 

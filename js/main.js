@@ -12,25 +12,23 @@
    ═══════════════════════════════════════════════ */
 
 import * as THREE from "three"; // layoutBookPages projects world points to screen
-import { LANGS, DEFAULT_LANG, COVER, OFFER, TRANSLATIONS } from "./i18n.js?v=62";
-import { prefersReduced, phoneQ, LITE } from "./config.js?v=62";
-import { lenis } from "./scroll.js?v=62";
-import "./cursor.js?v=62";
-import "./ambient.js?v=62";
-import { camera, key, fill } from "./scene/renderer.js?v=62";
+import { DEFAULT_LANG } from "./i18n.js?v=66";
+import { initI18n } from "./i18n-runtime.js?v=66";
+import { prefersReduced, phoneQ, LITE } from "./config.js?v=66";
+import { lenis } from "./scroll.js?v=66";
+import "./cursor.js?v=66";
+import "./ambient.js?v=66";
+import { camera, key, fill } from "./scene/renderer.js?v=66";
 import {
   book, bookHolder, coverPivot, coverFaceMat, W,
   turnPivot, turnPage, turnPivot2, turnPage2,
   leafPlane, rightPageTex, bookDust,
   openState,
-} from "./scene/book.js?v=62";
-import { render, setHeroVisible, scrollRotY, scrollRotX } from "./scene/loop.js?v=62";
+} from "./scene/book.js?v=66";
+import { render, setHeroVisible, scrollRotY, scrollRotX } from "./scene/loop.js?v=66";
 import {
   createCoverTexture, makeQuestionSheetTexture, makeLetterSheetTexture,
-} from "./scene/textures.js?v=62";
-
-/* the active language — the cover texture and the copy both read from this */
-let LANG = DEFAULT_LANG;
+} from "./scene/textures.js?v=66";
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
@@ -47,124 +45,41 @@ document.fonts.ready.then(() => {
   });
   // repaint the jacket whenever the language changes — the cover is a canvas
   // texture, so the title has to be re-drawn rather than re-styled
-  function repaintCover() {
+  function repaintCover(lang = i18n.getLang()) {
     const old = coverFaceMat.map;
-    coverFaceMat.map = createCoverTexture(LANG);
+    coverFaceMat.map = createCoverTexture(lang);
     coverFaceMat.color.set(0xffffff);
     coverFaceMat.needsUpdate = true;
     if (old) old.dispose();
   }
 
   /* ═══════════ LANGUAGE ═══════════
-     English lives in the markup and is snapshotted here on first touch, so
-     i18n.js only carries translations. Switching re-swaps innerHTML, re-runs
-     the SplitText instances over the new text, and repaints the 3D jacket. */
-  const EN = new Map();
-  const LANG_KEY = "byfrancia-lang";
+     The machinery lives in js/i18n-runtime.js so continue.html shares it.
+     This page passes the two hooks only it needs: SplitText instances hold
+     references to the DOM they created, so they are reverted before the text
+     swap and re-run after it; and the book's jacket is a canvas texture, so
+     it is repainted in the new language rather than restyled. */
   let splitsReady = false;
-
-  function remember(el, attr, read) {
-    const k = el.getAttribute(attr);
-    if (k && !EN.has(k)) EN.set(k, read(el));
-    return k;
-  }
-  function applyTo(root, lang) {
-    const dict = TRANSLATIONS[lang] || {};
-    root.querySelectorAll("[data-i18n]").forEach((el) => {
-      const k = remember(el, "data-i18n", (e) => e.innerHTML);
-      const v = lang === DEFAULT_LANG ? EN.get(k) : dict[k];
-      if (v != null) el.innerHTML = v;
-    });
-    root.querySelectorAll("[data-i18n-placeholder]").forEach((el) => {
-      const k = remember(el, "data-i18n-placeholder", (e) => e.getAttribute("placeholder") || "");
-      const v = lang === DEFAULT_LANG ? EN.get(k) : dict[k];
-      if (v != null) el.setAttribute("placeholder", v);
-    });
-  }
-
-  function applyLanguage(lang, { persist = true } = {}) {
-    if (!LANGS[lang]) lang = DEFAULT_LANG;
-    LANG = lang;
-    // a split holds references to DOM it created — revert before the swap
-    if (splitsReady) {
+  const i18n = initI18n({
+    beforeSwap: () => {
+      if (!splitsReady) return;
       heroSplits.forEach((s) => s.revert());
       lineSplits.forEach((s) => s.revert());
-    }
-    applyTo(document, lang);
-    if (splitsReady) {
-      heroSplits.forEach((s) => s.split());
-      lineSplits.forEach((s) => s.split());
-      ScrollTrigger.refresh();
-    }
-    document.documentElement.lang = LANGS[lang].htmlLang;
-    repaintCover();
-    if (persist) { try { localStorage.setItem(LANG_KEY, lang); } catch (e) {} }
-    renderSwitch();
-  }
-  window.__setLang = applyLanguage; // handy from the console
-  window.__offerLang = () => offerLanguage(); // ditto, for testing the prompt
+    },
+    afterSwap: (lang) => {
+      if (splitsReady) {
+        heroSplits.forEach((s) => s.split());
+        lineSplits.forEach((s) => s.split());
+        ScrollTrigger.refresh();
+      }
+      repaintCover(lang);
+    },
+  });
+  const applyLanguage = i18n.applyLanguage;
+  const applyTo = i18n.applyTo;
+  const offerLanguage = i18n.offerLanguage;
 
-  /* — the switcher builds itself from LANGS, so a new language needs no UI work — */
-  const langBox = document.getElementById("langSwitch");
-  function renderSwitch() {
-    if (!langBox) return;
-    langBox.innerHTML = "";
-    Object.entries(LANGS).forEach(([code, meta]) => {
-      const b = document.createElement("button");
-      b.type = "button";
-      b.className = "lang__btn" + (code === LANG ? " is-on" : "");
-      b.textContent = meta.short;
-      b.title = meta.label;
-      b.setAttribute("aria-label", meta.label);
-      if (code === LANG) b.setAttribute("aria-current", "true");
-      b.setAttribute("data-hover", "");
-      b.addEventListener("click", () => { if (code !== LANG) applyLanguage(code); });
-      langBox.append(b);
-    });
-  }
-
-  /* Restoring a saved choice runs before the text is split, so the swap is a
-     plain innerHTML write and the hero reveal still animates from scratch. */
-  function restoreSavedLanguage() {
-    let saved = null;
-    try { saved = localStorage.getItem(LANG_KEY); } catch (e) {}
-    if (saved && saved !== LANG) applyLanguage(saved, { persist: false });
-  }
-
-  /* — first visit: if the browser prefers another language we have, offer it — */
-  function offerLanguage() {
-    let saved = null;
-    try { saved = localStorage.getItem(LANG_KEY); } catch (e) {}
-    if (saved) return;
-    const want = (navigator.languages || [navigator.language || ""])
-      .map((l) => String(l).slice(0, 2).toLowerCase())
-      .find((l) => LANGS[l]);
-    if (!want || want === LANG) return;
-    const copy = OFFER[want];
-    if (!copy) return;
-
-    const bar = document.createElement("div");
-    bar.className = "lang-offer";
-    bar.lang = LANGS[want].htmlLang;
-    bar.innerHTML =
-      '<p>' + copy.text + '</p>' +
-      '<button type="button" class="lang-offer__yes" data-hover>' + copy.yes + '</button>' +
-      '<button type="button" class="lang-offer__no" data-hover>' + copy.no + '</button>';
-    document.body.append(bar);
-    const close = () => {
-      bar.classList.remove("is-in");
-      setTimeout(() => bar.remove(), 500);
-    };
-    bar.querySelector(".lang-offer__yes").addEventListener("click", () => { applyLanguage(want); close(); });
-    bar.querySelector(".lang-offer__no").addEventListener("click", () => {
-      try { localStorage.setItem(LANG_KEY, LANG); } catch (e) {}
-      close();
-    });
-    requestAnimationFrame(() => bar.classList.add("is-in"));
-  }
-
-  renderSwitch();
-  restoreSavedLanguage(); // before the splits below, so the reveal is unaffected
+  i18n.restoreSavedLanguage(); // before the splits below, so the reveal is unaffected
 
   // chars alone drops the whitespace inside nested tags (the <em> line lost
   // its word gap) — splitting words too keeps real spaces between them
@@ -687,7 +602,7 @@ document.fonts.ready.then(() => {
       btn.classList.add("is-active");
       void btn.offsetWidth; // restart the glow animation cleanly
       btn.classList.add("is-glow");
-      feelResponse.textContent = (feelResponsesByLang[LANG] || feelResponses)[btn.dataset.feel];
+      feelResponse.textContent = (feelResponsesByLang[i18n.getLang()] || feelResponses)[btn.dataset.feel];
       bookAcknowledge();                      // leaves stir, light brightens
       if (phoneQ.matches) {
         // …and the letter arrives full-screen instead of on the pages
@@ -733,7 +648,9 @@ document.fonts.ready.then(() => {
   }
 
   // place the quiet link beneath every letter's final "Continue with me"
-  document.querySelectorAll(".fpage__view--letter .feelings__continue[href='#book']").forEach((cont) => {
+  // matched on the i18n key rather than the href: "Continue with me" now leaves
+  // for continue.html, and keying off the destination broke this silently once
+  document.querySelectorAll('.fpage__view--letter .feelings__continue[data-i18n="feel.continue"]').forEach((cont) => {
     const link = document.createElement("a");
     link.href = "#";
     link.className = "read-another";
@@ -742,7 +659,7 @@ document.fonts.ready.then(() => {
     link.setAttribute("data-hover", "");
     link.addEventListener("click", (e) => { e.preventDefault(); resetToQuestion(); });
     cont.after(link);
-    if (LANG !== DEFAULT_LANG) applyTo(link.parentNode, LANG); // built after the initial pass
+    if (i18n.getLang() !== DEFAULT_LANG) applyTo(link.parentNode, i18n.getLang()); // built after the initial pass
   });
 
   /* ═══════════ NICOL'S VOICE NOTES — one per letter ═══════════ */

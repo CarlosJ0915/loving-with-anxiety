@@ -288,6 +288,21 @@ export const TRANSLATIONS = {
     "edition.3.list": "<li>eBook y audiolibro</li><li>Narrado por la autora</li><li>Entrega inmediata</li>",
     "edition.btn": "<span>Reservar</span>",
 
+    /* ── the choice page (continue.html) ── */
+    "choose.back": "← Volver al libro",
+    "choose.eyebrow": "Amar con ansiedad<span>por Nicol Montoya</span>",
+    "choose.title": "¿Cómo quieres<br /><em>continuar conmigo?</em>",
+    "choose.p1": "Este libro nació de mis momentos más oscuros,<br />pero también de los más lindos.",
+    "choose.p2": "No importa si prefieres leer o escuchar,<br />lo importante es que te des este espacio para ti.",
+    "choose.p3": "Aquí encontrarás una historia real, ejercicios,<br />preguntas y un acompañamiento que te ayudará<br />a entenderte, sentirte menos sola y hacer las paces<br />con tu ansiedad.",
+    "choose.mark": "<span>Y entre cada página, también me tienes aquí contigo.<br />Porque algún día yo me sentí como tú.</span>",
+    "choose.p4": "Y si mi historia logró traerme hasta aquí,<br />quiero que hoy pueda acompañarte<br />a comenzar la tuya.",
+    "choose.read.title": "Quiero leer",
+    "choose.read.line": "Déjame acompañarte<br />a través de sus páginas.",
+    "choose.listen.title": "Quiero escucharte",
+    "choose.listen.line": "Cuéntame mi historia<br />con tu voz.",
+    "choose.foot": "Puedes cambiar de camino cuando quieras.",
+
     /* ── footer ── */
     "footer.hint": "Otoño 2026 — Sé el primero en saberlo",
     "footer.big": "Respira<span>.</span>",

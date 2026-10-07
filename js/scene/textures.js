@@ -8,8 +8,8 @@
    takes the wording it should paint, so the caller owns that decision.
    ═══════════════════════════════════════════════ */
 import * as THREE from "three";
-import { COVER, DEFAULT_LANG } from "../i18n.js?v=78";
-import { renderer } from "./renderer.js?v=78";
+import { COVER, DEFAULT_LANG } from "../i18n.js?v=79";
+import { renderer } from "./renderer.js?v=79";
 
 function ovalLeaf(x, cx, cy, s, rot, rnd) {
   // rounded eucalyptus-style leaf: soft oval, faintly tapered at the stem end
@@ -462,10 +462,13 @@ function createCoverTexture(lang) {
   x.stroke();
   drawHeart(x, cx, dy, 30, "#c7a86d");
 
+  /* The subtitle is a full sentence rather than a three-word strapline, so it
+     is set smaller and tracked tighter than the old wording — at 55px/13px its
+     longest line ran past the jacket's edge. */
   x.fillStyle = "#6d6456";
-  x.letterSpacing = "13px";
-  x.font = '300 55px "Manrope", sans-serif';
-  words.sub.forEach((line, i) => x.fillText(line, cx + 6, 1210 + i * 90));
+  x.letterSpacing = "9px";
+  x.font = '300 46px "Manrope", sans-serif';
+  words.sub.forEach((line, i) => x.fillText(line, cx + 5, 1205 + i * 76));
 
   x.fillStyle = "#4a443a";
   x.letterSpacing = "20px";

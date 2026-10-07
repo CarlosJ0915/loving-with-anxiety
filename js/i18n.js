@@ -31,12 +31,12 @@ export const DEFAULT_LANG = "en";
 export const COVER = {
   en: {
     title1: "LOVING", title2: "with", title3: "ANXIETY",
-    sub: ["HOW TO FEEL IT ALL", "WITHOUT LOSING", "YOURSELF"],
+    sub: ["I LEARNED TO STAY WITH MYSELF,", "EVEN WHEN MY MIND", "WANTED TO FLEE."],
     author: "NICOL MONTOYA",
   },
   es: {
     title1: "AMAR", title2: "con", title3: "ansiedad",
-    sub: ["CÓMO SENTIRLO TODO", "SIN PERDERTE EN", "EL INTENTO"],
+    sub: ["APRENDÍ A QUEDARME CONMIGO,", "INCLUSO CUANDO MI MENTE", "QUERÍA HUIR."],
     author: "NICOL MONTOYA",
   },
 };

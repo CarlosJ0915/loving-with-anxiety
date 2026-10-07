@@ -8,8 +8,8 @@
    takes the wording it should paint, so the caller owns that decision.
    ═══════════════════════════════════════════════ */
 import * as THREE from "three";
-import { COVER, DEFAULT_LANG } from "../i18n.js?v=84";
-import { renderer } from "./renderer.js?v=84";
+import { COVER, DEFAULT_LANG } from "../i18n.js?v=86";
+import { renderer } from "./renderer.js?v=86";
 
 function ovalLeaf(x, cx, cy, s, rot, rnd) {
   // rounded eucalyptus-style leaf: soft oval, faintly tapered at the stem end
@@ -386,6 +386,77 @@ export function loadCoverArt(src) {
     im.onerror = () => resolve(null); // fall back to the drawn jacket
     im.src = src;
   });
+}
+
+/* ── wrapping the jacket around the rest of the book ──────────────────────
+   A real jacket continues around the spine and the back. The lower part of
+   the artwork is pure imagery — sea, sunset, flowers — with no type in it, so
+   the back and spine are cut from there: the same photograph continuing, with
+   the title appearing only once. */
+
+// Below this fraction the artwork carries no type at all. Measured against the
+// art: the byline sits at roughly 0.51, so anything above 0.56 drags lettering
+// onto the back — mirrored, which is how it was caught.
+const ART_IMAGERY_TOP = 0.57;
+
+export function createBackCoverTexture() {
+  if (!coverArt) return null;
+  const Wpx = 1024, Hpx = 1475; // the board's 2.5 x 3.6, half-res — it is never read closely
+  const c = document.createElement("canvas");
+  c.width = Wpx; c.height = Hpx;
+  const x = c.getContext("2d");
+
+  const sy = coverArt.height * ART_IMAGERY_TOP;
+  const sh = coverArt.height - sy;
+  const scale = Math.max(Wpx / coverArt.width, Hpx / sh);
+  const dw = coverArt.width * scale;
+  const dh = sh * scale;
+  // mirrored, so the back does not read as a copy of the front
+  x.save();
+  x.translate(Wpx, 0);
+  x.scale(-1, 1);
+  x.drawImage(coverArt, 0, sy, coverArt.width, sh, (Wpx - dw) / 2, (Hpx - dh) / 2, dw, dh);
+  x.restore();
+  // a back sits away from the light
+  x.fillStyle = "rgba(38, 30, 22, 0.3)";
+  x.fillRect(0, 0, Wpx, Hpx);
+
+  const t = new THREE.CanvasTexture(c);
+  t.colorSpace = THREE.SRGBColorSpace;
+  t.anisotropy = renderer.capabilities.getMaxAnisotropy();
+  return t;
+}
+
+export function createSpineTexture() {
+  if (!coverArt) return null;
+  const Wpx = 96, Hpx = 1475;
+  const c = document.createElement("canvas");
+  c.width = Wpx; c.height = Hpx;
+  const x = c.getContext("2d");
+  // the artwork's own left column, stretched down the spine
+  const strip = Math.max(1, Math.round(coverArt.width * 0.08));
+  x.drawImage(coverArt, 0, 0, strip, coverArt.height, 0, 0, Wpx, Hpx);
+  x.fillStyle = "rgba(38, 30, 22, 0.22)";
+  x.fillRect(0, 0, Wpx, Hpx);
+
+  const t = new THREE.CanvasTexture(c);
+  t.colorSpace = THREE.SRGBColorSpace;
+  t.anisotropy = renderer.capabilities.getMaxAnisotropy();
+  return t;
+}
+
+/* average of the artwork's outer border — the colour the board edges take, so
+   a 0.09-thick edge reads as part of the jacket rather than bare card */
+export function sampleCoverEdgeColour() {
+  if (!coverArt) return null;
+  const c = document.createElement("canvas");
+  c.width = 32; c.height = 48;
+  const x = c.getContext("2d");
+  x.drawImage(coverArt, 0, 0, 32, 48);
+  const d = x.getImageData(0, 0, 32, 48).data;
+  let r = 0, g = 0, b = 0, n = 0;
+  for (let i = 0; i < d.length; i += 4) { r += d[i]; g += d[i + 1]; b += d[i + 2]; n++; }
+  return (Math.round(r / n) << 16) | (Math.round(g / n) << 8) | Math.round(b / n);
 }
 
 function drawCoverArt(x, Wpx, Hpx) {

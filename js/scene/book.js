@@ -7,17 +7,22 @@
    scroll position continuously and stays sharp at any viewport size.
    ═══════════════════════════════════════════════ */
 import * as THREE from "three";
-import { phoneQ } from "../config.js?v=84";
-import { scene, camera } from "./renderer.js?v=84";
+import { phoneQ } from "../config.js?v=86";
+import { scene, camera } from "./renderer.js?v=86";
 import {
   ovalLeaf, frond,
   makePaperTexture, makeLeafShadowTexture,
-} from "./textures.js?v=84";
+} from "./textures.js?v=86";
 
 const book = new THREE.Group();
 
 const slateMat = new THREE.MeshStandardMaterial({ color: 0xded3c1, roughness: 0.62, metalness: 0.04 });
 const spineMat = new THREE.MeshStandardMaterial({ color: 0xc9b48c, roughness: 0.6, metalness: 0.12 });
+// The jacket wraps: the back carries the artwork's imagery, the board edges take
+// a colour sampled from it. Both were one flat cream before, which read as bare
+// card wherever the book turned away from the reader.
+const backMat = new THREE.MeshStandardMaterial({ color: 0xded3c1, roughness: 0.66, metalness: 0.03 });
+const edgeMat = new THREE.MeshStandardMaterial({ color: 0xded3c1, roughness: 0.62, metalness: 0.04 });
 const pageMat = new THREE.MeshStandardMaterial({ color: 0xfdfbf5, roughness: 0.9, metalness: 0 });
 const gildMat = new THREE.MeshStandardMaterial({ color: 0xd8c295, roughness: 0.25, metalness: 0.75 });
 
@@ -30,13 +35,14 @@ const coverGeo = new THREE.BoxGeometry(W, H, CT);
 // BoxGeometry material order: +x, -x, +y, -y, +z, -z — cover art on the outward (+z) face,
 // cream on the inward (-z) face so the inside of the cover reads as paper when opened
 const innerMat = new THREE.MeshStandardMaterial({ color: 0xf6f1e4, roughness: 0.85, metalness: 0 });
-const front = new THREE.Mesh(coverGeo, [slateMat, slateMat, slateMat, slateMat, coverFaceMat, innerMat]);
+const front = new THREE.Mesh(coverGeo, [edgeMat, edgeMat, edgeMat, edgeMat, coverFaceMat, innerMat]);
 // hinge the front cover at the spine so it can swing open on scroll
 const coverPivot = new THREE.Group();
 coverPivot.position.set(-W / 2, 0, D / 2 - CT / 2);
 front.position.x = W / 2;
 coverPivot.add(front);
-const back = new THREE.Mesh(coverGeo, slateMat);
+// order is +x, -x, +y, -y, +z, -z — -z faces out the back of the book
+const back = new THREE.Mesh(coverGeo, [edgeMat, edgeMat, edgeMat, edgeMat, innerMat, backMat]);
 back.position.z = -D / 2 + CT / 2;
 
 const spine = new THREE.Mesh(new THREE.BoxGeometry(CT, H + 0.008, D + 0.008), spineMat);
@@ -181,6 +187,7 @@ window.__rig = { bookHolder, camera, layoutScene }; // testing hook, like __open
 
 export {
   book, bookHolder, floatHolder, coverPivot, coverFaceMat,
+  backMat, edgeMat, spineMat,
   pageMat, gildMat, W,
   turnPivot, turnPage, turnPivot2, turnPage2,
   leafPlane, rightPageTex, leftPageTex,

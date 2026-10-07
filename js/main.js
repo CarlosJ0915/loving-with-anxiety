@@ -12,24 +12,26 @@
    ═══════════════════════════════════════════════ */
 
 import * as THREE from "three"; // layoutBookPages projects world points to screen
-import { DEFAULT_LANG } from "./i18n.js?v=84";
-import { initI18n } from "./i18n-runtime.js?v=84";
-import { prefersReduced, phoneQ, LITE } from "./config.js?v=84";
-import { lenis } from "./scroll.js?v=84";
-import "./cursor.js?v=84";
-import "./ambient.js?v=84";
-import { camera, key, fill } from "./scene/renderer.js?v=84";
+import { DEFAULT_LANG } from "./i18n.js?v=86";
+import { initI18n } from "./i18n-runtime.js?v=86";
+import { prefersReduced, phoneQ, LITE } from "./config.js?v=86";
+import { lenis } from "./scroll.js?v=86";
+import "./cursor.js?v=86";
+import "./ambient.js?v=86";
+import { camera, key, fill } from "./scene/renderer.js?v=86";
 import {
   book, bookHolder, coverPivot, coverFaceMat, W,
+  backMat, edgeMat, spineMat,
   turnPivot, turnPage, turnPivot2, turnPage2,
   leafPlane, rightPageTex, bookDust,
   openState,
-} from "./scene/book.js?v=84";
-import { render, setHeroVisible, scrollRotY, scrollRotX } from "./scene/loop.js?v=84";
+} from "./scene/book.js?v=86";
+import { render, setHeroVisible, scrollRotY, scrollRotX } from "./scene/loop.js?v=86";
 import {
   createCoverTexture, loadCoverArt,
+  createBackCoverTexture, createSpineTexture, sampleCoverEdgeColour,
   makeQuestionSheetTexture, makeLetterSheetTexture,
-} from "./scene/textures.js?v=84";
+} from "./scene/textures.js?v=86";
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
@@ -56,6 +58,29 @@ document.fonts.ready.then(() => {
     coverFaceMat.color.set(0xffffff);
     coverFaceMat.needsUpdate = true;
     if (old) old.dispose();
+    wrapJacket();
+  }
+
+  /* Carry the jacket around the rest of the book. Without this the back board
+     and the board edges stay flat cream, which reads as bare card the moment
+     the book turns away from the reader. Runs once — the artwork does not
+     change with the language. */
+  let jacketWrapped = false;
+  function wrapJacket() {
+    if (jacketWrapped) return;
+    const backTex = createBackCoverTexture();
+    const spineTex = createSpineTexture();
+    const edge = sampleCoverEdgeColour();
+    if (!backTex || !spineTex || edge == null) return; // no artwork; leave the cream
+    backMat.map = backTex;
+    backMat.color.set(0xffffff);
+    backMat.needsUpdate = true;
+    spineMat.map = spineTex;
+    spineMat.color.set(0xffffff);
+    spineMat.needsUpdate = true;
+    edgeMat.color.setHex(edge);
+    edgeMat.needsUpdate = true;
+    jacketWrapped = true;
   }
 
   /* ═══════════ LANGUAGE ═══════════

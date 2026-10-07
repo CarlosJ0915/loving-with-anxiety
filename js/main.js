@@ -12,22 +12,22 @@
    ═══════════════════════════════════════════════ */
 
 import * as THREE from "three"; // layoutBookPages projects world points to screen
-import { LANGS, DEFAULT_LANG, COVER, OFFER, TRANSLATIONS } from "./i18n.js?v=61";
-import { prefersReduced, phoneQ, LITE } from "./config.js?v=61";
-import { lenis } from "./scroll.js?v=61";
-import "./cursor.js?v=61";
-import "./ambient.js?v=61";
-import { camera, key, fill } from "./scene/renderer.js?v=61";
+import { LANGS, DEFAULT_LANG, COVER, OFFER, TRANSLATIONS } from "./i18n.js?v=62";
+import { prefersReduced, phoneQ, LITE } from "./config.js?v=62";
+import { lenis } from "./scroll.js?v=62";
+import "./cursor.js?v=62";
+import "./ambient.js?v=62";
+import { camera, key, fill } from "./scene/renderer.js?v=62";
 import {
   book, bookHolder, coverPivot, coverFaceMat, W,
   turnPivot, turnPage, turnPivot2, turnPage2,
   leafPlane, rightPageTex, bookDust,
   openState,
-} from "./scene/book.js?v=61";
-import { render, setHeroVisible, scrollRotY, scrollRotX } from "./scene/loop.js?v=61";
+} from "./scene/book.js?v=62";
+import { render, setHeroVisible, scrollRotY, scrollRotX } from "./scene/loop.js?v=62";
 import {
   createCoverTexture, makeQuestionSheetTexture, makeLetterSheetTexture,
-} from "./scene/textures.js?v=61";
+} from "./scene/textures.js?v=62";
 
 /* the active language — the cover texture and the copy both read from this */
 let LANG = DEFAULT_LANG;
@@ -768,17 +768,18 @@ document.fonts.ready.then(() => {
             progress.style.width = (voiceNote.currentTime / voiceNote.duration) * 100 + "%";
           }
         });
+        // the letter stays put when the message finishes — the card resets so it
+        // can be played again, and the reader keeps both ways on from here
         voiceNote.addEventListener("ended", () => {
           stop();
           progress.style.width = "0%";
-          beginExcerpt(); // as the voice note ends, the book invites them deeper
         });
+        // no recording yet: the card settles into its heart state and the letter
+        // stays exactly where it is, same as when a message finishes playing
         voiceNote.addEventListener("error", () => {
           stop();
           glyph.textContent = "♥";
           label.textContent = "Nicol’s message is on its way";
-          // even without the recording, the journey continues after a gentle beat
-          gsap.delayedCall(2.2, beginExcerpt);
         });
       }
       if (state.playing) {

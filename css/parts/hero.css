@@ -6,7 +6,36 @@
   flex-direction: column;
   justify-content: center;
   padding: 0 clamp(1.5rem, 4vw, 3.5rem);
-  background: linear-gradient(170deg, #f4eddc 0%, #efe6d2 55%, #ece2cb 100%);
+  /* The hero wore a flat cream gradient; it is the photographed room now.
+     Scoped here rather than to .room so the sections below keep the calm
+     ground their copy was set against. */
+  background-color: #f2e7d6;
+  background-image: url("../../assets/art/room.jpg?v=1");
+  background-size: cover;
+  background-position: 64% center; /* holds the vase to the far left, as in the reference */
+}
+
+/* The photograph carries its own leaf and window shadows; the drawn ones
+   underneath would double them up. */
+.hero__bg { display: none; }
+
+/* In the reference the headline sits on clean sunlit wall. The photograph
+   crops differently at every viewport ratio, so rather than relying on the
+   vase and leaves landing off to the left, the copy side gets its own wash of
+   light. It fades out before the book, which keeps its full contrast.
+   z-index 0: under the canvas (1) and the copy (2). */
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: linear-gradient(100deg,
+    rgba(250, 245, 234, 0.94) 0%,
+    rgba(250, 245, 234, 0.88) 26%,
+    rgba(250, 245, 234, 0.6) 44%,
+    rgba(250, 245, 234, 0.22) 60%,
+    rgba(250, 245, 234, 0) 76%);
 }
 .hero__bg {
   position: absolute; inset: 0;

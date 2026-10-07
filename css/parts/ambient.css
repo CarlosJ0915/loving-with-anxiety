@@ -18,6 +18,9 @@
 }
 
 /* ═══════════ SUNLIT ROOM ═══════════ */
+/* The drawn wall still carries every section below the hero. The photographic
+   room is the hero's alone — behind the long-form copy its vase, leaves and
+   ledge make the text unreadable. See css/parts/hero.css. */
 .room {
   position: fixed;
   inset: 0;

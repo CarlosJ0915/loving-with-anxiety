@@ -12,24 +12,24 @@
    ═══════════════════════════════════════════════ */
 
 import * as THREE from "three"; // layoutBookPages projects world points to screen
-import { DEFAULT_LANG } from "./i18n.js?v=80";
-import { initI18n } from "./i18n-runtime.js?v=80";
-import { prefersReduced, phoneQ, LITE } from "./config.js?v=80";
-import { lenis } from "./scroll.js?v=80";
-import "./cursor.js?v=80";
-import "./ambient.js?v=80";
-import { camera, key, fill } from "./scene/renderer.js?v=80";
+import { DEFAULT_LANG } from "./i18n.js?v=84";
+import { initI18n } from "./i18n-runtime.js?v=84";
+import { prefersReduced, phoneQ, LITE } from "./config.js?v=84";
+import { lenis } from "./scroll.js?v=84";
+import "./cursor.js?v=84";
+import "./ambient.js?v=84";
+import { camera, key, fill } from "./scene/renderer.js?v=84";
 import {
   book, bookHolder, coverPivot, coverFaceMat, W,
   turnPivot, turnPage, turnPivot2, turnPage2,
   leafPlane, rightPageTex, bookDust,
   openState,
-} from "./scene/book.js?v=80";
-import { render, setHeroVisible, scrollRotY, scrollRotX } from "./scene/loop.js?v=80";
+} from "./scene/book.js?v=84";
+import { render, setHeroVisible, scrollRotY, scrollRotX } from "./scene/loop.js?v=84";
 import {
   createCoverTexture, loadCoverArt,
   makeQuestionSheetTexture, makeLetterSheetTexture,
-} from "./scene/textures.js?v=80";
+} from "./scene/textures.js?v=84";
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
 

@@ -12,26 +12,26 @@
    ═══════════════════════════════════════════════ */
 
 import * as THREE from "three"; // layoutBookPages projects world points to screen
-import { DEFAULT_LANG } from "./i18n.js?v=86";
-import { initI18n } from "./i18n-runtime.js?v=86";
-import { prefersReduced, phoneQ, LITE } from "./config.js?v=86";
-import { lenis } from "./scroll.js?v=86";
-import "./cursor.js?v=86";
-import "./ambient.js?v=86";
-import { camera, key, fill } from "./scene/renderer.js?v=86";
+import { DEFAULT_LANG } from "./i18n.js?v=88";
+import { initI18n } from "./i18n-runtime.js?v=88";
+import { prefersReduced, phoneQ, LITE } from "./config.js?v=88";
+import { lenis } from "./scroll.js?v=88";
+import "./cursor.js?v=88";
+import "./ambient.js?v=88";
+import { camera, key, fill } from "./scene/renderer.js?v=88";
 import {
   book, bookHolder, coverPivot, coverFaceMat, W,
   backMat, edgeMat, spineMat,
   turnPivot, turnPage, turnPivot2, turnPage2,
   leafPlane, rightPageTex, bookDust,
   openState,
-} from "./scene/book.js?v=86";
-import { render, setHeroVisible, scrollRotY, scrollRotX } from "./scene/loop.js?v=86";
+} from "./scene/book.js?v=88";
+import { render, setHeroVisible, scrollRotY, scrollRotX } from "./scene/loop.js?v=88";
 import {
   createCoverTexture, loadCoverArt,
   createBackCoverTexture, createSpineTexture, sampleCoverEdgeColour,
   makeQuestionSheetTexture, makeLetterSheetTexture,
-} from "./scene/textures.js?v=86";
+} from "./scene/textures.js?v=88";
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
@@ -175,6 +175,9 @@ document.fonts.ready.then(() => {
     .from(".hero__sub .split-line", {
       yPercent: 110, duration: 1, stagger: 0.1, ease: "power3.out",
     }, "-=1.1")
+    .from(".hero__cta", {
+      autoAlpha: 0, y: 16, duration: 0.9, ease: "power3.out",
+    }, "-=0.95")
     .to("#nav", { opacity: 1, duration: 1, ease: "power2.out" }, "-=0.9")
     .to(".hero__footer", { opacity: 1, duration: 1, ease: "power2.out" }, "-=0.8")
     .from(bookHolder.position, { z: -9, duration: 2.2, ease: "power3.out" }, "-=1.9")

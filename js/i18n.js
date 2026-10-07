@@ -74,6 +74,7 @@ export const TRANSLATIONS = {
       '<span class="hero__title-line"><span data-split><em>a comprenderlo.</em></span></span>',
     "hero.sub": "Una historia sobre la ansiedad, el amor<br />y el camino de regreso a ti.",
     "hero.scroll": "Desliza",
+    "hero.cta": "Conoce el libro<span class=\"hero__cta-arrow\" aria-hidden=\"true\">&#8594;</span>",
 
     /* ── the question ── */
     "feel.intro.kicker": "Antes de continuar,",

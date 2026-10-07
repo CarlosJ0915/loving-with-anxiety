@@ -12,39 +12,44 @@
    ═══════════════════════════════════════════════ */
 
 import * as THREE from "three"; // layoutBookPages projects world points to screen
-import { DEFAULT_LANG } from "./i18n.js?v=79";
-import { initI18n } from "./i18n-runtime.js?v=79";
-import { prefersReduced, phoneQ, LITE } from "./config.js?v=79";
-import { lenis } from "./scroll.js?v=79";
-import "./cursor.js?v=79";
-import "./ambient.js?v=79";
-import { camera, key, fill } from "./scene/renderer.js?v=79";
+import { DEFAULT_LANG } from "./i18n.js?v=80";
+import { initI18n } from "./i18n-runtime.js?v=80";
+import { prefersReduced, phoneQ, LITE } from "./config.js?v=80";
+import { lenis } from "./scroll.js?v=80";
+import "./cursor.js?v=80";
+import "./ambient.js?v=80";
+import { camera, key, fill } from "./scene/renderer.js?v=80";
 import {
   book, bookHolder, coverPivot, coverFaceMat, W,
   turnPivot, turnPage, turnPivot2, turnPage2,
   leafPlane, rightPageTex, bookDust,
   openState,
-} from "./scene/book.js?v=79";
-import { render, setHeroVisible, scrollRotY, scrollRotX } from "./scene/loop.js?v=79";
+} from "./scene/book.js?v=80";
+import { render, setHeroVisible, scrollRotY, scrollRotX } from "./scene/loop.js?v=80";
 import {
-  createCoverTexture, makeQuestionSheetTexture, makeLetterSheetTexture,
-} from "./scene/textures.js?v=79";
+  createCoverTexture, loadCoverArt,
+  makeQuestionSheetTexture, makeLetterSheetTexture,
+} from "./scene/textures.js?v=80";
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
 /* ═══════════ TEXT SPLITTING ═══════════ */
 document.fonts.ready.then(() => {
 
-  // paint the cover once the exact faces it needs are available
+  // Paint the cover once the artwork and the exact faces it needs are here.
+  // The fonts still matter: if the artwork fails to load, createCoverTexture
+  // falls back to drawing the jacket, and that needs them.
   Promise.all([
+    loadCoverArt("assets/art/cover.jpg?v=1"),
     document.fonts.load('400 238px "Cormorant Garamond"'),
-    document.fonts.load('300 55px "Manrope"'),
+    document.fonts.load('300 46px "Manrope"'),
     document.fonts.load('400 58px "Manrope"'),
   ]).then(() => {
     repaintCover();
   });
-  // repaint the jacket whenever the language changes — the cover is a canvas
-  // texture, so the title has to be re-drawn rather than re-styled
+  // Repaints on a language change. With photographic artwork that redraws the
+  // same image — the title lives in the file, not in the code — but the call
+  // stays so the drawn fallback still follows the language.
   function repaintCover(lang = i18n.getLang()) {
     const old = coverFaceMat.map;
     coverFaceMat.map = createCoverTexture(lang);

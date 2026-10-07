@@ -8,8 +8,8 @@
    takes the wording it should paint, so the caller owns that decision.
    ═══════════════════════════════════════════════ */
 import * as THREE from "three";
-import { COVER, DEFAULT_LANG } from "../i18n.js?v=79";
-import { renderer } from "./renderer.js?v=79";
+import { COVER, DEFAULT_LANG } from "../i18n.js?v=80";
+import { renderer } from "./renderer.js?v=80";
 
 function ovalLeaf(x, cx, cy, s, rot, rnd) {
   // rounded eucalyptus-style leaf: soft oval, faintly tapered at the stem end
@@ -369,6 +369,33 @@ function drawSprigs(x, Wpx, Hpx) {
   }
 }
 
+/* ═══════════ THE JACKET ═══════════
+   The cover is now a photograph rather than drawn type. It is still composited
+   through a canvas at the face's own 1422x2048 so the art can be fitted rather
+   than stretched: the jacket is 2.5 x 3.6 (0.694) and the artwork is 2:3
+   (0.667), so a direct map would squash it ~4% horizontally.
+
+   If the file is missing the painted jacket below still runs, so the book is
+   never blank. */
+let coverArt = null;
+
+export function loadCoverArt(src) {
+  return new Promise((resolve) => {
+    const im = new Image();
+    im.onload = () => { coverArt = im; resolve(im); };
+    im.onerror = () => resolve(null); // fall back to the drawn jacket
+    im.src = src;
+  });
+}
+
+function drawCoverArt(x, Wpx, Hpx) {
+  // cover-fit: fill the face, centre, crop the overflow
+  const scale = Math.max(Wpx / coverArt.width, Hpx / coverArt.height);
+  const w = coverArt.width * scale;
+  const h = coverArt.height * scale;
+  x.drawImage(coverArt, (Wpx - w) / 2, (Hpx - h) / 2, w, h);
+}
+
 function createCoverTexture(lang) {
   const words = COVER[lang] || COVER[DEFAULT_LANG];
   const Wpx = 1422, Hpx = 2048;
@@ -376,6 +403,16 @@ function createCoverTexture(lang) {
   c.width = Wpx;
   c.height = Hpx;
   const x = c.getContext("2d");
+
+  // The artwork carries its own title, subtitle, byline and lighting, so when
+  // it is present nothing below is drawn — no base, no beams, no sprigs.
+  if (coverArt) {
+    drawCoverArt(x, Wpx, Hpx);
+    const artTex = new THREE.CanvasTexture(c);
+    artTex.colorSpace = THREE.SRGBColorSpace;
+    artTex.anisotropy = renderer.capabilities.getMaxAnisotropy();
+    return artTex;
+  }
 
   // warm ivory paper base — kept a shade below white so the light beams
   // below still have headroom to read as light falling across the cover

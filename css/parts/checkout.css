@@ -1,0 +1,475 @@
+/* ═══════════ THE CHECKOUT PAGE ═══════════
+   checkout.html only. Three formats over the warm room, then the payment
+   block. Adds the rose/clay family the reference carries — the landing page
+   has no equivalent, so the tokens are scoped here. */
+
+.page-checkout {
+  --clay: #a8625c;          /* the featured card, the buy button */
+  --clay-soft: #c08a83;
+  --rose-ink: #8c5750;      /* the handwritten asides */
+  --card: #fdf6ec;
+  --card-warm: #fbeee2;     /* the featured card's ground */
+  --co-line: rgba(140, 87, 80, 0.22);
+  min-height: 100svh;
+  color: var(--ink);
+}
+
+/* the ambient layers are fixed and full-bleed; only the root can contain them */
+html:has(.page-checkout) { overflow-x: clip; }
+
+.checkout__room {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background-color: #f6ece0;
+  background-image:
+    linear-gradient(to bottom,
+      rgba(252, 244, 234, 0.9) 0%,
+      rgba(252, 244, 234, 0.84) 40%,
+      rgba(252, 244, 234, 0.88) 72%,
+      rgba(252, 244, 234, 0.94) 100%),
+    url("../../assets/art/continue-bg.webp?v=1");
+  background-size: cover, cover;
+  background-position: center, center;
+}
+
+/* ── top bar ── */
+.cobar {
+  position: relative;
+  z-index: 5;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 1rem;
+  padding: clamp(1rem, 2.4vh, 1.6rem) clamp(1.1rem, 3vw, 2.4rem);
+  padding-top: calc(clamp(1rem, 2.4vh, 1.6rem) + env(safe-area-inset-top));
+}
+.cobar__back {
+  width: 44px; height: 44px;
+  display: grid; place-items: center;
+  border-radius: 50%;
+  color: var(--ink-soft);
+  justify-self: start;
+  transition: background-color 0.35s var(--ease-out), color 0.35s var(--ease-out);
+}
+.cobar__back svg { width: 1.3rem; height: 1.3rem; }
+.cobar__back:hover { background: rgba(168, 98, 92, 0.1); color: var(--clay); }
+.cobar__mark {
+  text-align: center;
+  font-family: var(--font-sans);
+  font-size: 0.66rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: #6f6354;
+  line-height: 1.9;
+  padding-left: 0.3em;
+}
+.cobar__mark span { display: block; font-size: 0.9em; color: #96897a; }
+.cobar__right { display: flex; align-items: center; gap: 0.6rem; justify-self: end; }
+.cobar__secure {
+  display: inline-flex; align-items: center; gap: 0.5em;
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  color: var(--ink-soft);
+  white-space: nowrap;
+}
+.cobar__secure svg { width: 0.95rem; height: 0.95rem; }
+
+/* ── head ── */
+.co {
+  position: relative;
+  max-width: 78rem;
+  margin: 0 auto;
+  padding: clamp(1rem, 3vh, 2rem) clamp(1.1rem, 4vw, 3rem) clamp(3rem, 8vh, 5rem);
+}
+.co__head { position: relative; text-align: center; }
+.co__title {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: clamp(1.9rem, 4.1vw, 3.3rem);
+  line-height: 1.18;
+  color: #3f3a31;
+  max-width: 22ch;
+  margin: 0 auto;
+}
+/* the handwritten note, tucked to the right of the heading */
+.co__aside {
+  position: absolute;
+  top: 0.2em;
+  right: 0;
+  max-width: 13rem;
+  font-family: "Allura", cursive;
+  font-size: clamp(1.05rem, 1.7vw, 1.5rem);
+  line-height: 1.45;
+  color: var(--rose-ink);
+  transform: rotate(-6deg);
+  text-align: left;
+}
+.co__orn, .co__moon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin: clamp(1rem, 2.4vh, 1.5rem) auto;
+  color: var(--clay);
+}
+.co__orn svg, .co__moon svg { width: 1.05rem; height: auto; }
+.co__orn-rule { display: block; width: clamp(2.5rem, 7vw, 5rem); height: 1px; background: var(--co-line); }
+.co__moon { margin: clamp(2rem, 5vh, 3.2rem) auto; }
+.co__lede {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: clamp(1rem, 1.55vw, 1.16rem);
+  line-height: 1.6;
+  color: var(--ink-soft);
+  max-width: 44rem;
+  margin: 0 auto;
+}
+
+/* ── the three formats ── */
+.plans {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: start;
+  gap: clamp(0.9rem, 1.8vw, 1.5rem);
+  margin-top: clamp(2.2rem, 5vh, 3.4rem);
+}
+.plan {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: clamp(1.4rem, 2.2vw, 2rem) clamp(1rem, 1.8vw, 1.6rem) clamp(1.3rem, 2.2vh, 1.8rem);
+  border-radius: 1.1rem;
+  background: var(--card);
+  border: 1px solid rgba(168, 98, 92, 0.12);
+  box-shadow: 0 22px 54px -36px rgba(90, 60, 45, 0.5);
+  text-align: center;
+}
+/* the middle card is raised, warmer, and ringed */
+.plan--featured {
+  background: var(--card-warm);
+  border-color: rgba(168, 98, 92, 0.3);
+  box-shadow: 0 30px 70px -34px rgba(90, 60, 45, 0.62);
+  margin-top: clamp(-1.6rem, -2vh, -0.8rem);
+  padding-top: clamp(2rem, 3vw, 2.6rem);
+}
+.plan__badge {
+  position: absolute;
+  top: 0; left: 50%;
+  translate: -50% -50%;
+  padding: 0.5em 1.2em;
+  border-radius: 999px;
+  background: var(--clay);
+  color: #fff;
+  font-family: var(--font-sans);
+  font-size: 0.64rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.plan__name {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  font-size: clamp(1.1rem, 1.75vw, 1.42rem);
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: #3f3a31;
+}
+.plan__kind {
+  margin-top: 0.5em;
+  font-family: var(--font-sans);
+  font-size: 0.66rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.plan__price {
+  margin-top: 0.5em;
+  font-family: var(--font-serif);
+  font-weight: 600;
+  font-size: clamp(1.9rem, 3.1vw, 2.6rem);
+  line-height: 1;
+  color: #3f3a31;
+}
+.plan__terms {
+  margin-top: 0.35em;
+  font-family: var(--font-serif);
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+.plan__plate {
+  margin: clamp(0.9rem, 2vh, 1.3rem) 0;
+  aspect-ratio: 4 / 3;
+  border-radius: 0.7rem;
+  overflow: hidden;
+  /* stands in until the product shot lands; the <img> removes itself if absent */
+  background:
+    radial-gradient(ellipse 70% 60% at 55% 35%, rgba(255, 246, 232, 0.95), rgba(255, 246, 232, 0) 70%),
+    linear-gradient(160deg, #f3e7d7, #ead9c4);
+}
+.plan__img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.plan__line {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: clamp(0.92rem, 1.35vw, 1.02rem);
+  line-height: 1.5;
+  color: var(--ink-soft);
+}
+.plan__list {
+  list-style: none;
+  margin: clamp(0.9rem, 2vh, 1.3rem) 0 0;
+  padding: 0;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 0.72em;
+}
+.plan__list li {
+  display: flex;
+  align-items: center;
+  gap: 0.75em;
+  font-family: var(--font-serif);
+  font-size: clamp(0.92rem, 1.3vw, 1.02rem);
+  color: #4a4234;
+}
+.plan__ico {
+  flex: 0 0 1.35em;
+  font-size: 1.05em;
+  line-height: 1;
+  color: var(--clay);
+  text-align: center;
+}
+.plan__pick {
+  margin-top: auto;
+  padding-top: 0;
+}
+.plan__pick {
+  margin-top: clamp(1.2rem, 2.6vh, 1.8rem);
+  min-height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7em;
+  border-radius: 999px;
+  border: 1px solid var(--clay-soft);
+  background: transparent;
+  color: var(--clay);
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  cursor: none;
+  transition: background-color 0.4s var(--ease-out), color 0.4s var(--ease-out),
+              transform 0.4s var(--ease-out);
+}
+@media (hover: none) { .plan__pick, .pay__buy { cursor: pointer; } }
+.plan__pick:hover { background: rgba(168, 98, 92, 0.1); transform: translateY(-2px); }
+.plan__pick--solid {
+  background: var(--clay);
+  border-color: var(--clay);
+  color: #fff;
+}
+.plan__pick--solid:hover { background: #96534e; }
+.plan__arrow { transition: transform 0.4s var(--ease-out); }
+.plan__pick:hover .plan__arrow, .pay__buy:hover .plan__arrow { transform: translateX(4px); }
+/* the chosen format */
+.plan.is-chosen { border-color: var(--clay); box-shadow: 0 26px 62px -30px rgba(140, 70, 60, 0.6); }
+.plan.is-chosen .plan__pick { background: var(--clay); border-color: var(--clay); color: #fff; }
+
+/* ── the handwritten asides ── */
+.co__quote {
+  font-family: "Allura", cursive;
+  font-size: clamp(1.05rem, 1.75vw, 1.5rem);
+  line-height: 1.45;
+  color: var(--rose-ink);
+  max-width: 18rem;
+  margin-top: clamp(1.4rem, 3vh, 2.2rem);
+}
+.co__quote--left { transform: rotate(-4deg); text-align: left; }
+.co__quote--right { margin-left: auto; transform: rotate(3deg); text-align: right; }
+
+/* ── checkout ── */
+.pay {
+  margin-top: clamp(1rem, 2vh, 1.6rem);
+  padding: clamp(1.4rem, 3vw, 2.3rem);
+  border-radius: 1.1rem;
+  background: rgba(253, 246, 236, 0.92);
+  border: 1px solid rgba(168, 98, 92, 0.14);
+  box-shadow: 0 24px 60px -38px rgba(90, 60, 45, 0.5);
+}
+.pay__form {
+  display: grid;
+  /* minmax(0, ...) rather than 1fr: a bare 1fr floors at the content's
+     intrinsic minimum, and the buy button plus the card brands pushed the
+     column wider than the page. */
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr) auto;
+  gap: clamp(1rem, 2.4vw, 2rem);
+  align-items: start;
+}
+.pay__col { min-width: 0; }
+.pay__h {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: clamp(1rem, 1.5vw, 1.18rem);
+  color: #3f3a31;
+  margin-bottom: 0.9em;
+}
+.field {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
+  margin-bottom: 0.7rem;
+  padding: 0 0.9em;
+  min-height: 48px;
+  border-radius: 0.6rem;
+  background: #fffdf9;
+  border: 1px solid rgba(140, 87, 80, 0.16);
+}
+.field__ico { flex: 0 0 auto; color: #b09a86; display: grid; place-items: center; }
+.field__ico svg { width: 1.05rem; height: 1.05rem; }
+.field__ico--end { margin-left: auto; }
+.field input {
+  flex: 1 1 auto;
+  min-width: 0;
+  border: 0;
+  background: none;
+  outline: none;
+  font-family: var(--font-sans);
+  font-size: 0.92rem;
+  color: var(--ink);
+  padding: 0.6em 0;
+}
+.field input::placeholder { color: #a99c8c; }
+.field input[readonly] { cursor: default; }
+/* same reason as .pay__form: an <input>'s default size is a real intrinsic
+   minimum, so 1fr alone pushed the CVC column off the page */
+.pay__row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0.7rem; }
+.field { min-width: 0; }
+.field input { width: 100%; }
+.pay__row .field { margin-bottom: 0; }
+
+.pay__save {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6em;
+  margin-top: 0.6rem;
+  font-family: var(--font-sans);
+  font-size: 0.76rem;
+  color: var(--ink-soft);
+  cursor: none;
+}
+@media (hover: none) { .pay__save { cursor: pointer; } }
+.pay__save input { position: absolute; opacity: 0; pointer-events: none; }
+.pay__tick {
+  flex: 0 0 auto;
+  width: 1.15rem; height: 1.15rem;
+  display: grid; place-items: center;
+  border-radius: 50%;
+  background: rgba(168, 98, 92, 0.18);
+  color: transparent;
+  font-size: 0.7rem;
+  transition: background-color 0.3s, color 0.3s;
+}
+.pay__save input:checked + .pay__tick { background: var(--clay); color: #fff; }
+
+.pay__col--action { display: flex; flex-direction: column; align-items: center; gap: 0.75rem; }
+.pay__buy {
+  min-height: 52px;
+  width: 100%;
+  min-width: 13rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7em;
+  padding: 0 1.8em;
+  border: 0;
+  border-radius: 0.7rem;
+  background: var(--clay);
+  color: #fff;
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  cursor: none;
+  transition: background-color 0.4s var(--ease-out), transform 0.4s var(--ease-out);
+}
+.pay__buy:hover { background: #96534e; transform: translateY(-2px); }
+.pay__note {
+  display: inline-flex; align-items: center; gap: 0.5em;
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  color: var(--ink-soft);
+}
+.pay__note svg { width: 0.9rem; height: 0.9rem; }
+.pay__brands {
+  list-style: none; display: flex; gap: 0.4rem; padding: 0; margin: 0;
+}
+.pay__brands li {
+  padding: 0.35em 0.55em;
+  border-radius: 0.35rem;
+  background: #fff;
+  border: 1px solid rgba(140, 87, 80, 0.14);
+  font-family: var(--font-sans);
+  font-size: 0.58rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: #6f6354;
+}
+/* says plainly that nothing is wired up yet */
+.pay__status {
+  margin-top: 1rem;
+  text-align: center;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+
+/* ── trust ── */
+.trust {
+  list-style: none;
+  margin: clamp(2rem, 5vh, 3rem) 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+.trust li {
+  display: flex; align-items: center; justify-content: center; gap: 0.7em;
+  font-family: var(--font-serif);
+  font-size: clamp(0.86rem, 1.2vw, 0.96rem);
+  line-height: 1.4;
+  color: var(--ink-soft);
+  text-align: left;
+}
+.trust svg { width: 1.3rem; height: 1.3rem; color: var(--clay); flex: 0 0 auto; }
+
+/* ═══════════ PHONES ═══════════ */
+@media (max-width: 900px) {
+  .plans { grid-template-columns: 1fr; gap: 1.6rem; }
+  .plan--featured { margin-top: 0; }
+  .pay__form { grid-template-columns: minmax(0, 1fr); }
+  .co__aside { position: static; max-width: none; transform: none; text-align: center; margin: 0.8rem auto 0; }
+  .co__quote, .co__quote--right { margin-left: auto; margin-right: auto; text-align: center; transform: none; }
+  .trust { grid-template-columns: 1fr; gap: 0.9rem; }
+  .trust li { justify-content: flex-start; }
+}
+@media (max-width: 760px) {
+  .cobar { grid-template-columns: auto 1fr auto; }
+  .cobar__secure span { display: none; } /* the padlock alone at this width */
+  .co__title { font-size: clamp(1.75rem, 7vw, 2.3rem); }
+  .pay__brands { flex-wrap: wrap; justify-content: center; }
+  /* the button fills the column instead of demanding a fixed width */
+  .pay__buy { min-width: 0; width: 100%; }
+  .pay__col--action { width: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .plan__pick, .pay__buy, .plan__arrow, .cobar__back { transition: none; }
+  .plan__pick:hover, .pay__buy:hover { transform: none; }
+}

@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#f7f4ef" />
+  <title>Choose your format — BY FRANCIA</title>
+  <meta name="description" content="Choose how you want to carry Loving with Anxiety with you — digital, the full experience, or the printed edition. BY FRANCIA." />
+  <meta name="robots" content="noindex" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Manrope:wght@300;400;500;600&family=Allura&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="css/parts/base.css?v=92" />
+  <link rel="stylesheet" href="css/parts/ambient.css?v=92" />
+  <link rel="stylesheet" href="css/parts/cursor.css?v=92" />
+  <link rel="stylesheet" href="css/parts/checkout.css?v=92" />
+  <link rel="stylesheet" href="css/parts/lang.css?v=92" />
+  <link rel="stylesheet" href="css/parts/lite.css?v=92" />
+</head>
+<body class="page-checkout">
+
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+  <div class="grain" aria-hidden="true"></div>
+  <div class="checkout__room" aria-hidden="true"></div>
+
+  <!-- ══════════ TOP BAR ══════════ -->
+  <header class="cobar">
+    <a class="cobar__back" href="continue.html" data-hover aria-label="Back">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M19 12H5" /><path d="M12 19l-7-7 7-7" />
+      </svg>
+    </a>
+    <p class="cobar__mark" data-i18n="co.mark">Loving with Anxiety<span>by Nicol Montoya</span></p>
+    <div class="cobar__right">
+      <span class="cobar__secure">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="4" y="10.5" width="16" height="10" rx="2.2" /><path d="M8 10.5V7.4a4 4 0 0 1 8 0v3.1" />
+        </svg>
+        <span data-i18n="co.secure">Secure checkout</span>
+      </span>
+      <div class="lang" id="langSwitch"></div>
+    </div>
+  </header>
+
+  <main class="co">
+    <!-- ══════════ HEAD ══════════ -->
+    <header class="co__head">
+      <h1 class="co__title" data-i18n="co.title">Choose how you want to carry <br />this experience with you.</h1>
+      <p class="co__aside" data-i18n="co.aside">A new chapter in your story<br />begins right here.</p>
+      <span class="co__orn" aria-hidden="true">
+        <span class="co__orn-rule"></span>
+        <svg viewBox="0 0 32 28" fill="currentColor"><path d="M16 27C6 20.5 1 15 1 9.2 1 4.7 4.4 1 8.8 1c2.9 0 5.5 1.6 7.2 4.2C17.7 2.6 20.3 1 23.2 1 27.6 1 31 4.7 31 9.2 31 15 26 20.5 16 27z"/></svg>
+        <span class="co__orn-rule"></span>
+      </span>
+      <p class="co__lede" data-i18n="co.lede">Each format was made to keep you company at a different moment,<br />but they all carry the same purpose: that you feel less alone,<br />calmer, and more yourself.</p>
+    </header>
+
+    <!-- ══════════ THE THREE FORMATS ══════════
+         The plate images are stand-ins drawn from assets the project already
+         has — the reference shows purpose-made product shots (a tablet, a
+         tablet beside headphones, the printed book). Drop those in and point
+         these three <img> tags at them; nothing else needs to change. -->
+    <div class="plans">
+      <!-- ── digital ── -->
+      <article class="plan" data-plan="digital">
+        <h2 class="plan__name" data-i18n="plan.1.name">I just want to read</h2>
+        <p class="plan__kind" data-i18n="plan.1.kind">Digital book</p>
+        <p class="plan__price">$9.99</p>
+        <p class="plan__terms" data-i18n="plan.1.terms">One-time payment</p>
+        <figure class="plan__plate">
+          <img class="plan__img" src="assets/art/cover.jpg?v=1" alt="The digital edition of Loving with Anxiety on a tablet, resting on soft bedding." loading="eager" decoding="async" onerror="this.remove()" />
+        </figure>
+        <p class="plan__line" data-i18n="plan.1.line">My whole story, for you to live at your own pace.</p>
+        <ul class="plan__list">
+          <li><span class="plan__ico" aria-hidden="true">&#9776;</span><span data-i18n="plan.1.f1">The complete digital book</span></li>
+          <li><span class="plan__ico" aria-hidden="true">&#9636;</span><span data-i18n="plan.1.f2">Every chapter</span></li>
+          <li><span class="plan__ico" aria-hidden="true">&#8734;</span><span data-i18n="plan.1.f3">Immediate access</span></li>
+          <li><span class="plan__ico" aria-hidden="true">&#9825;</span><span data-i18n="plan.1.f4">Take it on all your devices</span></li>
+        </ul>
+        <button class="plan__pick" type="button" data-hover>
+          <span data-i18n="plan.pick">Select</span><span class="plan__arrow" aria-hidden="true">&#8594;</span>
+        </button>
+      </article>
+
+      <!-- ── the full experience ── -->
+      <article class="plan plan--featured" data-plan="experience">
+        <span class="plan__badge" data-i18n="plan.badge">Most chosen &#9829;</span>
+        <h2 class="plan__name" data-i18n="plan.2.name">I want to live<br />the experience</h2>
+        <p class="plan__kind" data-i18n="plan.2.kind">Book + audio + exercises</p>
+        <p class="plan__price">$24.99</p>
+        <p class="plan__terms" data-i18n="plan.2.terms">One-time payment</p>
+        <figure class="plan__plate">
+          <img class="plan__img" src="assets/art/path-listen.webp?v=1" alt="The digital edition on a tablet beside headphones and a journal on soft bedding." loading="eager" decoding="async" onerror="this.remove()" />
+        </figure>
+        <p class="plan__line" data-i18n="plan.2.line">A complete experience: to read, to listen, to reflect, and to make peace with yourself.</p>
+        <ul class="plan__list">
+          <li><span class="plan__ico" aria-hidden="true">&#9776;</span><span data-i18n="plan.2.f1">The complete digital book</span></li>
+          <li><span class="plan__ico" aria-hidden="true">&#9834;</span><span data-i18n="plan.2.f2">Audio for every chapter</span></li>
+          <li><span class="plan__ico" aria-hidden="true">&#9636;</span><span data-i18n="plan.2.f3">“Now let's talk about you”</span></li>
+          <li><span class="plan__ico" aria-hidden="true">&#10048;</span><span data-i18n="plan.2.f4">Exercises and reflections</span></li>
+          <li><span class="plan__ico" aria-hidden="true">&#9790;</span><span data-i18n="plan.2.f5">Closings of peace</span></li>
+          <li><span class="plan__ico" aria-hidden="true">&#8734;</span><span data-i18n="plan.2.f6">Immediate, lifetime access</span></li>
+        </ul>
+        <button class="plan__pick plan__pick--solid" type="button" data-hover>
+          <span data-i18n="plan.pick">Select</span><span class="plan__arrow" aria-hidden="true">&#8594;</span>
+        </button>
+      </article>
+
+      <!-- ── printed ── -->
+      <article class="plan" data-plan="printed">
+        <h2 class="plan__name" data-i18n="plan.3.name">I want to hold it</h2>
+        <p class="plan__kind" data-i18n="plan.3.kind">Printed edition + digital experience</p>
+        <p class="plan__price">$39.99</p>
+        <p class="plan__terms" data-i18n="plan.3.terms">+ Shipping (calculated at checkout)</p>
+        <figure class="plan__plate">
+          <img class="plan__img" src="assets/art/path-read.webp?v=1" alt="The printed edition of Loving with Anxiety resting on soft bedding." loading="eager" decoding="async" onerror="this.remove()" />
+        </figure>
+        <p class="plan__line" data-i18n="plan.3.line">A printed book to hold in your hands, underline, feel — and the whole digital experience alongside it.</p>
+        <ul class="plan__list">
+          <li><span class="plan__ico" aria-hidden="true">&#9776;</span><span data-i18n="plan.3.f1">Printed book (special edition)</span></li>
+          <li><span class="plan__ico" aria-hidden="true">&#9834;</span><span data-i18n="plan.3.f2">Audio for every chapter</span></li>
+          <li><span class="plan__ico" aria-hidden="true">&#9636;</span><span data-i18n="plan.3.f3">“Now let's talk about you”</span></li>
+          <li><span class="plan__ico" aria-hidden="true">&#10048;</span><span data-i18n="plan.3.f4">Exercises and reflections</span></li>
+          <li><span class="plan__ico" aria-hidden="true">&#9790;</span><span data-i18n="plan.3.f5">Closings of peace</span></li>
+          <li><span class="plan__ico" aria-hidden="true">&#9993;</span><span data-i18n="plan.3.f6">Shipped to your address</span></li>
+          <li><span class="plan__ico" aria-hidden="true">&#8734;</span><span data-i18n="plan.3.f7">Immediate digital access</span></li>
+        </ul>
+        <button class="plan__pick" type="button" data-hover>
+          <span data-i18n="plan.pick">Select</span><span class="plan__arrow" aria-hidden="true">&#8594;</span>
+        </button>
+      </article>
+    </div>
+
+    <!-- ══════════ THE TWO ASIDES ══════════ -->
+    <p class="co__quote co__quote--left" data-i18n="co.quote.left">“More than a book,<br />it is company for<br />your own process.” &#9829;</p>
+    <p class="co__quote co__quote--right" data-i18n="co.quote.right">“How good it is to reach a place<br />where you finally feel accompanied.” &#9829;</p>
+
+    <span class="co__moon" aria-hidden="true">
+      <span class="co__orn-rule"></span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z" /></svg>
+      <span class="co__orn-rule"></span>
+    </span>
+
+    <!-- ══════════ CHECKOUT ══════════ -->
+    <section class="pay" id="pay">
+      <form class="pay__form" id="payForm" novalidate>
+        <div class="pay__col">
+          <h2 class="pay__h" data-i18n="pay.contact">Contact information</h2>
+          <label class="field">
+            <span class="field__ico" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.6" /><path d="M4.5 20a7.5 7.5 0 0 1 15 0" /></svg>
+            </span>
+            <input type="text" name="name" autocomplete="name" placeholder="Full name" data-i18n-placeholder="pay.name" aria-label="Full name" />
+          </label>
+          <label class="field">
+            <span class="field__ico" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5.5" width="18" height="13" rx="2.2" /><path d="M3.6 7l8.4 6 8.4-6" /></svg>
+            </span>
+            <input type="email" name="email" autocomplete="email" placeholder="Email address" data-i18n-placeholder="pay.email" aria-label="Email address" />
+          </label>
+        </div>
+
+        <div class="pay__col">
+          <h2 class="pay__h" data-i18n="pay.payment">Payment information</h2>
+          <!-- ══════════════════════════════════════════════════════════════
+               These three are a VISUAL PLACEHOLDER and are deliberately inert:
+               readonly, no name, autocomplete off, outside any submitting form
+               path. Card details must never be typed into fields this site
+               controls — that would put the whole project in PCI scope and make
+               a breach your liability.
+
+               Before launch, replace this block with a Stripe Elements (or
+               equivalent) mount point. The fields then render inside the
+               provider's own iframes: visually the same, but the number never
+               touches this page. #cardMount is here ready for it.
+               ══════════════════════════════════════════════════════════════ -->
+          <div class="pay__cardmount" id="cardMount" data-placeholder="true">
+            <div class="field field--card">
+              <span class="field__ico" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="5.5" width="19" height="13" rx="2.2" /><path d="M2.5 10h19" /></svg>
+              </span>
+              <input type="text" inputmode="numeric" readonly tabindex="-1" autocomplete="off"
+                     placeholder="1234 5678 9012 3456" data-i18n-placeholder="pay.card" aria-label="Card number" />
+              <span class="field__ico field__ico--end" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="5.5" width="19" height="13" rx="2.2" /><path d="M6 15h4" /></svg>
+              </span>
+            </div>
+            <div class="pay__row">
+              <div class="field">
+                <input type="text" inputmode="numeric" readonly tabindex="-1" autocomplete="off"
+                       placeholder="MM / YY" data-i18n-placeholder="pay.exp" aria-label="Expiry" />
+              </div>
+              <div class="field">
+                <span class="field__ico" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10.5" width="14" height="9" rx="2" /><path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5" /></svg>
+                </span>
+                <input type="text" inputmode="numeric" readonly tabindex="-1" autocomplete="off"
+                       placeholder="CVC" data-i18n-placeholder="pay.cvc" aria-label="Security code" />
+              </div>
+            </div>
+          </div>
+          <label class="pay__save">
+            <input type="checkbox" />
+            <span class="pay__tick" aria-hidden="true">&#10003;</span>
+            <span data-i18n="pay.save">Save my information for future purchases (optional)</span>
+          </label>
+        </div>
+
+        <div class="pay__col pay__col--action">
+          <button class="pay__buy" type="submit" data-hover>
+            <span data-i18n="pay.buy">Buy now</span><span class="plan__arrow" aria-hidden="true">&#8594;</span>
+          </button>
+          <p class="pay__note">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="10.5" width="16" height="10" rx="2.2" /><path d="M8 10.5V7.4a4 4 0 0 1 8 0v3.1" /></svg>
+            <span data-i18n="pay.encrypted">Secure, encrypted payment</span>
+          </p>
+          <ul class="pay__brands" aria-label="Accepted payment methods">
+            <li>VISA</li><li>MC</li><li>AMEX</li><li>&#63743;Pay</li><li>G Pay</li>
+          </ul>
+        </div>
+      </form>
+      <p class="pay__status" id="payStatus" role="status" data-i18n="pay.status">Checkout is not connected yet — this is a preview of the page.</p>
+    </section>
+
+    <!-- ══════════ TRUST ══════════ -->
+    <ul class="trust">
+      <li>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7.5 3v5.4c0 4.4-3 8.2-7.5 9.6-4.5-1.4-7.5-5.2-7.5-9.6V6z" /><path d="M9 12l2.2 2.2L15.5 10" /></svg>
+        <span data-i18n="trust.1">Secure and protected<br />purchase</span>
+      </li>
+      <li>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true"><path d="M8 12a3 3 0 1 0 0 .1M16 12a3 3 0 1 1 0 .1M8 12h8" /></svg>
+        <span data-i18n="trust.2">Immediate access<br />after your purchase</span>
+      </li>
+      <li>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="3" width="10" height="18" rx="2.2" /><path d="M11 18h2" /></svg>
+        <span data-i18n="trust.3">Available on<br />all your devices</span>
+      </li>
+    </ul>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <!-- scroll.js wires Lenis into ScrollTrigger, so it is needed even though
+       this page pins nothing -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.4/dist/lenis.min.js"></script>
+  <script type="module" src="js/checkout.js?v=92"></script>
+</body>
+</html>

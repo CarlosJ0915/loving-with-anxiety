@@ -10,10 +10,16 @@ const lenis = new Lenis({
   smoothWheel: true,
 });
 window.lenis = lenis;
-lenis.on("scroll", ScrollTrigger.update);
-lenis.on("scroll", ({ scroll }) => {
-  document.getElementById("nav").classList.toggle("is-scrolled", scroll > 40);
-});
+// Shared by three pages, which do not all carry the same furniture: the
+// checkout has no #nav, and a page that pins nothing need not load
+// ScrollTrigger. Both were hard assumptions and both threw here.
+if (typeof ScrollTrigger !== "undefined") lenis.on("scroll", ScrollTrigger.update);
+const navEl = document.getElementById("nav");
+if (navEl) {
+  lenis.on("scroll", ({ scroll }) => {
+    navEl.classList.toggle("is-scrolled", scroll > 40);
+  });
+}
 gsap.ticker.add((time) => lenis.raf(time * 1000));
 gsap.ticker.lagSmoothing(0);
 lenis.stop(); // hold until the loader finishes

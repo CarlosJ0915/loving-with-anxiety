@@ -12,26 +12,26 @@
    ═══════════════════════════════════════════════ */
 
 import * as THREE from "three"; // layoutBookPages projects world points to screen
-import { DEFAULT_LANG } from "./i18n.js?v=92";
-import { initI18n } from "./i18n-runtime.js?v=92";
-import { prefersReduced, phoneQ, LITE } from "./config.js?v=92";
-import { lenis } from "./scroll.js?v=92";
-import "./cursor.js?v=92";
-import "./ambient.js?v=92";
-import { camera, key, fill } from "./scene/renderer.js?v=92";
+import { DEFAULT_LANG } from "./i18n.js?v=94";
+import { initI18n } from "./i18n-runtime.js?v=94";
+import { prefersReduced, phoneQ, LITE } from "./config.js?v=94";
+import { lenis } from "./scroll.js?v=94";
+import "./cursor.js?v=94";
+import "./ambient.js?v=94";
+import { camera, key, fill } from "./scene/renderer.js?v=94";
 import {
   book, bookHolder, coverPivot, coverFaceMat, W,
   backMat, edgeMat, spineMat,
   turnPivot, turnPage, turnPivot2, turnPage2,
   leafPlane, rightPageTex, bookDust,
   openState,
-} from "./scene/book.js?v=92";
-import { render, setHeroVisible, scrollRotY, scrollRotX } from "./scene/loop.js?v=92";
+} from "./scene/book.js?v=94";
+import { render, setHeroVisible, scrollRotY, scrollRotX } from "./scene/loop.js?v=94";
 import {
   createCoverTexture, loadCoverArt,
   createBackCoverTexture, createSpineTexture, sampleCoverEdgeColour,
   makeQuestionSheetTexture, makeLetterSheetTexture,
-} from "./scene/textures.js?v=92";
+} from "./scene/textures.js?v=94";
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
@@ -276,6 +276,26 @@ document.fonts.ready.then(() => {
       { autoAlpha: 1, y: 0, duration: 0.14, ease: "power2.out" }, phoneQ.matches ? 0.42 : 0.5)
     // hold — the book stays open while the reader answers
     .to({}, { duration: 0.36 }, 0.64);
+
+  /* — the hero button lands on the question, not on the section —
+       #feelings is pinned for 260% of the viewport, and its first screenful
+       is the book still closed. A plain anchor to the section top therefore
+       drops the reader before anything has happened. Scroll instead to the
+       point in the pinned timeline where the spread is open and the question
+       has finished fading in (the hold runs 0.64 → 1).
+       Captured on document so it runs before the generic anchor handler in
+       scroll.js, which would otherwise scroll to the section top. */
+  function questionScrollY() {
+    const st = openTl.scrollTrigger;
+    return st.start + (st.end - st.start) * 0.72;
+  }
+  document.addEventListener("click", (e) => {
+    const cta = e.target.closest?.(".hero__cta");
+    if (!cta) return;
+    e.preventDefault();
+    e.stopPropagation();
+    lenis.scrollTo(questionScrollY(), { duration: 2.1 });
+  }, true);
 
   // the book never blinks away: it is gradually covered as the next
   // section scrolls over it, then rendering pauses once fully hidden

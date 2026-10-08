@@ -7,12 +7,12 @@
    scroll position continuously and stays sharp at any viewport size.
    ═══════════════════════════════════════════════ */
 import * as THREE from "three";
-import { phoneQ } from "../config.js?v=92";
-import { scene, camera } from "./renderer.js?v=92";
+import { phoneQ } from "../config.js?v=94";
+import { scene, camera } from "./renderer.js?v=94";
 import {
   ovalLeaf, frond,
   makePaperTexture, makeLeafShadowTexture,
-} from "./textures.js?v=92";
+} from "./textures.js?v=94";
 
 const book = new THREE.Group();
 
@@ -45,7 +45,15 @@ coverPivot.add(front);
 const back = new THREE.Mesh(coverGeo, [edgeMat, edgeMat, edgeMat, edgeMat, innerMat, backMat]);
 back.position.z = -D / 2 + CT / 2;
 
-const spine = new THREE.Mesh(new THREE.BoxGeometry(CT, H + 0.008, D + 0.008), spineMat);
+// Only the outward (-x) face of the spine wears the jacket. The inward (+x)
+// face is what shows in the gutter once the book is open, and a printed strip
+// there reads as a photograph wedged between the pages — no book looks like
+// that. It keeps the flat binding colour the whole spine used to have.
+const spineInnerMat = new THREE.MeshStandardMaterial({ color: 0xc9b48c, roughness: 0.6, metalness: 0.12 });
+const spine = new THREE.Mesh(
+  new THREE.BoxGeometry(CT, H + 0.008, D + 0.008),
+  [spineInnerMat, spineMat, spineInnerMat, spineInnerMat, spineInnerMat, spineInnerMat]
+);
 spine.position.x = -W / 2 + CT / 2 - 0.006;
 
 const pages = new THREE.Mesh(new THREE.BoxGeometry(W - 0.16, H - 0.12, D - CT * 2 - 0.015), pageMat);

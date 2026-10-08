@@ -210,6 +210,11 @@ html:has(.page-checkout) { overflow-x: clip; }
     linear-gradient(160deg, #f3e7d7, #ead9c4);
 }
 .plan__img { width: 100%; height: 100%; object-fit: cover; display: block; }
+/* A plate holding the jacket artwork rather than a photograph. The artwork is
+   portrait, so filling a 4/3 plate with it crops the title clean off. Fit the
+   whole cover inside instead and let the plate's warm wash frame it. */
+.plan__plate--art { padding: clamp(0.5rem, 1vw, 0.85rem); }
+.plan__plate--art .plan__img { object-fit: contain; }
 .plan__line {
   font-family: var(--font-serif);
   font-style: italic;
@@ -267,17 +272,16 @@ html:has(.page-checkout) { overflow-x: clip; }
 }
 @media (hover: none) { .plan__pick, .pay__buy { cursor: pointer; } }
 .plan__pick:hover { background: rgba(168, 98, 92, 0.1); transform: translateY(-2px); }
-.plan__pick--solid {
-  background: var(--clay);
-  border-color: var(--clay);
-  color: #fff;
-}
-.plan__pick--solid:hover { background: #96534e; }
+/* The filled button says "this is the one you picked", so nothing may wear it
+   by default — the middle card used to, and kept it after another format was
+   chosen, which read as two selections at once. Its badge and its ring carry
+   "most chosen" on their own. */
 .plan__arrow { transition: transform 0.4s var(--ease-out); }
 .plan__pick:hover .plan__arrow, .pay__buy:hover .plan__arrow { transform: translateX(4px); }
 /* the chosen format */
 .plan.is-chosen { border-color: var(--clay); box-shadow: 0 26px 62px -30px rgba(140, 70, 60, 0.6); }
 .plan.is-chosen .plan__pick { background: var(--clay); border-color: var(--clay); color: #fff; }
+.plan.is-chosen .plan__pick:hover { background: #96534e; }
 
 /* ── the handwritten asides ── */
 .co__quote {

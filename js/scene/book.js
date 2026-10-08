@@ -7,12 +7,12 @@
    scroll position continuously and stays sharp at any viewport size.
    ═══════════════════════════════════════════════ */
 import * as THREE from "three";
-import { phoneQ } from "../config.js?v=94";
-import { scene, camera } from "./renderer.js?v=94";
+import { phoneQ } from "../config.js?v=95";
+import { scene, camera } from "./renderer.js?v=95";
 import {
   ovalLeaf, frond,
   makePaperTexture, makeLeafShadowTexture,
-} from "./textures.js?v=94";
+} from "./textures.js?v=95";
 
 const book = new THREE.Group();
 

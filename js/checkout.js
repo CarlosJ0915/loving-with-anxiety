@@ -1,25 +1,26 @@
 /* ═══════════════════════════════════════════════
-   checkout.html — choosing a format.
+   checkout.html — choosing a format, then handing the payment over.
 
-   Deliberately does not take a payment. The card fields on this page are an
-   inert visual placeholder (see the comment around #cardMount in the markup):
-   card details must never be typed into inputs this site controls. When a
-   provider is chosen, its Elements mount into #cardMount and this file gains
-   the confirm call — nothing else here changes.
+   This page never takes a card. It collects who the customer is, and Buy now
+   sends them to a Stripe Payment Link — a page on Stripe's own domain, listed
+   in checkout-links.js — carrying the format they chose and their email. Card
+   details typed into fields this site controls would put the whole project in
+   PCI scope, and there is no reason to accept that for three fixed prices.
    ═══════════════════════════════════════════════ */
 
-import { prefersReduced } from "./config.js?v=99";
-import { lenis } from "./scroll.js?v=99";
-import "./cursor.js?v=99";
-import { initI18n } from "./i18n-runtime.js?v=99";
+import { prefersReduced } from "./config.js?v=100";
+import { lenis } from "./scroll.js?v=100";
+import "./cursor.js?v=100";
+import { initI18n } from "./i18n-runtime.js?v=100";
+import { PAYMENT_LINKS } from "./checkout-links.js?v=100";
 
 const i18n = initI18n();
 i18n.restoreSavedLanguage();
 lenis.start();
 
 /* ═══════════ WHICH FORMAT ═══════════ */
-const PLANS = { digital: "9.99", experience: "24.99", printed: "39.99" };
 const plans = [...document.querySelectorAll(".plan")];
+let chosen = null;
 
 /* arriving from continue.html: ?path=read lands on the digital format,
    ?path=listen on the full experience, which is the one with the audio */
@@ -27,6 +28,7 @@ const wanted = new URLSearchParams(location.search).get("path");
 const fromPath = wanted === "listen" ? "experience" : wanted === "read" ? "digital" : null;
 
 function choose(key) {
+  chosen = key;
   plans.forEach((p) => p.classList.toggle("is-chosen", p.dataset.plan === key));
   try { sessionStorage.setItem("byfrancia-plan", key); } catch (e) {}
 }
@@ -45,14 +47,39 @@ choose(fromPath || saved || "experience"); // the featured one by default
 /* ═══════════ THE FORM ═══════════ */
 const form = document.getElementById("payForm");
 const status = document.getElementById("payStatus");
+const email = document.getElementById("payEmail");
+const emailErr = document.getElementById("emailErr");
+
+/* the error clears itself as soon as they start fixing it */
+email.addEventListener("input", () => {
+  email.closest(".field").classList.remove("is-invalid");
+  emailErr.classList.remove("is-shown");
+});
 
 form.addEventListener("submit", (e) => {
-  // Nothing is sent anywhere. Until a payment provider is wired up this is the
-  // honest behaviour — better a clear message than a button that looks like it
-  // charged someone.
   e.preventDefault();
-  status.classList.add("is-shown");
-  status.scrollIntoView({ behavior: prefersReduced ? "auto" : "smooth", block: "center" });
+
+  // the field is type="email" required, so the browser does the parsing
+  if (!email.checkValidity()) {
+    email.closest(".field").classList.add("is-invalid");
+    emailErr.classList.add("is-shown");
+    email.focus();
+    return;
+  }
+
+  const link = PAYMENT_LINKS[chosen];
+  if (!link) {
+    // No Payment Link pasted in yet. Say so rather than leave a button that
+    // looks like it charged someone.
+    status.classList.add("is-shown");
+    status.scrollIntoView({ behavior: prefersReduced ? "auto" : "smooth", block: "center" });
+    return;
+  }
+
+  // Stripe's hosted page takes the email as a prefill, so it is not retyped
+  const url = new URL(link, location.href);
+  url.searchParams.set("prefilled_email", email.value.trim());
+  location.assign(url.toString());
 });
 
 /* ═══════════ THE PAGE SETTLES IN ═══════════ */

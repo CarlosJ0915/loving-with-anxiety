@@ -49,6 +49,10 @@ jacket; continue.html passes neither. A language choice persists across both.
     cursor.js          the dot and its ring
     ambient.js         sunbeam + dust field
     i18n.js            translations (data only)
+    checkout-links.js  the three Stripe Payment Link URLs — blank means "not
+                       connected yet" and Buy now says so. No secret goes in
+                       it: a Payment Link URL is public by design, which is
+                       what lets a static site hand off a payment at all.
     scene/renderer.js  canvas, camera, lights, WebGL context
     scene/textures.js  every canvas-painted texture
     scene/book.js      geometry, materials, holders, layoutScene

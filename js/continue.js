@@ -9,10 +9,10 @@
    chose Español on the way in still lands here in Español.
    ═══════════════════════════════════════════════ */
 
-import { prefersReduced } from "./config.js?v=99";
-import { lenis } from "./scroll.js?v=99";
-import "./cursor.js?v=99";
-import { initI18n } from "./i18n-runtime.js?v=99";
+import { prefersReduced } from "./config.js?v=100";
+import { lenis } from "./scroll.js?v=100";
+import "./cursor.js?v=100";
+import { initI18n } from "./i18n-runtime.js?v=100";
 
 gsap.registerPlugin(ScrollTrigger);
 

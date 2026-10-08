@@ -349,15 +349,11 @@ export const TRANSLATIONS = {
     "plan.3.f7": "Acceso digital inmediato",
 
     "pay.contact": "Información de contacto",
-    "pay.payment": "Información de pago",
     "pay.name": "Nombre completo",
     "pay.email": "Correo electrónico",
-    "pay.card": "1234 5678 9012 3456",
-    "pay.exp": "MM / AA",
-    "pay.cvc": "CVC",
-    "pay.save": "Guardar mi información para futuras compras (opcional)",
+    "pay.err.email": "Necesitamos un correo válido para enviarte tu libro.",
     "pay.buy": "Comprar ahora",
-    "pay.encrypted": "Pago seguro y encriptado",
+    "pay.handoff": "Terminas tu compra en una página segura",
     "pay.status": "El pago todavía no está conectado — esta es una vista previa de la página.",
 
     "trust.1": "Compra segura<br />y protegida",

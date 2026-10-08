@@ -8,8 +8,8 @@
    takes the wording it should paint, so the caller owns that decision.
    ═══════════════════════════════════════════════ */
 import * as THREE from "three";
-import { COVER, DEFAULT_LANG } from "../i18n.js?v=99";
-import { renderer } from "./renderer.js?v=99";
+import { COVER, DEFAULT_LANG } from "../i18n.js?v=100";
+import { renderer } from "./renderer.js?v=100";
 
 function ovalLeaf(x, cx, cy, s, rot, rnd) {
   // rounded eucalyptus-style leaf: soft oval, faintly tapered at the stem end

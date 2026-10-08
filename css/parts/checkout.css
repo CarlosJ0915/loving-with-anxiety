@@ -322,7 +322,7 @@ html:has(.page-checkout) { overflow-x: clip; }
   /* minmax(0, ...) rather than 1fr: a bare 1fr floors at the content's
      intrinsic minimum, and the buy button plus the card brands pushed the
      column wider than the page. */
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr) auto;
+  grid-template-columns: minmax(0, 1fr) auto;
   gap: clamp(1rem, 2.4vw, 2rem);
   align-items: start;
 }
@@ -361,37 +361,21 @@ html:has(.page-checkout) { overflow-x: clip; }
   padding: 0.6em 0;
 }
 .field input::placeholder { color: #a99c8c; }
-.field input[readonly] { cursor: default; }
-/* same reason as .pay__form: an <input>'s default size is a real intrinsic
-   minimum, so 1fr alone pushed the CVC column off the page */
-.pay__row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0.7rem; }
 .field { min-width: 0; }
 .field input { width: 100%; }
-.pay__row .field { margin-bottom: 0; }
-
-.pay__save {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.6em;
-  margin-top: 0.6rem;
+/* the email that did not pass — the field is ringed and told why */
+.field.is-invalid { border-color: var(--clay); background: #fffaf7; }
+.pay__err {
+  margin-top: -0.3rem;
   font-family: var(--font-sans);
   font-size: 0.76rem;
-  color: var(--ink-soft);
-  cursor: none;
+  line-height: 1.4;
+  color: var(--clay);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s var(--ease-out);
 }
-@media (hover: none) { .pay__save { cursor: pointer; } }
-.pay__save input { position: absolute; opacity: 0; pointer-events: none; }
-.pay__tick {
-  flex: 0 0 auto;
-  width: 1.15rem; height: 1.15rem;
-  display: grid; place-items: center;
-  border-radius: 50%;
-  background: rgba(168, 98, 92, 0.18);
-  color: transparent;
-  font-size: 0.7rem;
-  transition: background-color 0.3s, color 0.3s;
-}
-.pay__save input:checked + .pay__tick { background: var(--clay); color: #fff; }
+.pay__err.is-shown { opacity: 1; visibility: visible; }
 
 .pay__col--action { display: flex; flex-direction: column; align-items: center; gap: 0.75rem; }
 .pay__buy {
@@ -438,6 +422,9 @@ html:has(.page-checkout) { overflow-x: clip; }
   color: #6f6354;
 }
 /* says plainly that nothing is wired up yet */
+/* only after Buy now finds no Payment Link to send them to — it was showing
+   unconditionally, which would have gone on claiming the page was a preview
+   long after the links were pasted in */
 .pay__status {
   margin-top: 1rem;
   text-align: center;
@@ -445,7 +432,11 @@ html:has(.page-checkout) { overflow-x: clip; }
   font-style: italic;
   font-size: 0.88rem;
   color: var(--muted);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.4s var(--ease-out);
 }
+.pay__status.is-shown { opacity: 1; visibility: visible; }
 
 /* ── trust ── */
 .trust {

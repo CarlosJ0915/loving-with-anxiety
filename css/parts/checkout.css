@@ -219,29 +219,14 @@ html:has(.page-checkout) { overflow-x: clip; }
   align-items: center;
   justify-content: center;
 }
-/* sized to the artwork rather than to the plate, so anything drawn on the
-   image — the page block below — lands on the cover's own edge */
+/* sized to the artwork rather than to the plate, so the image box is the
+   cover itself and not the box it sits in */
 .plan__plate--art .plan__img {
   width: auto;
   height: auto;
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
-}
-/* The printed card shows the same jacket, standing as a physical copy: a page
-   block along the fore-edge and a shadow on the surface beneath it. The photo
-   that was here carried a different cover, which is the one thing a product
-   shot may not do. A real photograph of the printed edition replaces this. */
-/* roomier than the digital plate so the page block and the shadow are not
-   clipped by the plate's own overflow */
-.plan__plate--print { padding: clamp(0.85rem, 1.7vw, 1.35rem); }
-.plan__plate--print .plan__img {
-  border-radius: 0.1rem 0.22rem 0.22rem 0.1rem;
-  box-shadow:
-    3px 0 0 -0.5px #f7f1e5,
-    5px 0 0 -1px #ebe0cd,
-    7px 0 0 -1.5px #ddd0ba,
-    9px 11px 18px -11px rgba(90, 60, 45, 0.55);
 }
 .plan__line {
   font-family: var(--font-serif);

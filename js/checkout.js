@@ -8,10 +8,10 @@
    the confirm call — nothing else here changes.
    ═══════════════════════════════════════════════ */
 
-import { prefersReduced } from "./config.js?v=96";
-import { lenis } from "./scroll.js?v=96";
-import "./cursor.js?v=96";
-import { initI18n } from "./i18n-runtime.js?v=96";
+import { prefersReduced } from "./config.js?v=97";
+import { lenis } from "./scroll.js?v=97";
+import "./cursor.js?v=97";
+import { initI18n } from "./i18n-runtime.js?v=97";
 
 const i18n = initI18n();
 i18n.restoreSavedLanguage();

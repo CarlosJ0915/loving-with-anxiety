@@ -11,7 +11,7 @@
    and because the book's jacket is a canvas texture that must be repainted.
    A page with neither passes nothing.
    ═══════════════════════════════════════════════ */
-import { LANGS, DEFAULT_LANG, OFFER, TRANSLATIONS } from "./i18n.js?v=95";
+import { LANGS, DEFAULT_LANG, OFFER, TRANSLATIONS } from "./i18n.js?v=96";
 
 const LANG_KEY = "byfrancia-lang";
 

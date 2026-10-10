@@ -8,11 +8,11 @@
    PCI scope, and there is no reason to accept that for three fixed prices.
    ═══════════════════════════════════════════════ */
 
-import { prefersReduced } from "./config.js?v=100";
-import { lenis } from "./scroll.js?v=100";
-import "./cursor.js?v=100";
-import { initI18n } from "./i18n-runtime.js?v=100";
-import { PAYMENT_LINKS } from "./checkout-links.js?v=100";
+import { prefersReduced } from "./config.js?v=101";
+import { lenis } from "./scroll.js?v=101";
+import "./cursor.js?v=101";
+import { initI18n } from "./i18n-runtime.js?v=101";
+import { PAYMENT_LINKS } from "./checkout-links.js?v=101";
 
 const i18n = initI18n();
 i18n.restoreSavedLanguage();
